@@ -10,16 +10,24 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('dissemination-toolkit')
-            ->hasConfigFile()
+            ->hasConfigFile(['dissemination-toolkit', 'languages', 'filesystems'])
             ->hasViews()
-            ->hasMigration('create_dissemination_toolkit_table')
-            ->hasCommand(DisseminationToolkitCommand::class);
+            ->hasTranslations()
+            ->hasRoute('web')
+            ->hasMigrations([
+                'install_postgis_extension',
+                'install_ltree_extension',
+                'create_invitations_table',
+                'create_usage_stats_table',
+                'create_areas_table',
+                'create_indicators_table',
+                'create_notifications_table',
+                'create_announcements_table',
+                'create_area_hierarchies_table',
+                'create_settings_table',
+            ])
+            ->hasCommands([]);
     }
 }
