@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace UNECA\DisseminationToolkit\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class DisseminationToolkitCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'dissemination-toolkit';
 
     public $description = 'My command';
 
