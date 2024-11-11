@@ -18,46 +18,33 @@
     "require": {
         "php": "^8.2",
         "livewire/livewire": "^3.4",
+        "laravel/jetstream": "^5.3",
         "spatie/laravel-package-tools": "^1.16",
         "spatie/laravel-translatable": "^6.8"
     },
     "require-dev": {
-        "laravel/pint": "^1.14",
         "nunomaduro/collision": "^8.1.1||^7.10.0",
-        "orchestra/testbench": "^9.0.0||^8.22.0",
         "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-arch": "^2.7",
         "pestphp/pest-plugin-laravel": "^2.3"
     },
     "autoload": {
         "psr-4": {
-            "UNECA\\DisseminationToolkit\\": "src/",
-            "UNECA\\DisseminationToolkit\\Database\\Factories\\": "database/factories/"
-        }
+            "Uneca\\DisseminationToolkit\\": "src"
+        },
+        "files": [
+            "src/Services/Helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "UNECA\\DisseminationToolkit\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "Uneca\\DisseminationToolkit\\Tests\\": "tests/"
         }
     },
     "scripts": {
-        "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-dissemination-toolkit --ansi",
-        "prepare": "@php vendor/bin/testbench package:discover --ansi",
-        "build": [
-            "@composer run prepare",
-            "@php vendor/bin/testbench workbench:build --ansi"
-        ],
-        "start": [
-            "Composer\\Config::disableProcessTimeout",
-            "@composer run build",
-            "@php vendor/bin/testbench serve"
-        ],
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
-        "test-coverage": "vendor/bin/pest --coverage",
-        "format": "vendor/bin/pint"
+        "test-coverage": "vendor/bin/pest --coverage"
     },
     "config": {
         "sort-packages": true,
@@ -69,10 +56,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "UNECA\\DisseminationToolkit\\DisseminationToolkitServiceProvider"
+                "Uneca\\DisseminationToolkit\\DisseminationToolkitServiceProvider"
             ],
             "aliases": {
-                "DisseminationToolkit": "UNECA\\DisseminationToolkit\\Facades\\DisseminationToolkit"
+                "DisseminationToolkit": "Uneca\\DisseminationToolkit\\Facades\\DisseminationToolkit"
             }
         }
     },

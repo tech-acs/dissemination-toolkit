@@ -1,6 +1,6 @@
 <?php
 
-namespace UNECA\DisseminationToolkit\Database\Factories;
+namespace Uneca\DisseminationToolkit\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
