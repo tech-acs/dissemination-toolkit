@@ -1,84 +1,68 @@
-# Census and survey data dissemination tool
+# Installation
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/tech-acs/dissemination-toolkit.svg?style=flat-square)](https://packagist.org/packages/tech-acs/dissemination-toolkit)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/tech-acs/dissemination-toolkit/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/tech-acs/dissemination-toolkit/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/tech-acs/dissemination-toolkit/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/tech-acs/dissemination-toolkit/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/tech-acs/dissemination-toolkit.svg?style=flat-square)](https://packagist.org/packages/tech-acs/dissemination-toolkit)
+As the dissemination toolkit is built for Laravel, you will first have to create a fresh Laravel project.
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Please refer to the Laravel documentation [here](https://laravel.com/docs/installation) on how to go about this.
 
-## Support us
+> Here is the **TLDR** version of a Laravel project creation
+> 
+> After you have installed PHP and Composer, you may create a new Laravel project via the Composer `create-project` command:
+>
+>```
+>composer create-project laravel/laravel my-dissemination
+>```
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/dissemination-toolkit.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/dissemination-toolkit)
+Once you have created the project, you may use composer to install the latest version of the toolkit into your new Laravel project:
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
-## Installation
-
-You can install the package via composer:
-
-```bash
-composer require tech-acs/dissemination-toolkit
+```
+composer require uneca/dissemination-toolkit
 ```
 
-You can publish and run the migrations with:
+After installing the package, you may execute the dissemination:install artisan command. This command will install a suite of tools and features that enable you to build
+a modern census/data dissemination platform.
 
-```bash
-php artisan vendor:publish --tag="dissemination-toolkit-migrations"
+```
+php artisan dissemination:install
+```
+
+
+>**New Applications Only**
+>
+>Dissemination toolkit should only be installed into new Laravel applications. Attempting to install it into an existing (modified or not freshly installed) Laravel application will result in unexpected behavior and issues.
+
+
+Now that you have scaffolded your dissemination platform, the next step is to edit your application's .env configuration file and put in the correct settings for your database and other relevant settings.
+
+To proceed, you need to first create a PostgreSQL database and add the details to the .env file (see below). Again please refer to the Laravel documentation on how to configure a database connection.
+
+```
+DB_CONNECTION=pgsql
+DB_HOST=your database host name or ip address
+DB_PORT=your database port (5432 is the default port for postgres)
+DB_DATABASE=your database name
+DB_USERNAME=your database username
+DB_PASSWORD=your database password
+```
+
+For a complete list of all environment variables you can configure, please refer to the relevant section of the documentation.
+
+Once you have edited your .env file, you are now ready to run the database migrations:
+
+```
 php artisan migrate
 ```
 
-You can publish the config file with:
+At this point, you are ready to start your server, whatever that may be (artisan serve command, nginx, WAMP, IIS, etc.) and navigate to the web address where you will see the landing page
 
-```bash
-php artisan vendor:publish --tag="dissemination-toolkit-config"
+The quickest way would be to run the built-in artisan web server like so,
+
 ```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
+php artisan serve
 ```
+Assuming everything goes well, you should be able to navigate to *http://localhost:8000* and see the landing page
 
-Optionally, you can publish the views using
+Finally, you can run the adminify command to create a _Manager_ account with which you can access your new platform.
 
-```bash
-php artisan vendor:publish --tag="dissemination-toolkit-views"
 ```
-
-## Usage
-
-```php
-$disseminationToolkit = new UNECA\DisseminationToolkit();
-echo $disseminationToolkit->echoPhrase('Hello, UNECA!');
+php artisan adminify
 ```
-
-## Testing
-
-```bash
-composer test
-```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [UNECA](https://github.com/amestsantim)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
