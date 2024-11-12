@@ -11,15 +11,15 @@
 
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
 
-        <x-message-display />
-        <x-error-display />
+        <x-dissemination::message-display />
+        <x-dissemination::error-display />
 
         <div class="mt-2 flex flex-col">
             <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg" x-data="confirmedDeletion">
 
-                        <x-delete-confirmation />
+                        <x-dissemination::delete-confirmation />
 
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
@@ -40,9 +40,9 @@
                                         {{$record->name}}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-red text-center gap-2">
-                                        <x-badge :count="$record->visualizations_count">Visualizations</x-badge>
-                                        <x-badge :count="$record->stories_count">Data Stories</x-badge>
-                                        <x-badge :count="$record->census_tables_count">Census Tables</x-badge>
+                                        <x-dissemination::badge :count="$record->visualizations_count">Visualizations</x-dissemination::badge>
+                                        <x-dissemination::badge :count="$record->stories_count">Data Stories</x-dissemination::badge>
+                                        <x-dissemination::badge :count="$record->documents_count">Census Tables</x-dissemination::badge>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="{{route('manage.tag.edit', $record->id)}}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>

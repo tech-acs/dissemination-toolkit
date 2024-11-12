@@ -36,16 +36,16 @@ class DocumentManagementController extends Controller
 
     public function index(Request $request)
     {
-        return (new SmartTableData(auth()->user()->censusTables(), $request))
+        return (new SmartTableData(auth()->user()->documents(), $request))
             ->columns([
                 SmartTableColumn::make('title')->sortable()->tdClasses('w-1/3'),
                 SmartTableColumn::make('type')->sortable()
-                    ->setBladeTemplate('<x-dataset-type-badge :text="$row->dataset_type" class="{{\Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum::getTypeClass($row->dataset_type)}}"/>'),
+                    ->setBladeTemplate('<x-dissemination::dataset-type-badge :text="$row->dataset_type" class="{{\Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum::getTypeClass($row->dataset_type)}}"/>'),
                 SmartTableColumn::make('publisher')->sortable(),
                 SmartTableColumn::make('author')->sortable()
                     ->setBladeTemplate('{{ $row->user->name }}'),
                 SmartTableColumn::make('published')
-                    ->setBladeTemplate('<x-yes-no value="{{$row->published}}"/>'),
+                    ->setBladeTemplate('<x-dissemination::yes-no value="{{$row->published}}"/>'),
                 SmartTableColumn::make('updated')
                     ->setBladeTemplate('{{ $row->updated_at->diffForHumans() }}'),
             ])

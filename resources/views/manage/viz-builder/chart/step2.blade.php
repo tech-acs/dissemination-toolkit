@@ -31,7 +31,7 @@
                 </form>
             </footer>
 
-            <x-toast />
+            <x-dissemination::toast />
         </section>
 
     </div>

@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
+use Uneca\DisseminationToolkit\Jobs\ImportDatasetJob;
 use Uneca\DisseminationToolkit\Models\Area;
 use Uneca\DisseminationToolkit\Models\Dataset;
 use Uneca\DisseminationToolkit\Models\Dimension;
@@ -28,7 +29,7 @@ class DatasetImporter extends Component
     public array $columnMapping = [];
     public string $filePath = '';
     public string $message = '';
-    const CHUNK_SIZE = 500;
+    //const CHUNK_SIZE = 500;
     public string $importError = '';
 
     private function mappings(): array
@@ -92,10 +93,12 @@ class DatasetImporter extends Component
 
     public function import()
     {
-        $lookups = $this->makeLookupTables();
         $this->validate();
+        $lookups = $this->makeLookupTables();
 
-        $this->importError = '';
+        ImportDatasetJob::dispatch($this->dataset, $this->filePath, $lookups, $this->columnMapping, auth()->user(), app()->getLocale());
+
+        /*$this->importError = '';
         try {
             $dataFile = SimpleExcelReader::create($this->filePath);//->formatHeadersUsing(fn($header) => strtolower(trim($header)));
             $rows = $dataFile->getRows();
@@ -143,7 +146,7 @@ class DatasetImporter extends Component
             logger('Exception: ' . $exception->getMessage());
             //return back()->withErrors(['datafile' => $exception->getMessage()]);
             $this->importError = str($exception->getMessage())->limit(500);
-        }
+        }*/
     }
 
     public function render()

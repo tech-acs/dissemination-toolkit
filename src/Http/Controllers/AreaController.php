@@ -4,7 +4,7 @@ namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Uneca\DisseminationToolkit\Http\Requests\MapRequest;
-use Uneca\DisseminationToolkit\Jobs\ImportShapefileJob;
+use Uneca\DisseminationToolkit\Jobs\ImportDatasetJob;
 use Uneca\DisseminationToolkit\Models\Area;
 use Uneca\DisseminationToolkit\Services\AreaTree;
 use Uneca\DisseminationToolkit\Services\ShapefileImporter;
@@ -35,7 +35,7 @@ class AreaController extends Controller
                     ->setBladeTemplate('{{ ucfirst($hierarchies[$row->level] ?? $row->level) }}'),
                 SmartTableColumn::make('path'),
                 SmartTableColumn::make('geom')->setLabel('Has Map')
-                    ->setBladeTemplate('<x-yes-no value="{{ $row->geom }}" />'),
+                    ->setBladeTemplate('<x-dissemination::yes-no value="{{ $row->geom }}" />'),
             ])
             ->editable('manage.area.edit')
             ->searchable(['name', 'code'])
@@ -79,7 +79,7 @@ class AreaController extends Controller
             ]);
         }
 
-        ImportShapefileJob::dispatch($filePath, $level, auth()->user(), app()->getLocale());
+        ImportDatasetJob::dispatch($filePath, $level, auth()->user(), app()->getLocale());
 
         return redirect()->route('manage.area.index')
             ->withMessage("Importing is in progress. You will be notified when it is complete.");

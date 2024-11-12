@@ -70,8 +70,13 @@ class User extends Authenticatable
         return $this->hasMany(Story::class);
     }
 
-    public function censusTables(): HasMany
+    public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+    public function announcements(): HasMany
+    {
+        return $this->hasMany(Announcement::class);
     }
 }

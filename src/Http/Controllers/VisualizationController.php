@@ -21,10 +21,10 @@ class VisualizationController extends Controller
                 SmartTableColumn::make('title')->sortable()
                     ->setBladeTemplate('{{ $row->title }}<br /><div class="text-xs text-gray-600 mt-1">Topics: <span class="font-normal text-gray-500">{{ $row->topics->pluck("name")->join(", ") }}</span></div>'),
                 SmartTableColumn::make('type')
-                    ->setBladeTemplate('{{ ucfirst($row->type) }} @if ($row->is_filterable) <span class="text-green-700" title="Filterable by geography"><x-icon.filter /></span> @endif')
+                    ->setBladeTemplate('{{ ucfirst($row->type) }} @if ($row->is_filterable) <span class="text-green-700" title="Filterable by geography"><x-dissemination::icon.filter /></span> @endif')
                     ->tdClasses('whitespace-nowrap'),
                 SmartTableColumn::make('published_at')->setLabel(__('Published'))
-                    ->setBladeTemplate('<x-yes-no value="{{ $row->published }}" />'),
+                    ->setBladeTemplate('<x-dissemination::yes-no value="{{ $row->published }}" />'),
                 SmartTableColumn::make('author')
                     ->setBladeTemplate('{{ $row->user->name }}'),
                 SmartTableColumn::make('updated_at')->setLabel('Last Updated')->sortable()

@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 gap-6">
             <div>
                 <x-label for="name" value="{{ __('Name') }} *" />
-                <x-multi-lang-input id="name" name="name" type="text" value="{{ old('name', $tag->name ?? null )}}" />
+                <x-dissemination::multi-lang-input id="name" name="name" type="text" value="{{ old('name', $tag->name ?? null )}}" />
                 <x-input-error for="name" class="mt-2" />
             </div>
 

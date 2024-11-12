@@ -23,7 +23,7 @@ class Tag extends Model
     {
         return $this->morphedByMany(Story::class, 'taggable');
     }
-    public function censusTables(): MorphToMany
+    public function documents(): MorphToMany
     {
         return $this->morphedByMany(Document::class, 'taggable');
     }

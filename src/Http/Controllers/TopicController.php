@@ -14,7 +14,7 @@ class TopicController extends Controller
 {
     public function index(Request $request)
     {
-        return (new SmartTableData(Topic::query()->withCount(['indicators', 'visualizations', 'stories', 'datasets', 'censusTables']), $request))
+        return (new SmartTableData(Topic::query()->withCount(['indicators', 'visualizations', 'stories', 'datasets', 'documents']), $request))
             ->columns([
                 SmartTableColumn::make('name')->sortable(),
                 SmartTableColumn::make('coverage')->setLabel('Coverage')
@@ -23,7 +23,7 @@ class TopicController extends Controller
                         {{ $row?->visualizations_count }} visualizations,
                         {{ $row?->stories_count }} stories,
                         {{ $row?->datasets_count }} datasets,
-                        {{ $row?->census_tables_count }} tables
+                        {{ $row?->documents_count }} tables
                     '),
             ])
             ->editable('manage.topic.edit')

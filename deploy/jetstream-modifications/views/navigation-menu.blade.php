@@ -19,7 +19,6 @@
                     <x-nav-link href="{{ route('manage.indicator.index') }}" :active="request()->routeIs('manage.indicator.*')">{{ __('Indicators') }}</x-nav-link>
                     <x-nav-link href="{{ route('manage.dimension.index') }}" :active="request()->routeIs('manage.dimension.*')">{{ __('Dimensions') }}</x-nav-link>
                     <x-nav-link href="{{ route('manage.dataset.index') }}" :active="request()->routeIs('manage.dataset.*')">{{ __('Datasets') }}</x-nav-link>
-                    {{--<x-nav-link href="{{ route('manage.year.index') }}" :active="request()->routeIs('manage.year.*')">{{ __('Years') }}</x-nav-link>--}}
                     <x-nav-link href="{{ route('manage.census-table.index') }}" :active="request()->routeIs('manage.census-table.*')">{{ __('Documents') }}</x-nav-link>
                 </div>
             </div>

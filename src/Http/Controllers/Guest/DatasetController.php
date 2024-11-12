@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class DatasetController extends Controller
 {
-    public function index(Request $request)
+    public function __invoke(Request $request)
     {
         $records = Dataset::query()
             ->when($request->has('keyword'), function (Builder $query) use ($request) {

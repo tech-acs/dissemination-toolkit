@@ -13,7 +13,7 @@ class Topic extends Model
     protected $guarded = ['id'];
     public array $translatable = ['name', 'description'];
 
-    public function censusTables(): MorphToMany
+    public function documents(): MorphToMany
     {
         return $this->morphedByMany(Document::class, 'topicable');
     }

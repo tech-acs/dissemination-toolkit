@@ -64,5 +64,5 @@
             }
         }
     </script>
-    <x-toast />
+    <x-dissemination::toast />
 </x-app-layout>

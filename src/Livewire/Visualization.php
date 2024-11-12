@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
-use App\Services\QueryBuilder;
-use App\Services\Sorter;
+use Uneca\DisseminationToolkit\Services\QueryBuilder;
+use Uneca\DisseminationToolkit\Services\Sorter;
 use Livewire\Component;
 
 abstract class Visualization extends Component
@@ -31,7 +31,7 @@ abstract class Visualization extends Component
         $this->htmlId = 'viz-' . str()->random(5);
 
         if ($this->vizId) {
-            $visualization = \App\Models\Visualization::find($this->vizId);
+            $visualization = \Uneca\DisseminationToolkit\Models\Visualization::find($this->vizId);
             $this->data = $visualization->data;
             $this->layout = $visualization->layout;
             $this->options = $visualization->options;

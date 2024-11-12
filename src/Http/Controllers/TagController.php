@@ -10,8 +10,8 @@ class TagController extends Controller
 {
     public function index()
     {
-        $records = Tag::withCount(['visualizations', 'stories','censusTables'])->get();
-        return view('manage.tag.index', compact('records'));
+        $records = Tag::withCount(['visualizations', 'stories','documents'])->get();
+        return view('dissemination::manage.tag.index', compact('records'));
     }
 
     /*public function create()
@@ -27,7 +27,7 @@ class TagController extends Controller
 
     public function edit(Tag $tag)
     {
-        return view('manage.tag.edit', compact('tag'));
+        return view('dissemination::manage.tag.edit', compact('tag'));
     }
 
     public function update(Tag $tag, Request $request)

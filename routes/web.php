@@ -35,7 +35,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('census-table', [DocumentController::class, 'index'])->name('census-table.index');
     Route::get('census-table/{id}', [DocumentController::class, 'show'])->name('census-table.show');
     Route::get('census-table/download/{Document}', [DocumentController::class, 'download'])->name('census-table.download');
-    Route::get('dataset', [DatasetController::class, 'index'])->name('dataset.index');
+    Route::get('dataset', DatasetController::class)->name('dataset.index');
     Route::get('dataset/{dataset}/download', DatasetDownloadController::class)->name('dataset.download');
 
     Route::view('about', 'dissemination::guest.about')->name('about');

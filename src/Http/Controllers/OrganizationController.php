@@ -11,7 +11,7 @@ class OrganizationController extends Controller
     public function edit()
     {
         $organization = Organization::firstOrCreate();
-        return view('manage.organization.edit', compact('organization'));
+        return view('dissemination::manage.organization.edit', compact('organization'));
     }
 
     public function update(Organization $organization, Request $request)

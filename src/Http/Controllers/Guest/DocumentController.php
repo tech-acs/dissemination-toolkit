@@ -67,8 +67,8 @@ class DocumentController extends Controller
             'id' => 'all',
         ]);
 
-        $tags = Tag::whereHas('censusTables')
-            ->withCount('censusTables')->orderByDesc('census_tables_count')->orderBy('name')->get();
+        $tags = Tag::whereHas('documents')
+            ->withCount('documents')->orderByDesc('documents_count')->orderBy('name')->get();
 
         return view('dissemination::guest.census-table.index', compact('records', 'sortOptions', 'censusYears', 'tags', 'types'));
     }

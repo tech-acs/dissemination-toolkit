@@ -95,7 +95,7 @@
                                                            @if(is_array(request()->get('tags')) && in_array($tag->id, request()->get('tags'))) checked @endif
                                                     >
                                                     <label for="tag-{{ $tag->id }}" class="ml-3 text-sm text-gray-600">{{ $tag->name  }}
-                                                        ({{$tag->census_tables_count}})</label>
+                                                        ({{$tag->documents_count}})</label>
                                                 </div>
                                             @endforeach
                                         </div>

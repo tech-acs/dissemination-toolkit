@@ -25,7 +25,7 @@ class StoryBuilderController extends Controller
                     'type' => $visualization->type,
                 ];
             })->all();
-        return view('manage.story.builder', compact('story', 'visualizations', 'baseUrl'));
+        return view('dissemination::manage.story.builder', compact('story', 'visualizations', 'baseUrl'));
     }
 
     public function update(Request $request, $id)

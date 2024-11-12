@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Jobs;
+namespace Uneca\DisseminationToolkit\Jobs;
 
 use Illuminate\Bus\Batchable;
 use Illuminate\Support\Str;
-use App\Models\Area;
-use App\Traits\Geospatial;
+use Uneca\DisseminationToolkit\Models\Area;
+use Uneca\DisseminationToolkit\Traits\Geospatial;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Auth\User;

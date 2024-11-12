@@ -41,6 +41,6 @@ class TableOptionsShaper extends Component
     public function render()
     {
         //dump($this->options, $this->sortColumn);
-        return view('livewire.table-options-shaper');
+        return view('dissemination::livewire.table-options-shaper');
     }
 }

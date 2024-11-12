@@ -16,6 +16,6 @@ class Visualizer extends Component
 
     public function render()
     {
-        return view('livewire.visualizer');
+        return view('dissemination::livewire.visualizer');
     }
 }

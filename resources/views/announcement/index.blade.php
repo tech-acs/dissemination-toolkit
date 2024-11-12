@@ -10,8 +10,8 @@
     </x-slot>
 
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-        <x-message-display />
-        <x-error-display />
+        <x-dissemination::message-display />
+        <x-dissemination::error-display />
 
         <div class="text-right">
             <a href="{{ route('manage.announcement.create') }}"><x-button>{{ __('Make Announcement') }}</x-button></a>

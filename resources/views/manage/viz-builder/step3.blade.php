@@ -6,7 +6,7 @@
         <livewire:state-recorder />
 
         <section class="shadow sm:rounded-md sm:overflow-hidden py-5 bg-white sm:p-6">
-            @include('manage.viz-builder.nav')
+            @include('dissemination::manage.viz-builder.nav')
 
             <div class="flex w-full">
                 <div class="w-1/2 border-r pr-4 py-8">
@@ -120,7 +120,7 @@
                             </div>
                             <div>
                                 <x-label for="tags" value="{{ __('Tags') }}" />
-                                <x-tags :value="\Uneca\DisseminationToolkit\Models\Tag::tagsToJsArray($visualization?->tags() ?? [])" class="mt-1" />
+                                <x-dissemination::tags :value="\Uneca\DisseminationToolkit\Models\Tag::tagsToJsArray($visualization?->tags() ?? [])" class="mt-1" />
                                 <x-input-error for="tags" class="mt-2" />
                             </div>
                         </div>
@@ -135,7 +135,7 @@
                 </button>
             </footer>
 
-            <x-toast />
+            <x-dissemination::toast />
         </section>
     </div>
 </x-app-layout>

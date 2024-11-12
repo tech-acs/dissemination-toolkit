@@ -83,7 +83,7 @@
                 </dl>
                 <dl class="py-2 border-b">
                     <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">Tags</dt>
-                    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">@include('components.tag-cloud', ['tags' => $censusTable->tags])</dd>
+                    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">@include('dissemination::components.tag-cloud', ['tags' => $censusTable->tags])</dd>
                 </dl>
                 <dl class="py-2 border-b flex items-center">
                     <div class="basis-1/2">

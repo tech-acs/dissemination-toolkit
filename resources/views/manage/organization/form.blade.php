@@ -5,12 +5,12 @@
             <div class="grid grid-cols-2 gap-6">
                 <div>
                     <x-label for="name" value="{{ __('Name') }}" />
-                    <x-multi-lang-input id="name" name="name" type="text" value="{{ old('name', $organization->name ?? null) }}" />
+                    <x-dissemination::multi-lang-input id="name" name="name" type="text" value="{{ old('name', $organization->name ?? null) }}" />
                     <x-input-error for="name" class="mt-2" />
                 </div>
                 <div>
                     <x-label for="slogan" value="{{ __('Slogan') }}" />
-                    <x-multi-lang-input id="slogan" name="slogan" type="text" value="{{ old('slogan', $organization->slogan ?? null) }}" />
+                    <x-dissemination::multi-lang-input id="slogan" name="slogan" type="text" value="{{ old('slogan', $organization->slogan ?? null) }}" />
                     <x-input-error for="slogan" class="mt-2" />
                 </div>
 
@@ -48,9 +48,9 @@
             </div>
 
             <div>
-                <x-label for="blurb" value="{{ __('Introduction') }}" class="inline" /><x-locale-display />
+                <x-label for="blurb" value="{{ __('Introduction') }}" class="inline" /><x-dissemination::locale-display />
                 {{--<x-textarea name="blurb" rows="3"></x-textarea>--}}
-                <x-easy-mde name="blurb">{{ old('blurb', $organization->blurb ?? null) }}</x-easy-mde>
+                <x-dissemination::easy-mde name="blurb">{{ old('blurb', $organization->blurb ?? null) }}</x-dissemination::easy-mde>
                 <x-input-error for="blurb" class="mt-2" />
             </div>
             <x-label for="logo_path" value="{{ __('Social Media') }}" />
@@ -77,9 +77,9 @@
                 </div>
             </div>
             <div class="w-1/2">
-                <x-label for="address" value="{{ __('Address') }}" class="inline" /><x-locale-display />
+                <x-label for="address" value="{{ __('Address') }}" class="inline" /><x-dissemination::locale-display />
                 {{--<x-textarea name="address" rows="3" class="">{{ old('address', $organization->address ?? null) }}</x-textarea>--}}
-                <x-easy-mde name="address">{{ old('address', $organization->address ?? null) }}</x-easy-mde>
+                <x-dissemination::easy-mde name="address">{{ old('address', $organization->address ?? null) }}</x-dissemination::easy-mde>
                 <x-input-error for="address" class="mt-2" />
             </div>
         </div>

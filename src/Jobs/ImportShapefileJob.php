@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace Uneca\DisseminationToolkit\Jobs;
 
 use Illuminate\Bus\Batch;
 use Illuminate\Bus\Batchable;
@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Throwable;
-use App\Models\AreaHierarchy;
-use App\Notifications\TaskCompletedNotification;
-use App\Notifications\TaskFailedNotification;
-use App\Notifications\TaskProgressNotification;
-use App\Services\AreaTree;
-use App\Services\ShapefileImporter;
-use App\Traits\Geospatial;
+use Uneca\DisseminationToolkit\Models\AreaHierarchy;
+use Uneca\DisseminationToolkit\Notifications\TaskCompletedNotification;
+use Uneca\DisseminationToolkit\Notifications\TaskFailedNotification;
+use Uneca\DisseminationToolkit\Notifications\TaskProgressNotification;
+use Uneca\DisseminationToolkit\Services\AreaTree;
+use Uneca\DisseminationToolkit\Services\ShapefileImporter;
+use Uneca\DisseminationToolkit\Traits\Geospatial;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Auth\User;
@@ -124,7 +124,7 @@ class ImportShapefileJob implements ShouldQueue
         }); //->allowFailures()
 
         $processBatch = true;
-        foreach ($features->chunk(config('dissemination.shapefile.import_chunk_size')) as $index => $featuresChunk) {
+        foreach ($features->chunk(config('chimera.shapefile.import_chunk_size')) as $index => $featuresChunk) {
             $features = $featuresChunk->values()->toArray();
 
             if ($this->areNamesAndCodesValid($features)) {
@@ -141,7 +141,7 @@ class ImportShapefileJob implements ShouldQueue
                     if (! empty($orphanFeatures)) {
                         $augmentedFeaturesChunk = array_filter($augmentedFeaturesChunk, fn ($feature) => ! empty($feature['path']));
                     }
-                    $batch->add(new ImportShapefileChunkJob($augmentedFeaturesChunk, $this->level, $this->user, $this->locale));
+                    $batch->add(new ImportDatasetChunkJob($augmentedFeaturesChunk, $this->level, $this->user, $this->locale));
                 } else {
                     $processBatch = false;
                     break;
