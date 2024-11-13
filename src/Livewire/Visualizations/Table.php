@@ -106,22 +106,18 @@ class Table extends Visualization
 
     public function preparePayload(array $rawData = []): void
     {
-        //$this->options = array_replace_recursive($this::DEFAULT_OPTIONS, $this->options);
-        $options['rowData'] = $rawData;
-        $options['columnDefs'] = $this->makeColumnDefs(collect($rawData));
-        //dump($options, $this->options);
-        $this->options = array_replace_recursive($this::DEFAULT_OPTIONS, $options, $this->options);
-        //dump($this->options);
-        /*$this->options['columnDefs'] = empty($this->options['columnDefs']) ?
-            $this->makeColumnDefs(collect($rawData)) :
-            $this->options['columnDefs'];*/
+        /*$options['rowData'] = $rawData;
+        $options['columnDefs'] = $this->makeColumnDefs(collect($rawData));*/
+        $options = array_replace_recursive($this::DEFAULT_OPTIONS, ['rowData' => $rawData, 'columnDefs' => $this->makeColumnDefs(collect($rawData))]);
+        $this->options = array_replace_recursive($options, $this->options);
     }
 
     #[On('dataShaperEvent')]
     public function reactToChanges(array $rawData, string $indicatorName, array $dataParams): void
     {
-        //$this->options = array_replace_recursive($this::DEFAULT_OPTIONS, $this->options, []);
+        $this->options = [];
         $this->preparePayload($rawData);
+        //dump($rawData, $this->options);
         $this->dispatch("updateTable.$this->htmlId", $this->options);
     }
 

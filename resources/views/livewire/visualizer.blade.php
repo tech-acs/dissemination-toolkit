@@ -4,6 +4,6 @@
         'data' => $data,
         'layout' => $layout,
         'options' => $options,
-        'vizId' => $vizId
+        'vizId' => $vizId,
     ])
 </div>

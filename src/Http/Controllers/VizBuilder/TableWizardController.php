@@ -65,7 +65,6 @@ class TableWizardController extends Controller
         }
         $resource = session()->get('viz-wizard-resource');
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Table::class, 'title' => $resource->indicatorTitle]);
-        //dump($resource);
         return view('dissemination::manage.viz-builder.step3')
             ->with([
                 'steps' => $this->steps,

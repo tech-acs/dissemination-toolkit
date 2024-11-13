@@ -31,7 +31,6 @@ class StateRecorder extends Component
     {
         $resource = session()->get('viz-wizard-resource');
         $resource->options = array_replace_recursive($resource->options, $options);
-        //dump($options, $resource->options);
         session()->put('viz-wizard-resource', $resource);
     }
 

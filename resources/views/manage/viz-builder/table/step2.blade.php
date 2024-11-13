@@ -11,7 +11,7 @@
 
                 <div id="table-editor" class="col-span-2 p-8">
                     <livewire:visualizer
-                        designated-component="\Uneca\DisseminationToolkit\Livewire\Visualizations\Table"
+                        designated-component="visualizations.table"
                         :raw-data="$resource->rawData"
                         :data="$resource->data"
                         :options="$resource->options"

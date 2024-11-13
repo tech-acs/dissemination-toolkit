@@ -37,7 +37,8 @@ class IndicatorController extends Controller
 
     public function store(IndicatorRequest $request)
     {
-        Indicator::create($request->only(['name', 'description', 'topic_id']));
+        $indicator = Indicator::create($request->only(['name', 'description']));
+        $indicator->topics()->sync($request->get('topics'));
         return redirect()->route('manage.indicator.index')->withMessage('Record created');
     }
 

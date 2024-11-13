@@ -66,3 +66,23 @@ Finally, you can run the adminify command to create a _Manager_ account with whi
 ```
 php artisan adminify
 ```
+
+# Configuration
+
+The first thing you should probably set the details for is your organization.
+
+You can do this by going to the management drop down and then to the "Organization" menu
+
+Then you should create your area hierarchy and import your areas
+
+Next, you should populate some data for your:
+
+- Topics
+- Indicators
+- Dimensions
+- Dimension values
+- Documents and
+- Datasets
+
+Finally, you can move onto creating visualizations and data stories
+
