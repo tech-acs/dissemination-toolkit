@@ -91,6 +91,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         Livewire::component('state-recorder', \Uneca\DisseminationToolkit\Livewire\StateRecorder::class);
         Livewire::component('i-need-alpine', \Uneca\DisseminationToolkit\Livewire\INeedAlpine::class);
         Livewire::component('dataset-importer', \Uneca\DisseminationToolkit\Livewire\DatasetImporter::class);
+        Livewire::component('review-form', \Uneca\DisseminationToolkit\Livewire\ReviewForm::class);
     }
 
     public function packageBooted()

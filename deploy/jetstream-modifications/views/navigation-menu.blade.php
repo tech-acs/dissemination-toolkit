@@ -11,7 +11,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex items-center">
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 lg:flex items-center">
                     <x-nav-link href="{{ route('manage.home') }}" :active="request()->routeIs('manage.home')">{{ __('Home') }}</x-nav-link>
                     <x-nav-link href="{{ route('manage.visualization.index') }}" :active="request()->routeIs('manage.visualization.*')">{{ __('Visualizations') }}</x-nav-link>
                     <x-nav-link href="{{ route('manage.story.index') }}" :active="request()->routeIs('manage.story.*')" class="whitespace-nowrap">{{ __('Data stories') }}</x-nav-link>
@@ -23,9 +23,9 @@
                 </div>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <div class="hidden lg:flex sm:items-center sm:ml-6">
                 <div class="flex space-x-4">
-                    <x-dropdown align="right" width="w-96" contentClasses="py-0 bg-white overflow-hidden">
+                    <x-dropdown align="right" contentClasses="w-96 py-0 bg-white overflow-hidden">
                         <x-slot name="trigger">
                             <livewire:notification-bell />
                         </x-slot>
@@ -37,7 +37,7 @@
                     <livewire:language-switcher />
 
                     @can('Super Admin')
-                        <x-dropdown align="right" width="60">
+                        <x-dropdown align="right" class="w-60">
                             <x-slot name="trigger">
                                 <x-dissemination::round-button title="{{ __('Manage') }}">
                                     <x-dissemination::icon.wrench />
@@ -190,10 +190,12 @@
             </div>
 
             <!-- Hamburger -->
-            <div class="-mr-2 flex items-center sm:hidden">
+            <div class="-mr-2 flex items-center lg:hidden">
                 <div class="mr-4 flex items-center space-x-4">
                     {{--<div class="-mt-2"><livewire:command-palette /></div>--}}
-                    <a href="{{ route('notification.index') }}"><livewire:notification-bell /></a>
+                    <a href="{{ route('notification.index') }}">
+                        <livewire:notification-bell />
+                    </a>
                     <livewire:language-switcher />
                 </div>
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition">
@@ -207,24 +209,31 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden h-96 overflow-y-auto">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden h-96 overflow-y-auto">
         <div class="pt-2 pb-3 space-y-1">
             {{--<x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
                 {{ __('Home') }}
             </x-responsive-nav-link>--}}
+            <x-responsive-nav-link href="{{ route('manage.visualization.index') }}" :active="request()->routeIs('manage.visualization.*')">{{ __('Visualizations') }}</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('manage.story.index') }}" :active="request()->routeIs('manage.story.*')" class="whitespace-nowrap">{{ __('Data stories') }}</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('manage.topic.index') }}" :active="request()->routeIs('manage.topic.*')">{{ __('Topics') }}</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('manage.indicator.index') }}" :active="request()->routeIs('manage.indicator.*')">{{ __('Indicators') }}</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('manage.dimension.index') }}" :active="request()->routeIs('manage.dimension.*')">{{ __('Dimensions') }}</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('manage.dataset.index') }}" :active="request()->routeIs('manage.dataset.*')">{{ __('Datasets') }}</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('manage.census-table.index') }}" :active="request()->routeIs('manage.census-table.*')">{{ __('Documents') }}</x-responsive-nav-link>
 
             @can('Super User')
                 <div class="border-t border-gray-200"></div>
                 <x-responsive-nav-link href="{{ route('manage.user.index') }}">{{ __('Users') }}</x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('manage.role.index') }}">{{ __('Roles') }}</x-responsive-nav-link>
                 <div class="border-t border-gray-200 border-dotted mx-4"></div>
-                {{--<x-responsive-nav-link href="{{ route('developer.source.index') }}">{{ __('Sources') }}</x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('developer.area-hierarchy.index') }}" >{{ __('Area Hierarchy') }}</x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('developer.area.index') }}">{{ __('Areas') }}</x-responsive-nav-link>--}}
+                <x-responsive-nav-link href="{{route('manage.area-hierarchy.index')}}">{{ __('Area Hierarchy') }}</x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('manage.area.index') }}">{{ __('Areas') }}</x-responsive-nav-link>
+                <div class="border-t border-gray-200 border-dotted mx-4"></div>
+                <x-responsive-nav-link href="{{ route('manage.organization.edit') }}">{{ __('Organization') }}</x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('manage.tag.index') }}">{{ __('Tags') }}</x-responsive-nav-link>
                 <div class="border-t border-gray-200 border-dotted mx-4"></div>
                 <x-responsive-nav-link href="{{ route('manage.announcement.index') }}">{{ __('Announcements') }}</x-responsive-nav-link>
-                {{--<x-responsive-nav-link href="{{ route('usage_stats') }}">{{ __('Usage Stats') }}</x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('analytics.index') }}">{{ __('Query Analytics') }}</x-responsive-nav-link>--}}
             @endcan
         </div>
 

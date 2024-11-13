@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
-use App\Models\Story;
-use App\Models\Visualization;
+use Uneca\DisseminationToolkit\Models\Story;
+use Uneca\DisseminationToolkit\Models\Visualization;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -41,6 +41,6 @@ class ReviewForm extends Component
 
     public function render()
     {
-        return view('livewire.review-form');
+        return view('dissemination::livewire.review-form');
     }
 }
