@@ -15,7 +15,11 @@ class VisualizationController extends Controller
         $records = Visualization::published()
             ->when($request->has('keyword'), function (Builder $query) use ($request) {
                 $locale = app()->getLocale();
-                $query->where("title->{$locale}", 'ilike', '%' . $request->get('keyword') . '%');
+                $keyword = $request->get('keyword');
+                $query->where("title->{$locale}", 'ilike', "%{$keyword}%")
+                    ->orWhereHas('tags', function ($query) use ($keyword) {
+                        $query->where('name', 'ilike', "%{$keyword}%");
+                    });
             })
             ->when(! empty($request->get('topic')), function (Builder $query) use ($request) {
                 $query->whereRelation('topics', 'topic_id', '=', $request->get('topic'));

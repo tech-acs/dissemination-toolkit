@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
-use App\Mail\InvitationMail;
-use App\Models\Invitation;
+use Uneca\DisseminationToolkit\Mail\InvitationMail;
+use Uneca\DisseminationToolkit\Models\Invitation;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
@@ -28,7 +28,7 @@ class InvitationManager extends Component
     public $resultBody;
 
     protected $rules = [
-        'email' => 'required|email|unique:Uneca\Scaffold\Models\Invitation,email|unique:Uneca\Scaffold\Models\User,email',
+        'email' => 'required|email|unique:Uneca\DisseminationToolkit\Models\Invitation,email|unique:Uneca\DisseminationToolkit\Models\User,email',
     ];
 
     protected $messages = [
@@ -115,6 +115,6 @@ class InvitationManager extends Component
 
     public function render()
     {
-        return view('livewire.invitation-manager');
+        return view('dissemination::livewire.invitation-manager');
     }
 }

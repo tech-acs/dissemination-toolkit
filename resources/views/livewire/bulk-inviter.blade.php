@@ -29,10 +29,10 @@
                         </label>
                         <input type="file" id="file" name="file" wire:model.live="file" onchange="document.getElementById('file_label').innerText=this.files[0].name;" class="hidden">
                         @if ($fileAccepted)
-                            <x-icon.accepted />
+                            <x-dissemination::icon.accepted />
                         @endif
                         @if($errors->has('file'))
-                            <x-icon.rejected />
+                            <x-dissemination::icon.rejected />
                         @endif
                     </div>
                 </div>

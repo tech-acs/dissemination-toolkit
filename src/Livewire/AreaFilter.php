@@ -2,9 +2,9 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
-use App\Models\Area;
-use App\Services\AreaTree;
-use App\Traits\ChecksumSafetyTrait;
+use Uneca\DisseminationToolkit\Models\Area;
+use Uneca\DisseminationToolkit\Services\AreaTree;
+use Uneca\DisseminationToolkit\Traits\ChecksumSafetyTrait;
 use Livewire\Component;
 
 class AreaFilter extends Component
@@ -87,6 +87,6 @@ class AreaFilter extends Component
 
     public function render()
     {
-        return view('livewire.area-filter');
+        return view('dissemination::livewire.area-filter');
     }
 }
