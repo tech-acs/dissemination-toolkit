@@ -30,6 +30,6 @@ class Reviews extends Component
 
     public function render()
     {
-        return view('components.reviews');
+        return view('dissemination::components.reviews');
     }
 }

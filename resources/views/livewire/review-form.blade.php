@@ -37,9 +37,12 @@
                 <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit review</button>
             </div>
         </div>
-        <div class="text-xs text-gray-500 pt-4 flex justify-end">
-            We will notify you as soon as your review is processed.
+        <div class="text-xs text-green-500 pt-4 flex justify-start">
+            {{ $message }}
         </div>
+        {{--<div class="text-xs text-gray-500 pt-4 flex justify-end">
+            We will notify you as soon as your review is processed.
+        </div>--}}
     </form>
 
     <script>

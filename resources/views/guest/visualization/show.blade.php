@@ -10,7 +10,7 @@
 
             <livewire:visualizer :designated-component="$visualization->livewire_component" :viz-id="$visualization->id" />
 
-            <x-dissemination::reviews :subject="$visualization" />
+            <x-dissemination-reviews :subject="$visualization" />
 
         </article>
 

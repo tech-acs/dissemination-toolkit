@@ -18,6 +18,8 @@ class ReviewForm extends Component
     #[Validate('required')]
     public Visualization|Story $subject;
 
+    public string $message = '';
+
     public bool $alreadyReviewed;
 
     public function mount()
@@ -35,8 +37,10 @@ class ReviewForm extends Component
             'rating' => $this->rating,
             'headline' => $this->headline,
             'detailed_review' => $this->detailedReview,
+            'approved_at' => now()
         ]);
         $this->reset();
+        $this->message = 'Your review has been submitted.';
     }
 
     public function render()
