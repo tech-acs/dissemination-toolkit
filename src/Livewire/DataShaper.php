@@ -176,13 +176,13 @@ class DataShaper extends Component
             }
         } else {
             $query = new QueryBuilder($queryParameters);
-            //dump($queryParameters, $query->toSql());
             $this->dispatch(
                 "dataShaperEvent",
                 rawData: Sorter::sort($query->get()),
                 indicatorName: $this->makeIndicatorName(),
                 dataParams: $queryParameters
             );
+            //dump($query->toSql(), $query->get(), Sorter::sort($query->get()));
         }
         $this->nextSelection = '';
     }

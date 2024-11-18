@@ -33,10 +33,10 @@
                                         <div class="col-span-2 overflow-hidden justify-center items-center text-indigo-300">
                                             <x-dissemination::icon.table class="w-2/3 group-hover:text-indigo-500"/>
                                         </div>
-                                    @elseif($record->type === 'Chart')
+                                    @else($record->type === 'Chart')
                                         <img class="col-span-2" src="{{ $record->thumbnail }}" alt="">
-                                    @elseif($record->type === 'Map')
-                                        <x-dissemination::icon.map class="w-2/3 group-hover:text-indigo-500" url="{{$record->id}}"/>
+                                    {{--@elseif($record->type === 'Map')
+                                        <x-dissemination::icon.map class="w-2/3 group-hover:text-indigo-500" url="{{$record->id}}"/>--}}
                                     @endif
 
                                 <div class="p-3 cursor-pointer flex-col flex overflow-hidden col-span-3">

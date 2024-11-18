@@ -14,14 +14,17 @@ return [
     ],
     'require_account_approval' => env('REQUIRE_ACCOUNT_APPROVAL', false),
     'color_theme' => env('COLOR_THEME', 'Chimera'),
-    'area' => [
-        'map' => [
-            'center' => [env('MAP_CENTER_LAT', 9.005401), env('MAP_CENTER_LON', 38.763611)],
-            'starting_zoom' => env('MAP_STARTING_ZOOM', 6),
-            'min_zoom' => env('MAP_MIN_ZOOM', 6),
-            'ignore_orphan_areas' => env('IGNORE_ORPHAN_AREAS', false),
+
+    'map' => [
+        'center' => [
+            'lat' => env('MAP_CENTER_LAT', 9.005401),
+            'lon' => env('MAP_CENTER_LON', 38.763611),
         ],
+        'starting_zoom' => env('MAP_STARTING_ZOOM', 6),
+        'min_zoom' => env('MAP_MIN_ZOOM', 6),
+        //'ignore_orphan_areas' => env('IGNORE_ORPHAN_AREAS', false),
     ],
+
     'cache' => [
         //'enabled' => env('CACHE_ENABLED', false),
         'ttl' => env('CACHE_TTL_SECONDS', 60 * 5),

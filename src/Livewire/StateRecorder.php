@@ -4,6 +4,7 @@ namespace Uneca\DisseminationToolkit\Livewire;
 
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Uneca\DisseminationToolkit\Services\QueryBuilder;
 
 class StateRecorder extends Component
 {
@@ -35,10 +36,12 @@ class StateRecorder extends Component
     }
 
     #[On('mapOptionsShaperEvent')]
-    public function recordDataAndLayout(array $data, array $layout): void
+    public function recordMapTweaks(array $options): void
     {
+        //dump($options);
         $resource = session()->get('viz-wizard-resource');
-        //$resource->options = array_replace_recursive($resource->options, $options);
+        $resource->data[0] = array_replace_recursive($resource->data[0], $options['data']);
+        $resource->layout = array_replace_recursive($resource->layout, $options['layout']);
         session()->put('viz-wizard-resource', $resource);
     }
 

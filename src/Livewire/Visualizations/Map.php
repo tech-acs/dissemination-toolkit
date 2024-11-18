@@ -30,14 +30,9 @@ class Map extends Visualization
     {
         $traces = $this->data;
         $data = toDataFrame($rawData);
-        logger('dump', ['traces' => $traces, 'df' => $data]);
         if ($data->isNotEmpty()) {
             foreach ($traces as $index => $trace) {
                 $columnNames = Arr::get($trace, 'meta.columnNames', []);
-                /*if ($columnNames) {
-                    $traces[$index]['x'] = $data[$columnNames['x']] ?? null;
-                    $traces[$index]['y'] = $data[$columnNames['y']] ?? null;
-                }*/
                 foreach($columnNames as $key => $columnName) {
                     if (! is_array($columnName)) {
                         $traces[$index][$key] = $data[$columnName] ?? null;
@@ -69,16 +64,23 @@ class Map extends Visualization
         $this->dispatch("updateChart.$this->htmlId", $this->data, $this->layout);
     }
 
-    /*#[On(['filterChanged'])]
-    public function update()
+    #[On('mapOptionsShaperEvent')]
+    public function applyOptions(array $options): void
     {
-        list($this->filterPath,) = $this->areaResolver();
-        $this->data = $this->getTraces($data, $this->filterPath);
-        $this->layout = $this->getLayout($this->filterPath);
-    }*/
+        $mapTrace = array_replace_recursive($this->data[0], $options['data']);
+        foreach ($mapTrace as $key => $value) {
+            if (in_array($key, ['showscale', 'autocolorscale'])) {
+                $mapTrace[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            }
+        }
+        $this->data[0] = $mapTrace;
+        $this->layout = array_replace_recursive($this->layout, $options['layout']);
+        //dump($this->data);
+        $this->dispatch("updateResponse.$this->htmlId", $this->data, $this->layout);
+    }
 
     public function render()
     {
-        return view('dissemination::livewire.visualizations.chart');
+        return view('dissemination::livewire.visualizations.map');
     }
 }

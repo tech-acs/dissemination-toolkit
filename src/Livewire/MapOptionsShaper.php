@@ -2,45 +2,34 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
+use Illuminate\Support\Arr;
 use Livewire\Component;
 
 class MapOptionsShaper extends Component
 {
     public array $options = [];
-    public array $optionLabels = [
-        'pagination' => 'Enable pagination',
-        'suppressMovableColumns' => 'Disable movable columns',
-        'unSortIcon' => 'Show unsort icon',
-        'columnHoverHighlight' => 'Highlight columns on hover'
-    ];
-    public ?int $sortColumn = null;
-    public string $sortDirection = 'asc';
+    public array $optionValues = [];
 
     public function mount()
     {
-        $this->sortColumn = collect($this->options['columnDefs'])->reduce(function ($carry, $columnDef, $index) {
-            return key_exists('sort', $columnDef) && ! is_null($columnDef['sort']) ? $index : $carry;
-        });
+        $this->optionValues = Arr::undot(array_map(fn($option) => $option['value'], $this->options));
     }
+
+    /*public function updated($property)
+    {
+        if ($property === 'optionValues.data.meta.columnNames.z') {
+            $this->optionValues['data']['zsrc'] = Arr::get($this->optionValues, 'data.meta.columnNames.z');
+        }
+    }*/
 
     public function apply()
     {
-        if (! is_null($this->sortColumn)) {
-            foreach ($this->options['columnDefs'] as $index => $columnDef) {
-                if ($columnDef['sort'] ?? null) {
-                    $this->options['columnDefs'][$index]['sort'] = null;
-                }
-            }
-            $this->options['columnDefs'][$this->sortColumn]['sort'] = $this->sortDirection;
-        }
-        $options = $this->options;
-        unset($options['rowData']);
-        $this->dispatch('tableOptionsShaperEvent', options: $options);
+        //dump($this->optionValues);
+        $this->dispatch('mapOptionsShaperEvent', options: $this->optionValues);
     }
 
     public function render()
     {
-        //dump($this->options, $this->sortColumn);
-        return view('livewire.table-options-shaper');
+        return view('dissemination::livewire.map-options-shaper');
     }
 }

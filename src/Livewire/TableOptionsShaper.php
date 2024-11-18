@@ -21,6 +21,9 @@ class TableOptionsShaper extends Component
         $this->sortColumn = collect($this->options['columnDefs'])->reduce(function ($carry, $columnDef, $index) {
             return key_exists('sort', $columnDef) && ! is_null($columnDef['sort']) ? $index : $carry;
         });
+        if (! is_null($this->sortColumn)) {
+            $this->sortDirection = $this->options['columnDefs'][$this->sortColumn]['sort'] ?? 'asc';
+        }
     }
 
     public function apply()

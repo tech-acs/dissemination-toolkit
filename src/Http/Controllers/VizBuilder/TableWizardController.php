@@ -130,7 +130,7 @@ class TableWizardController extends Controller
         // ToDo: if not found...redirect back to index with error message
         $this->setupResource($visualization);
         if (! $this->isStepValid($step)) {
-            return redirect()->route('manage.viz-builder.table.prepare-data');
+            return redirect()->route('manage.viz-builder.table.step1');
         }
         $resource = session()->get('viz-wizard-resource');
         //$options = $this->makeOptions($resource, $visualization);
@@ -160,7 +160,7 @@ class TableWizardController extends Controller
             $rawData = Sorter::sort($query->get())->all();
             $resource = new TableDesignerResource(
                 dataSources: toDataFrame(collect($rawData))->toArray(),
-                data: $visualization->data,
+                //data: $visualization->data,
                 options: $visualization->options,
                 vizId: $visualization->id,
                 rawData: $rawData,
@@ -170,6 +170,7 @@ class TableWizardController extends Controller
                 options: self::DEFAULT_OPTIONS,
             );
         }
+        //dd($resource, $visualization);
         session()->put('viz-wizard-resource', $resource);
     }
 }

@@ -86,7 +86,7 @@ Route::middleware(['web'])->group(function () {
         Route::controller(\Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\MapWizardController::class)->group(function () {
             Route::get('viz-builder/map/step1', 'step1')->name('viz-builder.map.step1');
             Route::get('viz-builder/map/step2', 'step2')->name('viz-builder.map.step2');
-            Route::post('viz-builder/map/step3', 'step3')->name('viz-builder.map.step3');
+            Route::get('viz-builder/map/step3', 'step3')->name('viz-builder.map.step3');
             Route::get('viz-builder/map/{viz}/edit', 'edit')->name('viz-builder.map.edit');
             Route::post('viz-builder/map', 'store')->name('viz-builder.map.store');
         });

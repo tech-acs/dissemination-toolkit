@@ -3,6 +3,8 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
+use Uneca\DisseminationToolkit\Livewire\Visualizations\Map;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Tag;
 use Uneca\DisseminationToolkit\Models\Visualization;
@@ -42,27 +44,63 @@ class MapWizardController extends Controller
         }
         $resource = session()->get('viz-wizard-resource');
         $options = $this->makeOptions($resource);
-        //dump($resource);
+
+        /*$areaIds = array_merge(array_values($resource->dataParams['geographies']));
+        $geojson = Geospatial::getGeoJsonByAreaId($areaIds[0] ?? []);
+        $mapTrace = [
+            'type' => 'choroplethmap',
+            'featureidkey' => 'properties.name',
+            'locationmode' => 'geojson-id',
+            'meta' => ['columnNames' => ['z' => '', 'locations' => 'geography']],
+            'locationssrc' => 'geography',
+            'geojson' => json_decode($geojson),
+            'showscale' => false,
+        ];
+
+        $setValues = Arr::undot(array_map(fn($option) => $option['value'], $options));
+        $setDataValues = $setValues['data'];
+        $setLayoutValues = $setValues['layout'];
+        foreach ($setDataValues as $key => $value) {
+            if (in_array($key, ['showscale', 'autocolorscale'])) {
+                $setDataValues[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            }
+        }
+        $resource->data = [array_replace_recursive($mapTrace, $setDataValues)];
+
+        $layout = [
+            ...self::DEFAULT_LAYOUT,
+            'height' => 650,
+            'margin' => ['l' => 0, 'r' => 0, 't' => 0, 'b' => 0],
+            'map' => [
+                'zoom' => config('dissemination.map.starting_zoom'),
+                'center' => config('dissemination.map.center'),
+                'style' => '',
+            ]
+        ];
+        $resource->layout = array_replace_recursive($layout, $setLayoutValues);*/
+
+        $resource = $this->addCurrentValuesToResource($resource, $options);
+
+        //dump($resource, $options);
         return view('dissemination::manage.viz-builder.map.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
     }
 
     public function step3(Request $request)
     {
         $step = 3;
-        $this->recordChartDesign(json_decode($request->get('data'), true), json_decode($request->get('layout'), true));
         if (! $this->isStepValid($step)) {
-            return redirect()->route('manage.viz-builder.map.design');
+            return redirect()->route('manage.viz-builder.map.step1');
         }
         $resource = session()->get('viz-wizard-resource');
-        $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Chart::class]);
+        dump($resource);
+        $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Map::class, 'title' => $resource->indicatorTitle]);
         return view('dissemination::manage.viz-builder.step3')
             ->with([
                 'steps' => $this->steps,
                 'currentStep' => 3,
-                //'topics' => $topics,
                 'resource' => $resource,
                 'visualization' => $visualization,
-                'type' => $this->type,
+                'type' => $this->type
             ]);
     }
 
@@ -95,7 +133,7 @@ class MapWizardController extends Controller
             $visualization = Auth::user()->visualizations()->create([
                 'name' => str($title)->slug()->toString(),
                 'data_params' => $resource->dataParams,
-                'livewire_component' => Chart::class,
+                'livewire_component' => Map::class,
                 ...$vizInfo
             ]);
         }
@@ -122,7 +160,11 @@ class MapWizardController extends Controller
                 ->withMessage('The visualization is either broken or could not be located');
         }
         $resource = session()->get('viz-wizard-resource');
-        return view('dissemination::manage.viz-builder.map.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource]);
+        //dump('from db', $resource);
+        $options = $this->makeOptions($resource);
+        $resource = $this->addCurrentValuesToResource($resource, $options);
+
+        return view('dissemination::manage.viz-builder.map.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
     }
 
     public function ajaxGetChart()
@@ -153,12 +195,95 @@ class MapWizardController extends Controller
         session()->put('viz-wizard-resource', $resource);
     }
 
+    private function addCurrentValuesToResource($resource, $options)
+    {
+        $areaIds = array_merge(array_values($resource->dataParams['geographies']));
+        $geojson = Geospatial::getGeoJsonByAreaId($areaIds[0] ?? []);
+        $mapTrace = [
+            'type' => 'choroplethmap',
+            'featureidkey' => 'properties.name',
+            'locationmode' => 'geojson-id',
+            'meta' => ['columnNames' => ['z' => '', 'locations' => 'geography']],
+            'locationssrc' => 'geography',
+            'geojson' => json_decode($geojson),
+            'showscale' => false,
+        ];
+
+        $setValues = Arr::undot(array_map(fn($option) => $option['value'], $options));
+        $setDataValues = $setValues['data'];
+        $setLayoutValues = $setValues['layout'];
+        foreach ($setDataValues as $key => $value) {
+            if (in_array($key, ['showscale', 'autocolorscale'])) {
+                $setDataValues[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            }
+        }
+        $resource->data = [array_replace_recursive($mapTrace, $setDataValues)];
+
+        $layout = [
+            ...self::DEFAULT_LAYOUT,
+            'height' => 650,
+            'margin' => ['l' => 0, 'r' => 0, 't' => 0, 'b' => 0],
+            'map' => [
+                'zoom' => config('dissemination.map.starting_zoom'),
+                'center' => config('dissemination.map.center'),
+                'style' => '',
+            ]
+        ];
+        $resource->layout = array_replace_recursive($layout, $setLayoutValues);
+        //dump('mixed', $resource);
+        return $resource;
+    }
+
     private function makeOptions($resource, $visualization = null)
     {
-        $table = new Chart();
-        $table->vizId = $visualization?->id;
-        $table->preparePayload($resource->rawData);
-        return $table->options;
+        $indicators = array_filter(array_keys($resource->dataSources), function ($column) {
+            return str($column)->endsWith(QueryBuilder::VALUE_COLUMN_INVISIBLE_MARKER);
+        });
+        $firstIndicator = reset($indicators);
+        return [
+            'data.meta.columnNames.z' => [
+                'type' => 'hidden',
+                'label' => 'Displayed indicator',
+                'options' => array_values($indicators),
+                'value' => $firstIndicator
+            ],
+            'data.zsrc' => [
+                'type' => 'hidden',
+                'value' => $firstIndicator,
+            ],
+            'data.autocolorscale' => [
+                'type' => 'select',
+                'label' => 'Auto color scale',
+                'options' => ['No', 'Yes'],
+                'value' => 'No'
+            ],
+            'data.colorscale' => [
+                'type' => 'select',
+                'label' => 'Color scale',
+                'options' => ['Blackbody','Bluered','Blues','Cividis','Earth','Electric','Greens','Greys','Hot','Jet','Picnic','Portland','Rainbow','RdBu','Reds','Viridis','YlGnBu','YlOrRd'],
+                'value' => 'Grey'
+            ],
+            'data.showscale' => [
+                'type' => 'select',
+                'label' => 'Display colorbar',
+                'options' => ['No', 'Yes'],
+                'value' => 'No'
+            ],
+            'layout.map.zoom' => [
+                'type' => 'select',
+                'label' => 'Zoom level',
+                'options' => [4, 5, 6, 7, 8],
+                'value' => config('dissemination.map.starting_zoom')
+            ],
+            'layout.map.style' => [
+                'type' => 'select',
+                'label' => 'Base map',
+                'options' => ['basic', 'carto-darkmatter', 'carto-darkmatter-nolabels', 'carto-positron',
+                    'carto-positron-nolabels', 'carto-voyager', 'carto-voyager-nolabels', 'dark', 'light',
+                    'open-street-map', 'outdoors', 'satellite', 'satellite-streets', 'streets', 'white-bg'],
+                'value' => 'streets'
+            ],
+        ];
     }
 
     private function setupResource(Visualization $visualization = null): void
@@ -170,41 +295,13 @@ class MapWizardController extends Controller
                 dataSources: toDataFrame(collect($rawData))->toArray(),
                 data: $visualization->data,
                 layout: $visualization->layout,
-                config: [...$this->getConfig(), 'editable' => true],
+                config: $this->getConfig(),
                 vizId: $visualization->id,
+                dataParams: $visualization->data_params,
                 rawData: $rawData,
             );
         } else {
-            $geojson = Geospatial::getGeoJson(1);
-            $mapTrace = [
-                'meta' => ["columnNames" => ["z" => "Population", "locations" => "geography"]],
-                'type' => "choroplethmap",
-                'zsrc' => 'Population',
-                'locationssrc' => 'geography',
-                'geojson' => json_decode($geojson),
-                'showscale' => false,
-                'featureidkey' => 'properties.name',
-                "locationmode" => "geojson-id",
-            ];
-            $mapStyle = [
-                /* height
-                   data column
-                   color scale?
-                   zoom  */
-                'height' => 700,
-                'map' => [
-                    'zoom' => 5,
-                    'center' => ['lat' => 1, 'lon' => 1]
-                ]
-            ];
-            $options = [
-
-            ];
-            $resource = new ChartDesignerResource(
-                data: [$mapTrace],
-                config: [...$this->getConfig(), 'editable' => true],
-                defaultLayout: [ ...self::DEFAULT_LAYOUT, ...$mapStyle],
-            );
+            $resource = new ChartDesignerResource(config: $this->getConfig());
         }
         session()->put('viz-wizard-resource', $resource);
     }

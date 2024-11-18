@@ -4,13 +4,13 @@
         <livewire:state-recorder />
 
         <section class="shadow sm:rounded-md sm:overflow-hidden py-5 bg-white sm:p-6">
-            @include('manage.viz-builder.nav')
+            @include('dissemination::manage.viz-builder.nav')
 
             <div class="grid grid-cols-3" style="height: calc(100vh - 360px);">
 
                 <div id="table-editor" class="col-span-2 p-8">
                     <livewire:visualizer
-                        designated-component="\App\Livewire\Visualizations\Map"
+                        designated-component="visualizations.map"
                         :raw-data="$resource->rawData"
                         :data="$resource->data"
                         :layout="$resource->layout"
@@ -28,7 +28,7 @@
                 </a>
             </footer>
 
-            <x-toast />
+            <x-dissemination::toast />
         </section>
 
     </div>

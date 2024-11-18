@@ -168,7 +168,7 @@ class QueryBuilder
             ->map(function ($indicatorValues, $indicatorName) {
                 $df = toDataFrame($indicatorValues);
                 $df->pull('indicator');
-                $df->put($indicatorName, $df->pull('values'));
+                $df->put($indicatorName . self::VALUE_COLUMN_INVISIBLE_MARKER, $df->pull('values'));
                 return $df;
             });
         $unionized = $columnized->reduce(function ($carry, $subTable) {

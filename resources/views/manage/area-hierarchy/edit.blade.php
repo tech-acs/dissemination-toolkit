@@ -15,7 +15,7 @@
         <form action="{{route('manage.area-hierarchy.update', $areaHierarchy->id)}}" method="POST">
             @csrf
             @method('PATCH')
-            @include('manage.area-hierarchy.form')
+            @include('dissemination::manage.area-hierarchy.form')
         </form>
 
     </div>
