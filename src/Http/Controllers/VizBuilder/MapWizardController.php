@@ -92,7 +92,7 @@ class MapWizardController extends Controller
             return redirect()->route('manage.viz-builder.map.step1');
         }
         $resource = session()->get('viz-wizard-resource');
-        dump($resource);
+        //dump($resource);
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Map::class, 'title' => $resource->indicatorTitle]);
         return view('dissemination::manage.viz-builder.step3')
             ->with([
@@ -161,9 +161,9 @@ class MapWizardController extends Controller
         }
         $resource = session()->get('viz-wizard-resource');
         //dump('from db', $resource);
-        $options = $this->makeOptions($resource);
+        $options = $this->makeOptions($resource, $visualization);
         $resource = $this->addCurrentValuesToResource($resource, $options);
-
+        //dump('synt', $resource, $options);
         return view('dissemination::manage.viz-builder.map.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
     }
 
@@ -255,25 +255,25 @@ class MapWizardController extends Controller
                 'type' => 'select',
                 'label' => 'Auto color scale',
                 'options' => ['No', 'Yes'],
-                'value' => 'No'
+                'value' => $visualization->data[0]['autocolorscale'] ?? 'No'
             ],
             'data.colorscale' => [
                 'type' => 'select',
                 'label' => 'Color scale',
                 'options' => ['Blackbody','Bluered','Blues','Cividis','Earth','Electric','Greens','Greys','Hot','Jet','Picnic','Portland','Rainbow','RdBu','Reds','Viridis','YlGnBu','YlOrRd'],
-                'value' => 'Grey'
+                'value' => $visualization->data[0]['colorscale'] ?? 'Grey'
             ],
             'data.showscale' => [
                 'type' => 'select',
                 'label' => 'Display colorbar',
                 'options' => ['No', 'Yes'],
-                'value' => 'No'
+                'value' => $visualization->data[0]['showscale'] ?? 'No'
             ],
             'layout.map.zoom' => [
                 'type' => 'select',
                 'label' => 'Zoom level',
                 'options' => [4, 5, 6, 7, 8],
-                'value' => config('dissemination.map.starting_zoom')
+                'value' => $visualization->layout['map']['zoom'] ?? config('dissemination.map.starting_zoom')
             ],
             'layout.map.style' => [
                 'type' => 'select',
@@ -281,7 +281,7 @@ class MapWizardController extends Controller
                 'options' => ['basic', 'carto-darkmatter', 'carto-darkmatter-nolabels', 'carto-positron',
                     'carto-positron-nolabels', 'carto-voyager', 'carto-voyager-nolabels', 'dark', 'light',
                     'open-street-map', 'outdoors', 'satellite', 'satellite-streets', 'streets', 'white-bg'],
-                'value' => 'streets'
+                'value' => $visualization->layout['map']['style'] ?? 'streets'
             ],
         ];
     }

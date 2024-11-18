@@ -30,14 +30,9 @@ class Chart extends Visualization
     {
         $traces = $this->data;
         $data = toDataFrame($rawData);
-        logger('dump', ['traces' => $traces, 'df' => $data]);
         if ($data->isNotEmpty()) {
             foreach ($traces as $index => $trace) {
                 $columnNames = Arr::get($trace, 'meta.columnNames', []);
-                /*if ($columnNames) {
-                    $traces[$index]['x'] = $data[$columnNames['x']] ?? null;
-                    $traces[$index]['y'] = $data[$columnNames['y']] ?? null;
-                }*/
                 foreach($columnNames as $key => $columnName) {
                     if (! is_array($columnName)) {
                         $traces[$index][$key] = $data[$columnName] ?? null;

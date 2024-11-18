@@ -24,6 +24,11 @@ class Map extends Visualization
     {
         parent::mount();
         $this->config = $this->makeConfig();
+        foreach ($this->data[0] ?? [] as $key => $value) {
+            if (in_array($key, ['showscale', 'autocolorscale'])) {
+                $this->data[0][$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            }
+        }
     }
 
     public function makeTraces(Collection $rawData): array
@@ -54,6 +59,7 @@ class Map extends Visualization
     public function preparePayload(array $rawData = []): void
     {
         $this->data = $this->makeTraces(collect($rawData));
+        //array_replace_recursive($this->data[0], $options['data']);
     }
 
     #[On('dataShaperEvent')]
