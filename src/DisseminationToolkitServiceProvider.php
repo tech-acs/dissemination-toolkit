@@ -30,6 +30,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
             ->hasMigrations([
                 'install_postgis_extension',
                 'install_ltree_extension',
+                'install_tablefunc_extension',
                 'create_invitations_table',
                 'create_usage_stats_table',
                 'create_areas_table',
@@ -81,6 +82,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         Livewire::component('visualizations.map', \Uneca\DisseminationToolkit\Livewire\Visualizations\Map::class);
         Livewire::component('visualizer', \Uneca\DisseminationToolkit\Livewire\Visualizer::class);
         Livewire::component('table-options-shaper', \Uneca\DisseminationToolkit\Livewire\TableOptionsShaper::class);
+        Livewire::component('map-options-shaper', \Uneca\DisseminationToolkit\Livewire\MapOptionsShaper::class);
         Livewire::component('topic-selector', \Uneca\DisseminationToolkit\Livewire\TopicSelector::class);
         Livewire::component('invitation-manager', \Uneca\DisseminationToolkit\Livewire\InvitationManager::class);
         Livewire::component('language-switcher', \Uneca\DisseminationToolkit\Livewire\LanguageSwitcher::class);
