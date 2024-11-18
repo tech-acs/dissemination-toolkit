@@ -59,7 +59,7 @@ class AreaHierarchyController extends Controller
     {
         $areaHierarchy->zoom_start = min($areaHierarchy->map_zoom_levels ?? [6]);
         $areaHierarchy->zoom_end = max($areaHierarchy->map_zoom_levels ?? [6]);
-        return view('manage.area-hierarchy.edit', compact('areaHierarchy'));
+        return view('dissemination::manage.area-hierarchy.edit', compact('areaHierarchy'));
     }
 
     public function update(AreaHierarchy $areaHierarchy, AreaHierarchyRequest $request)
