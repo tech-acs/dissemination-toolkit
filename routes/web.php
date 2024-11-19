@@ -98,8 +98,8 @@ Route::middleware(['web'])->group(function () {
 
         Route::middleware(['can:Super Admin'])->group(function () {
             Route::resource('role', RoleController::class)->only(['index', 'store', 'edit', 'destroy']);
-            Route::resource('user', UserController::class)->only(['index', 'edit', 'update']);
-            Route::get('user/{user}/suspension', UserSuspensionController::class)->name('user.suspension');
+            Route::resource('user', UserController::class)->only(['index', 'edit', 'update', 'destroy'])->middleware('password.confirm');
+            Route::get('user/{user}/suspension', UserSuspensionController::class)->name('user.suspension')->middleware('password.confirm');
 
             Route::resource('area-hierarchy', AreaHierarchyController::class);
             Route::resource('area', AreaController::class)->except(['destroy']);
@@ -108,10 +108,10 @@ Route::middleware(['web'])->group(function () {
             Route::get('organization', [\Uneca\DisseminationToolkit\Http\Controllers\OrganizationController::class, 'edit'])->name('organization.edit');
             Route::patch('organization/{organization}', [\Uneca\DisseminationToolkit\Http\Controllers\OrganizationController::class, 'update'])->name('organization.update');
             Route::resource('tag', \Uneca\DisseminationToolkit\Http\Controllers\TagController::class)->only(['index', 'edit', 'update']);
-            Route::name('templates.')->group(function () {
+            /*Route::name('templates.')->group(function () {
                 //Route::resource('templates/visualization', \App\Http\Controllers\VisualizationTemplateController::class)->only(['index', 'destroy']);
                 Route::resource('templates/story', \App\Http\Controllers\StoryTemplateController::class)->only(['index', 'destroy']);
-            });
+            });*/
         });
 
         Route::resource('census-table', DocumentManagementController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');

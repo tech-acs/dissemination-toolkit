@@ -34,6 +34,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
                 'install_postgis_extension',
                 'install_ltree_extension',
                 'install_tablefunc_extension',
+                'add_is_suspended_and_last_login_at_columns_to_users_table',
                 'create_invitations_table',
                 'create_usage_stats_table',
                 'create_areas_table',

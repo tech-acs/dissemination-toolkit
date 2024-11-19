@@ -12,7 +12,7 @@
 
     <div class="flex flex-col max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div class="bg-white shadow sm:rounded-lg">
-            <form class="space-y-6" action="{{route('user.update', $user->id)}}" method="POST">
+            <form class="space-y-6" action="{{route('manage.user.update', $user->id)}}" method="POST">
                 @method('patch')
                 @csrf
                 <div class="md:grid md:grid-cols-3 md:gap-6 px-4 py-5 sm:p-6">
@@ -72,12 +72,12 @@
                                 @endforelse
                                 </div>
                             </div>
-                            <div class="mt-6">
+                            {{--<div class="mt-6">
                                 <div class="mb-2">
                                     <span class="text-base font-medium text-gray-900">{{ __('Area restriction') }}</span>
                                 </div>
                                 <livewire:area-restriction-manager :user="$user" />
-                            </div>
+                            </div>--}}
                         </fieldset>
                     </div>
                 </div>
