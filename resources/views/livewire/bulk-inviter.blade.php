@@ -9,7 +9,7 @@
         <x-slot name="content">
             <div class="mb-4">
                 <p class="mb-2">
-                    You can invite multiple users at once by importing a list of email addresses from an Excel file.
+                    {{ __('You can invite multiple users at once by importing a list of email addresses from an Excel file.')}}
                 </p>
                 <span class="mb-2 text-sm text-gray-600 italic">
                     <p class="mb-2">The file needs to have at least one column named <span class="font-semibold">email</span> that contains the email addresses.</p>
@@ -40,12 +40,12 @@
                     <x-input-error for="file" />
                 @else
                     <div class="text-xs text-gray-500 mt-1">
-                        You must upload a spreadsheet (.xlsx or .csv)
+                        {{ __('You must upload a spreadsheet')}} (.xlsx or .csv)
                     </div>
                 @endif
             </div>
             <div class="mt-5">
-                @if(config('scaffold.emailing_enabled'))
+                @if(config('dissemination.emailing_enabled'))
                     <x-label>
                         <x-checkbox name="send_email" class="mr-1" wire:model.live="sendEmails" /> {{ __('send invitation emails') }}
                     </x-label>

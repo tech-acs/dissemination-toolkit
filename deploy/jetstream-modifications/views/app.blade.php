@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="icon" href="{{asset('images/favicon.ico', config('scaffold.secure'))}}" />
+        <link rel="icon" href="{{asset('images/favicon.ico', config('dissemination.secure'))}}" />
         <title>{{ config('app.name') }}</title>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -85,7 +85,7 @@
 
                     </div>
                     <div class="mt-2 md:mt-0 text-center text-base text-gray-400 flex">
-                        <div>{{ __('Owned by') }}&nbsp;<a href="{{ config('scaffold.owner.url') }}" target="_blank" class="text-blue-400">{{ config('scaffold.owner.name') }}</a></div>
+                        <div>{{ __('Owned by') }}&nbsp;<a href="{{ config('dissemination.owner.url') }}" target="_blank" class="text-blue-400">{{ config('dissemination.owner.name') }}</a></div>
                     </div>
                 </div>
             </footer>

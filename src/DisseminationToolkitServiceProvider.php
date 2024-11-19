@@ -5,7 +5,10 @@ namespace Uneca\DisseminationToolkit;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Http\Request;
 use Laravel\Jetstream\Http\Livewire\NavigationMenu;
+use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -126,7 +129,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         $router->aliasMiddleware('enforce_2fa', \Uneca\DisseminationToolkit\Http\Middleware\RedirectIf2FAEnforced::class);
         //$router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
 
-        /*Fortify::registerView(function (Request $request) {
+        Fortify::registerView(function (Request $request) {
             if (! $request->hasValidSignature()) {
                 throw new InvalidSignatureException();
             }
@@ -138,9 +141,9 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         $router->pushMiddlewareToGroup('web', \Uneca\DisseminationToolkit\Http\Middleware\CheckAccountSuspension::class);
         $router->pushMiddlewareToGroup('web', \Uneca\DisseminationToolkit\Http\Middleware\Language::class);
         $router->aliasMiddleware('enforce_2fa', \Uneca\DisseminationToolkit\Http\Middleware\RedirectIf2FAEnforced::class);
-        $router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
+        //$router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
 
-        $this->app->booted(function () {
+        /*$this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
             $schedule->command('chimera:generate-reports')->hourly();
         });

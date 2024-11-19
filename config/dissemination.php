@@ -10,7 +10,7 @@ return [
     'emailing_enabled' => env('EMAILING_ENABLED', false),
     'enforce_2fa' => env('ENFORCE_2FA', false),
     'invitation' => [
-        'ttl_hours' => env('INVITATION_TTL_HOURS', 72)
+        'ttl_hours' => (int) env('INVITATION_TTL_HOURS', 72)
     ],
     'require_account_approval' => env('REQUIRE_ACCOUNT_APPROVAL', false),
     'color_theme' => env('COLOR_THEME', 'Chimera'),

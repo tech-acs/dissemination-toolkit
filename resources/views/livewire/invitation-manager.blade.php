@@ -71,12 +71,12 @@
 
         <x-slot name="content">
             {{ __('Using the email address of the user you want to invite, a registration link will be generated which you can then send to the prospective user.') }}
-            {{ __('The link will expire in :ttl hours.', ['ttl' => config('scaffold.invitation.ttl_hours')]) }}
+            {{ __('The link will expire in :ttl hours.', ['ttl' => config('dissemination.invitation.ttl_hours')]) }}
             <div class="mt-6">
                 <x-label for="email" value="{{ __('Email address') }}" />
                 <x-input id="email" type="email" class="mt-1 block w-2/3" wire:model.defer="email" />
                 <x-input-error for="email" class="mt-2" />
-                @if(config('scaffold.emailing_enabled'))
+                @if(config('dissemination.emailing_enabled'))
                     <x-label>
                         <x-checkbox name="send_email" class="mr-1" wire:model="sendEmail" checked /> {{ __('send invitation email') }}
                     </x-label>

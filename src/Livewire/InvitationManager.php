@@ -59,7 +59,7 @@ class InvitationManager extends Component
     {
         $this->validate();
         try {
-            $expiresAt = now()->addHours(config('scaffold.invitation.ttl_hours'));
+            $expiresAt = now()->addHours(config('dissemination.invitation.ttl_hours'));
             $invitation = Invitation::create([
                 'email' => $this->email,
                 'link' => URL::temporarySignedRoute('register', $expiresAt, ['email' => $this->email]),
