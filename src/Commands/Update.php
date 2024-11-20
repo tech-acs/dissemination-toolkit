@@ -15,7 +15,7 @@ class Update extends Command
         {--migrations : Publishes migration files from dissemination}
         {--packages : Installs php dependencies via composer}
         {--jetstream-customizations : Copies customized jetstream files from dissemination}
-        {--assets : Copies assets (css, js, images and stubs)}
+        {--assets : Copies assets (css, js and images)}
         {--color-palettes : Copies color palettes from dissemination}
         {--npm : Installs node dependencies}
         {--copy-env : Copies .env.example from kit to .env and also generates key}';
@@ -32,7 +32,7 @@ class Update extends Command
         }
 
         $runAll = $this->option('all') ?? false;
-        $this->components->info("Updating Dashboard Starter Kit");
+        $this->components->info("Updating Dissemination Toolkit");
 
         if ($runAll || $this->option('dissemination-config')) {
             $this->components->task('Publishing dissemination config...', function () use ($runAll) {
@@ -56,9 +56,9 @@ class Update extends Command
         if ($runAll || $this->option('color-palettes')) {
             $this->copyColorPalettes();
         }
-        if ($runAll || $this->option('stubs')) {
+        /*if ($runAll || $this->option('stubs')) {
             $this->publishStubs();
-        }
+        }*/
         if ($runAll || $this->option('npm')) {
             $this->installJsDependencies();
         }
