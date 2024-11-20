@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
-use Laravel\Jetstream\Http\Livewire\NavigationMenu;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
@@ -70,6 +69,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
                 \Uneca\DisseminationToolkit\Commands\ImportDataset::class,
                 \Uneca\DisseminationToolkit\Commands\RemoveDimension::class,
                 \Uneca\DisseminationToolkit\Commands\RemoveDimensions::class,
+                \Uneca\DisseminationToolkit\Commands\Update::class,
             ]);
     }
 

@@ -51,7 +51,7 @@ export default class ChartEmbedEditing extends Plugin {
                 let vizType = modelElement.getAttribute('type')
 
                 let vizInit
-                if (vizType === 'Chart') {
+                if (vizType === 'Chart' || vizType === 'Map') {
                     vizInit = `new PlotlyChart('${id}')`
                 } else if (vizType === 'Table') {
                     vizInit = `new AgGridTable('${id}')`
@@ -73,7 +73,7 @@ export default class ChartEmbedEditing extends Plugin {
                 let vizType = modelElement.getAttribute('type')
 
                 let vizInit
-                if (vizType === 'Chart') {
+                if (vizType === 'Chart' || vizType === 'Map') {
                     vizInit = `new PlotlyChart('${id}')`
                 } else if (vizType === 'Table') {
                     vizInit = `new AgGridTable('${id}')`

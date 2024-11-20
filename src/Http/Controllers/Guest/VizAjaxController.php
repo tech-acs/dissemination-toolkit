@@ -43,17 +43,24 @@ class VizAjaxController extends Controller
 
     public function show(Visualization $visualization, Request $request)
     {
-        if ($visualization->type === 'Chart') {
+        if ($visualization->type === 'Chart' || $visualization->type === 'Map') {
             $instance = new Chart();
             $instance->vizId = $visualization->id;
             $instance->mount();
             $path = $request->get('path');
             if ($path) {
                 $dataParams = $this->updateDataParam($visualization->data_params, $path);
-                logger('Data params', ['original' => $visualization->data_params['geographies'], 'new' => $dataParams['geographies']]);
+                //logger('Data params', ['original' => $visualization->data_params['geographies'], 'new' => $dataParams['geographies']]);
                 $query = new QueryBuilder($dataParams);
                 $rawData = Sorter::sort($query->get())->all();
                 $instance->preparePayload($rawData);
+            }
+            if ($visualization->type === 'Map') {
+                foreach ($instance->data[0] ?? [] as $key => $value) {
+                    if (in_array($key, ['showscale', 'autocolorscale'])) {
+                        $instance->data[0][$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                    }
+                }
             }
             return [
                 'data' => $instance->data,

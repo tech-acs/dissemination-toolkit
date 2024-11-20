@@ -25,16 +25,15 @@ return [
         //'ignore_orphan_areas' => env('IGNORE_ORPHAN_AREAS', false),
     ],
 
-    'cache' => [
+    /*'cache' => [
         //'enabled' => env('CACHE_ENABLED', false),
         'ttl' => env('CACHE_TTL_SECONDS', 60 * 5),
         'tags' => [],
     ],
 
-    'schema' => env('DB_SCHEMA', 'data'),
+    'schema' => env('DB_SCHEMA', 'data'),*/
     'featured_stories' => env('FEATURED_STORIES', 2),
     'fact_tables' => ['population_facts' => 'Population facts', 'housing_facts' => 'Housing facts'],
-    'hosting' => strtolower(env('HOSTING') ?? ''),
     'shapefile' => [
         'import_chunk_size' => (int) env('SHAPEFILE_IMPORT_CHUNK_SIZE', 500),
         'stop_import_if_orphans_found' => env('SHAPEFILE_STOP_IMPORT_IF_ORPHANS_FOUND', true),

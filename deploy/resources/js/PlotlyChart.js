@@ -9,7 +9,6 @@ export default class PlotlyChart {
     data = [];
     layout = {};
     config = [];
-    baseurl;
     filterable = false;
 
     emptyLayout = {
@@ -26,8 +25,7 @@ export default class PlotlyChart {
     }
 
     async fetchData(vizId, filterPath = '') {
-        //console.log({URL:`${this.baseurl}/api/visualization/${vizId}?path=${filterPath}`});
-        const response = await axios.get(`/api/visualization/${vizId}?path=${filterPath}`);
+        const response = await axios.get(`${ajaxBaseURL}/api/visualization/${vizId}?path=${filterPath}`);
         console.log('Fetched chart via axios:', response.data);
         this.data = response.data.data;
         this.layout = response.data.layout;
@@ -38,7 +36,6 @@ export default class PlotlyChart {
     constructor(htmlId) {
         this.id = htmlId
         this.rootElement = document.getElementById(htmlId)
-        this.baseurl = this.rootElement.dataset['baseurl']
 
         if (this.config.locale === 'fr') {
             Plotly.register(fr);

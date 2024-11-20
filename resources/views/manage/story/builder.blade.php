@@ -12,8 +12,8 @@
                     <span class="text-xl">{{ $story->title }}</span>
                 </div>
                 <div>
-                    <x-danger-button x-on:click="reset()">Reset</x-danger-button>
-                    <x-button x-on:click="save()">Save</x-button>
+                    <x-danger-button x-on:click="reset()">{{ __('Reset')}}</x-danger-button>
+                    <x-button x-on:click="save()">{{ __('Save')}}</x-button>
                 </div>
             </div>
 
@@ -39,7 +39,7 @@
                             this.editor = e
                             e.setData(this.storyHtml)
 
-                            CKEditorInspector.attach( e );
+                            //CKEditorInspector.attach( e );
                         })
                         .catch( error => {
                             console.error( error.stack )
@@ -48,7 +48,7 @@
 
                 async save() {
                     let data = Alpine.raw(this.editor).getData()
-                    const response = await axios.patch(`/manage/story-builder/${this.storyId}`, { storyHtml: data }, {validateStatus: () => true})
+                    const response = await axios.patch(`${ajaxBaseURL}/manage/story-builder/${this.storyId}`, { storyHtml: data }, {validateStatus: () => true})
                     console.log(data, 'Save response: (response.status, response.data)', response.status, response.data)
                     if (response.status === 200) {
                         this.$dispatch('notify', {type: 'success', content: 'Successfully saved'})
