@@ -8,7 +8,7 @@
             </div>
             <div>
                 <x-label for="description" value="{{ __('Description') }} *" class="inline" /><x-dissemination::locale-display />
-                <x-dissemination::textarea name="description" rows="3">{{old('description', $story->description ?? null)}}</x-dissemination::textarea>
+                <x-dissemination::textarea name="description" rows="3" placeholder="{{ __('Please enter a helpful description that is at least 20 characters in length') }}">{{old('description', $story->description ?? null)}}</x-dissemination::textarea>
                 <x-input-error for="description" class="mt-2" />
             </div>
             <div class="grid lg:grid-cols-3">
@@ -17,7 +17,7 @@
                         <x-label for="topics" value="{{ __('Topics') }} *" />
                         <select size="5" multiple id="topics" name="topics[]" class="mt-1 p-2 text-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md">
                             @foreach($topics as $id => $topicName)
-                                <option class="p-1 mb-1 rounded" value="{{ $id }}" @selected(in_array($id, old('$topics', $story?->topics->pluck('id')->all())))>{{ $topicName }}</option>
+                                <option class="p-1 mb-1 rounded" value="{{ $id }}" @selected(in_array($id, old('topics', $story?->topics->pluck('id')->all())))>{{ $topicName }}</option>
                             @endforeach
                         </select>
                         <x-input-error for="topics" class="mt-2" />

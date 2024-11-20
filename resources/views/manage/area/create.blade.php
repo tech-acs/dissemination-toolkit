@@ -65,9 +65,9 @@
                             </div>
                             <div class="ml-3">
                                 <p class="text-sm text-yellow-700 font-medium">
-                                    Please make sure that the shapefile you are attempting to import has the
+                                    {{ __('Please make sure that the shapefile you are attempting to import has the')}}
                                     <a href="https://spatialreference.org/ref/epsg/wgs-84/" target="_blank" class="font-semibold text-yellow-700 underline hover:text-yellow-600">EPSG:4326 - WGS 84</a>
-                                    Coordinate Reference System (CRS).
+                                    {{ __('Coordinate Reference System (CRS)')}}.
                                 </p>
                             </div>
                         </div>

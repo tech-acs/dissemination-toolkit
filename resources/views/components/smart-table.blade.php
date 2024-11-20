@@ -7,12 +7,13 @@
                     <input type="hidden" name="sort_direction" value="{{ request('sort_direction') }}">
                     <x-input type="search" name="search" placeholder="{{ $smartTableData->searchPlaceholder }}" value="{{ request('search') }}" />
                     <div class="text-xs text-gray-400 ml-1">{{ $smartTableData->searchHint }}</div>
-                    <button type="submit" class="sm:hidden rounded-md bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Search</button>
+                    <button type="submit" class="sm:hidden rounded-md bg-white px-2.5 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                        {{ __('Search') }}</button>
                 </form>
             @endif
         </div>
         <div class="flex items-center">
-            <label class="text-sm text-gray-600 mr-2">Per page</label>
+            <label class="text-sm text-gray-600 mr-2">{{ __('Per page') }}</label>
             <x-dropdown align="right" width="20">
                 <x-slot name="trigger">
                     <span class="inline-flex rounded-md border border-gray-300">
@@ -40,7 +41,7 @@
                         <a href="{{ request()->fullUrlWithQuery(['download' => 'all']) }}" title="Download all records as a CSV file">
                             <button class="inline-flex items-center gap-x-1.5 rounded-l-md bg-white px-3 py-2 text-blue-600 shadow-sm hover:text-blue-400">
                                 <x-dissemination::icon.download />
-                                <p class="text-xs tracking-widest font-semibold">ALL</p>
+                                <p class="text-xs tracking-widest font-semibold uppercase">{{ __('All') }}</p>
                             </button>
                         </a>
                         <button @click="open = ! open" @click.outside="open = false" type="button" class="inline-flex items-center rounded-l-none rounded-r-md bg-white p-2 hover:text-blue-400" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label">
@@ -54,7 +55,7 @@
                         <a href="{{ request()->fullUrlWithQuery(['download' => 'filtered']) }}" title="Download filtered (current) records as a CSV file">
                             <button class="inline-flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-blue-600 shadow-sm hover:text-blue-400">
                                 <x-dissemination::icon.download />
-                                <p class="text-xs tracking-widest font-semibold">FILTERED</p>
+                                <p class="text-xs tracking-widest font-semibold uppercase">{{ __('filtered') }}</p>
                             </button>
                         </a>
                     </ul>

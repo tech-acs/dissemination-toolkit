@@ -15,25 +15,25 @@
             <div>
                 <div class="flex flex-wrap w-full -mt-2 -ml-3 lg:ml-0">
                     <a class="w-full px-4 py-2 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700" href="{{ route('data-explorer') }}">
-                        Data Explorer</a>
+                        {{ __('Data Explorer')}}</a>
                     <a class="w-full px-4 py-2 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700" href="{{ route('story.index') }}">
-                        Data Stories</a>
+                        {{ __('Data Stories')}}</a>
                     <a class="w-full px-4 py-2 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700" href="{{ route('visualization.index') }}">
-                        Visualizations</a>
+                        {{ __('Visualizations')}}</a>
                     <a class="w-full px-4 py-2 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700" href="{{ route('about') }}">
-                        About</a>
+                        {{ __('About')}}</a>
                     <a class="w-full px-4 py-2 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700" href="{{ route('contact') }}">
-                        Contact</a>
+                        {{ __('Contact')}}</a>
                 </div>
             </div>
             <div>
                 <div class="flex flex-wrap w-full -mt-2 -ml-3 lg:ml-0">
                     <a class="w-full px-4 py-2 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700" href="/">
-                        Terms</a>
+                        {{ __('Terms')}}</a>
                     <a class="w-full px-4 py-2 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700" href="/">
-                        Privacy</a>
+                        {{ __('Privacy')}}</a>
                     <a class="w-full px-4 py-2 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none dark:focus:bg-trueGray-700" href="/">
-                        Legal</a>
+                        {{ __('Legal')}}</a>
                 </div>
             </div>
             <div>

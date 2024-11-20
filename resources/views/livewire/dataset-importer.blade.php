@@ -60,7 +60,7 @@
                     <x-input-error for="spreadsheet" />
                 @else
                     <div class="text-xs text-gray-500 mt-1">
-                        You must upload a spreadsheet (csv or xlsx)
+                        {{ __('You must upload a spreadsheet')}} (csv or xlsx)
                     </div>
                 @endif
             </div>
@@ -73,7 +73,7 @@
                     and a <b>geography</b> column.
                 </p>
                 <p class="mt-2 text-sm text-gray-500">
-                    Please map the columns of your file to their corresponding indicators, dimensions and geography.
+                    {{ __('Please map the columns of your file to their corresponding indicators, dimensions and geography.')}}
                 </p>
             </div>
 
@@ -131,7 +131,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="2">You have not associated any dimensions with this dataset</td>
+                            <td colspan="2">{{ __('You have not associated any dimensions with this dataset')}}</td>
                         </tr>
                     @endforelse
                     </tbody>
@@ -147,7 +147,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td class="p-2 whitespace-nowrap text-sm text-right text-gray-900">Geography</td>
+                        <td class="p-2 whitespace-nowrap text-sm text-right text-gray-900">{{ __('Geography')}}</td>
                         <td class="p-3 align-top whitespace-nowrap text-sm text-gray-500">
                             <select wire:model.live="columnMapping.others.geography" class="w-full pr-8 rounded-md border border-gray-300 bg-white px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
                                 <option value="">{{ __('Select column') }}</option>

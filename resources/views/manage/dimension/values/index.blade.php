@@ -5,7 +5,7 @@
             {{ __('Dimension values') }}
         </h3>
         <p class="mt-2 max-w-7xl text-sm text-gray-500">
-            {{ $dimension->name }} dimension: {{ __('values') }}
+            {{ $dimension->name }} {{ __('dimension')}}: {{ __('values') }}
         </p>
 </x-slot>
 

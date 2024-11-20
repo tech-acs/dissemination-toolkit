@@ -4,7 +4,7 @@
 
         <main class="py-12">
             <div class="pb-6 border-b border-gray-200">
-                <h1 class="text-3xl font-bold tracking-tight text-indigo-800">Census Tables</h1>
+                <h1 class="text-3xl font-bold tracking-tight text-indigo-800">{{ __('Documents') }}</h1>
                 <p class="mt-4 text-sm text-left text-gray-500">
                     Census tables are published in the form of a large collection of Excel files. These tables are
                     listed here by Census year, organized by series. To a large extent, census tables maintain the same
@@ -40,11 +40,10 @@
                             <div>
                                 <fieldset>
                                     <div class="pt-2 space-y-2">
-                                        <label for="fromYear" class="block text-sm font-medium leading-6 text-gray-900">From year</label>
+                                        <label for="fromYear" class="block text-sm font-medium leading-6 text-gray-900">{{ __('From year') }}</label>
                                         <div>
-                                            <label for="fromYear" class="sr-only">Year</label>
-                                            <select id="fromYear" name="fromYear" autocomplete="fromYear-name" x-data
-                                                    x-on:change="$event.target.form.submit()"
+                                            <label for="fromYear" class="sr-only">{{ __('Year') }}</label>
+                                            <select id="fromYear" name="fromYear" autocomplete="fromYear-name" x-data x-on:change="$event.target.form.submit()"
                                                     class="relative block w-full rounded-none rounded-r-md border-0 bg-transparent py-1.5 pt-2 text-gray-700 ring-1 ring-inset ring-indigo-300 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-8">
                                                 <option value></option>
                                                 @foreach($censusYears ?? [] as $censusYear)
@@ -56,11 +55,10 @@
                                         </div>
                                     </div>
                                     <div class="pt-2 space-y-2">
-                                        <label for="toYear" class="block text-sm font-medium leading-6 text-gray-900">To year</label>
+                                        <label for="toYear" class="block text-sm font-medium leading-6 text-gray-900">{{ __('To year') }}</label>
                                         <div>
-                                            <label for="toYear" class="sr-only">Year</label>
-                                            <select id="toYear" name="toYear" autocomplete="toYear-name" x-data
-                                                    x-on:change="$event.target.form.submit()"
+                                            <label for="toYear" class="sr-only">{{ __('Year') }}</label>
+                                            <select id="toYear" name="toYear" autocomplete="toYear-name" x-data x-on:change="$event.target.form.submit()"
                                                     class="relative block w-full rounded-none rounded-r-md border-0 bg-transparent py-1.5 pt-2 text-gray-700 ring-1 ring-inset focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-8">
                                                 <option value></option>
                                                 @foreach($censusYears ?? [] as $censusYear)
@@ -76,7 +74,7 @@
                             <div>
                                 <fieldset>
                                     <div class="pt-2 space-y-2">
-                                        <label for="topic" class="block text-sm font-medium leading-6 text-gray-900">Topic</label>
+                                        <label for="topic" class="block text-sm font-medium leading-6 text-gray-900">{{ __('Topic') }}</label>
                                         <livewire:topic-selector/>
                                     </div>
                                 </fieldset>
@@ -84,7 +82,7 @@
                             <div>
                                 <fieldset>
                                     <div class="pt-2 space-y-2">
-                                        <legend class="block text-sm font-medium text-gray-900">Tags</legend>
+                                        <legend class="block text-sm font-medium text-gray-900">{{ __('Tags') }}</legend>
                                         <div class="h-64 pt-2 overflow-y-scroll border border-gray-200" x-data>
                                             @foreach($tags ?? [] as $tag)
                                                 <div class="flex items-center pl-2">
@@ -115,7 +113,7 @@
                                 class="py-3 pl-4 pr-3 text-sm text-left sm:pl-6">
                                 <form class="flex flex-row space-x-1">
                                     <div class="relative flex-1" x-data>
-                                        <label for="keyword" class="absolute -top-3 left-2 inline-block bg-white px-1 text-base font-normal text-gray-700">Search</label>
+                                        <label for="keyword" class="absolute -top-3 left-2 inline-block bg-white px-1 text-base font-normal text-gray-700">{{ __('Search') }}</label>
                                         <input type="search" name="keyword" id="keyword"
                                                value="{{ request()->get('keyword') }}"
                                                class="block w-full rounded-l-md border-0 py-1.5 pt-2 text-gray-400 ring-1 ring-inset ring-indigo-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-8"
@@ -123,7 +121,7 @@
                                                placeholder="Type keyword and press enter"/>
                                     </div>
                                     <div class="basis-1/5">
-                                        <label for="sort" class="sr-only">Sort by</label>
+                                        <label for="sort" class="sr-only">{{ __('Sort by')}}</label>
                                         <select id="sort" name="sort" x-data x-on:change="$event.target.form.submit()"
                                                 autocomplete="sort"
                                                 class="relative block w-full rounded-none rounded-r-md border-0 bg-transparent py-1.5 pt-2 text-gray-700 ring-1 ring-inset ring-indigo-300 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-8">
@@ -174,21 +172,17 @@
                                                                 </p>
 
                                                                 <p class="pt-2 text-xs text-gray-600 line-clamp-1">
-                                                                    <strong>Data
-                                                                        source: </strong>{{$record->data_source}}
+                                                                    <strong>{{ __('Data source')}}: </strong>{{$record->data_source}}
                                                                 </p>
                                                                 <p class="pt-1 text-xs text-gray-600 line-clamp-1">
-                                                                    <strong>Published
-                                                                        by: </strong>{{$record->publisher}}
+                                                                    <strong>{{ __('Published by')}}: </strong>{{$record->publisher}}
                                                                 </p>
                                                             </div>
                                                             <div class="pt-2 text-xs text-gray-400">
-                                                                <span>Created on: {{$record->created_at->format('M d, Y')}}</span>
-                                                                <span
-                                                                    class="px-2">Last modified: {{$record->updated_at->diffForHumans()}}</span>
-                                                                <span class="px-2">Views: {{$record->view_count}}</span>
-                                                                <span
-                                                                    class="px-2">Downloads: {{$record->download_count}}</span>
+                                                                <span>{{ __('Created on')}}: {{$record->created_at->format('M d, Y')}}</span>
+                                                                <span class="px-2">{{ __('Last modified')}}: {{$record->updated_at->diffForHumans()}}</span>
+                                                                <span class="px-2">{{ __('Views')}}: {{$record->view_count}}</span>
+                                                                <span class="px-2">{{ __('Downloads')}}: {{$record->download_count}}</span>
                                                             </div>
                                                         </div>
                                                         <div class="w-1/6">

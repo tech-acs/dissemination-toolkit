@@ -45,7 +45,7 @@
                     <x-input-error for="spreadsheet" />
                 @else
                     <div class="text-xs text-gray-500 mt-1">
-                        You must upload a spreadsheet (.csv)
+                        {{ __('You must upload a spreadsheet')}} (.csv)
                     </div>
                 @endif
             </div>
@@ -53,14 +53,13 @@
             <div class="md:col-span-1 pt-4 md:pt-0">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('Column mapping') }}</h3>
                 <p class="mt-2 text-sm text-gray-500">
-                    Please map the columns of your file to the right area hierarchies.
+                    {{ __('Please map the columns of your file to the right area hierarchies.')}}
                 </p>
                 <p class="mt-2 text-sm text-gray-500">
-                    You can specify the desired (including the padded 0s) length of your
-                    code columns in the 'Zero pad code to length' column.
+                    {{ __("You can specify the desired (including the padded 0s) length of your code columns in the 'Zero pad code to length' column.")}}
                 </p>
                 <p class="mt-2 text-sm text-gray-500">
-                    Leaving it with the default value of 0 means no padding will occur.
+                    {{ __('Leaving it with the default value of 0 means no padding will occur.')}}
                 </p>
             </div>
             <div class="mt-5 md:col-span-2 md:mt-0">
@@ -104,7 +103,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4">You have not configured your area hierarchies.</td>
+                                <td colspan="4">{{ __('You have not configured your area hierarchies')}}.</td>
                             </tr>
                         @endforelse
                         </tbody>

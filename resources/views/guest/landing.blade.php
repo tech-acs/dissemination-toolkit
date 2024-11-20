@@ -59,10 +59,11 @@
         {{-- Data Explorer Promo --}}
         <section>
             <div class="p-8 xl:px-0 flex w-full flex-col mt-4 items-center justify-center text-center">
-                <div class="text-sm font-bold tracking-wider text-indigo-600 uppercase">Try the data explorer</div>
-                <h2 class="max-w-2xl mt-3 text-3xl font-bold leading-snug tracking-tight text-gray-800 lg:leading-tight lg:text-3xl">Explore, visualize, &amp; communicate census data</h2>
+                <div class="text-sm font-bold tracking-wider text-indigo-600 uppercase">{{ __('Try the data explorer')}}</div>
+                <h2 class="max-w-2xl mt-3 text-3xl font-bold leading-snug tracking-tight text-gray-800 lg:leading-tight lg:text-3xl">{{ __('Explore, visualize, &amp; communicate census data')}}</h2>
                 <p class="max-w-2xl py-4 text-lg leading-normal text-gray-500 lg:text-xl xl:text-xl">
-                    Explore data through a point-and-click interface and create and share visualizations in minutes, all without any programming.
+                    {{ __('Explore data through a point-and-click interface and create and share visualizations in minutes,
+                    all without any programming.')}}
                 </p>
             </div>
             <div class="p-8 xl:px-0">
@@ -75,7 +76,9 @@
         {{-- Featured Data Stories --}}
         <section>
             <div class="p-8 xl:px-0 flex w-full flex-col mt-12 items-center justify-center text-center">
-                <div class="max-w-2xl mt-3 text-3xl font-bold leading-snug tracking-tight text-indigo-800 lg:leading-tight lg:text-4xl uppercase">Featured Data Stories</div>
+                <div class="max-w-2xl mt-3 text-3xl font-bold leading-snug tracking-tight text-indigo-800 lg:leading-tight lg:text-4xl uppercase">
+                    {{ __('Featured Data Stories')}}
+                </div>
                 <p class="max-w-2xl py-4 text-lg leading-normal text-gray-500 lg:text-xl xl:text-xl">
                     Every so often, we go to great lengths to craft beautiful pages that narrate worthy data stories using
                     charts, tables, maps and much more. Here are a few that we feel you need to read.
@@ -90,7 +93,7 @@
                             <div class="text-lg space-y-4 py-2">
                                 {!! $story->description !!}
                             </div>
-                            <a href="{{ route('story.show', $story) }}" class="py-2 rounded-md text-sm font-semibold leading-6 text-indigo-900 hover:ring-1 ring-indigo-500">Read more <span aria-hidden="true">→</span></a>
+                            <a href="{{ route('story.show', $story) }}" class="py-2 rounded-md text-sm font-semibold leading-6 text-indigo-900 hover:ring-1 ring-indigo-500">{{ __('Read more')}} <span aria-hidden="true">→</span></a>
                         </div>
                     </div>
                     <div class="flex items-center justify-center w-full lg:w-1/2 @if($loop->odd) lg:order-1 @endif">

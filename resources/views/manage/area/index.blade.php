@@ -20,7 +20,7 @@
                         {{--href="{{ route('developer.download-area-import-template') }}"--}}
                         class="text-sm font-medium text-indigo-600 hover:text-indigo-500"
                     >
-                        Download Import Template
+                        {{ __('Download Import Template')}}
                     </a>
                 @endif
             </div>

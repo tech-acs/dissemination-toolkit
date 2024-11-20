@@ -62,7 +62,7 @@
                                 <label for="dimension-{{ $dimension['id'] }}-dimension-value-{{ $value['id'] }}" class="text-gray-900 ml-2 leading-6">{{ $value['name'] }}</label>
                             </div>
                         @empty
-                            There are no values to display
+                            {{ __('There are no values to display') }}
                         @endforelse
                     </div>
                 </div>

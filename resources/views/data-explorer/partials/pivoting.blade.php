@@ -26,7 +26,7 @@
             @if(! empty($pivotableDimensions))
                 <div class="flex flex-col space-y-4">
                     <div class="flex flex-col">
-                        <label class="text-xs mb-1">Column</label>
+                        <label class="text-xs mb-1">{{ __('Column') }}</label>
                         <select wire:model.live="pivotColumn" class="w-fit text-xs rounded-md border border-gray-300 bg-white px-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
                             <option value>Select a dimension</option>
                             @foreach($pivotableDimensions as $dimension)
@@ -35,18 +35,18 @@
                         </select>
                     </div>
                     <div x-show="dimensions.length > 1" class="flex flex-col">
-                        <label class="text-xs mb-1">Row</label>
+                        <label class="text-xs mb-1">{{ __('Row') }}</label>
                         <select wire:model.live="pivotRow" class="w-fit text-xs rounded-md border border-gray-300 bg-white px-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
-                            <option value>Select a dimension</option>
+                            <option value>{{ __('Select a dimension') }}</option>
                             @foreach($pivotableDimensions as $dimension)
                                 <option value="{{ $dimension['id'] }}">{{ $dimension['label'] }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div x-show="dimensions.length > 2" class="flex flex-col">
-                        <label class="text-xs mb-1">Nesting column</label>
+                        <label class="text-xs mb-1">{{ __('Nesting column') }}</label>
                         <select wire:model.live="nestingPivotColumn" class="w-fit text-xs rounded-md border border-gray-300 bg-white px-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
-                            <option value>Select a dimension</option>
+                            <option value>{{ __('Select a dimension') }}</option>
                             @foreach($pivotableDimensions as $dimension)
                                 <option value="{{ $dimension['id'] }}">{{ $dimension['label'] }}</option>
                             @endforeach

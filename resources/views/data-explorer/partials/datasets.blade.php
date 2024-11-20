@@ -52,19 +52,19 @@
                     <div class="border-t border-gray-300">
                         <dl class="divide-y divide-gray-300">
                             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt class="text-sm font-medium text-gray-900">Included indicators</dt>
+                                <dt class="text-sm font-medium text-gray-900">{{ __('Included indicators') }}</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $dataset['indicators'] }}</dd>
                             </div>
                             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt class="text-sm font-medium text-gray-900">Available dimensions</dt>
+                                <dt class="text-sm font-medium text-gray-900">{{ __('Available dimensions') }}</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $dataset['dimensions'] }}</dd>
                             </div>
                             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt class="text-sm font-medium text-gray-900">No. of observations</dt>
+                                <dt class="text-sm font-medium text-gray-900">{{ __('No. of observations') }}</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $dataset['observations'] }}</dd>
                             </div>
                             <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt class="text-sm font-medium text-gray-900">Geographic granularity</dt>
+                                <dt class="text-sm font-medium text-gray-900">{{ __('Geographic granularity') }}</dt>
                                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{ $dataset['granularity'] }}</dd>
                             </div>
                         </dl>

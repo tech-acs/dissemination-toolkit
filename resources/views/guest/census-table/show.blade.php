@@ -22,26 +22,26 @@
 
             <article class="mt-4">
                 <dl class="py-2 border-b ">
-                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">Description</dt>
+                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Description')}}</dt>
                     <dd class="mb-4  text-gray-500 sm:mb-5 dark:text-gray-400">{{ strip_tags($censusTable->description) }}</dd>
                 </dl>
                 <dl class="py-2 border-b flex justify-between">
                     <div class="basis-1/3">
-                        <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">Published date</dt>
+                        <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Published date')}}</dt>
                         <dd class="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">{{$censusTable->published_date}}</dd>
                     </div>
                     <div class="basis-1/3">
-                        <dt class="my-2 mt-2 font-semibold leading-none text-gray-900 dark:text-white">Last modified</dt>
+                        <dt class="my-2 mt-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Last modified')}}</dt>
                         <dd class="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">{{$censusTable->updated_at->format('M d, Y')}}</dd>
                     </div>
                     <div class="basis-1/3">
-                        <dt class="my-2 mt-2 font-semibold leading-none text-gray-900 dark:text-white">Updated by</dt>
+                        <dt class="my-2 mt-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Updated by')}}</dt>
                         <dd class="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">{{$censusTable->updated_by}}</dd>
                     </div>
 
                 </dl>
                 <dl class="py-2 border-b ">
-                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">Downloads</dt>
+                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Downloads')}}</dt>
                     <dd class="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">
                         <ul role="list" class="divide-y divide-gray-100 rounded-md ">
                             <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
@@ -82,25 +82,25 @@
                     </dd>
                 </dl>
                 <dl class="py-2 border-b">
-                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">Tags</dt>
+                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Tags')}}</dt>
                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">@include('dissemination::components.tag-cloud', ['tags' => $censusTable->tags])</dd>
                 </dl>
                 <dl class="py-2 border-b flex items-center">
                     <div class="basis-1/2">
-                        <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">Producer</dt>
+                        <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Producer')}}</dt>
                         <dd class="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">{{$censusTable->producer}}</dd>
                     </div>
                     <div class="basis-1/2">
-                        <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">Publisher</dt>
+                        <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Publisher')}}</dt>
                         <dd class="mb-4 text-gray-500 sm:mb-5 dark:text-gray-400">{{$censusTable->publisher}}</dd>
                     </div>
                 </dl>
                 <dl class="py-2 border-b">
-                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">Data source</dt>
+                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Data source')}}</dt>
                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{$censusTable->data_source}}</dd>
                 </dl>
                 <dl class="py-2">
-                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">Comment</dt>
+                    <dt class="my-2 font-semibold leading-none text-gray-900 dark:text-white">{{ __('Comment')}}</dt>
                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{$censusTable->comment}}</dd>
                 </dl>
             </article>

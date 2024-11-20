@@ -21,7 +21,7 @@
         @forelse($dataShaperSelections as $key => $value)
             <x-dissemination::simple-badge><span class="font-bold">{{ ucfirst($key) }}:</span>&nbsp;{{ $value }}</x-dissemination::simple-badge>
         @empty
-            Please select your desired parameters and press the fetch button
+            {{ __('Please select your desired parameters and press the fetch button')}}
         @endforelse
     </div>
 

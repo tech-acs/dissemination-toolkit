@@ -56,7 +56,7 @@
             <x-label for="logo_path" value="{{ __('Social Media') }}" />
             <div class="grid grid-cols-2 gap-6">
                 <div>
-                    <x-label for="twitter" value="{{ __('Twitter') }}" />
+                    <x-label for="twitter" value="{{ __('X') }}" />
                     <x-input class="w-full" id="twitter" name="twitter" type="text" value="{{ old('twitter', $organization->social_media['twitter'] ?? null) }}" />
                     <x-input-error for="twitter" class="mt-2" />
                 </div>

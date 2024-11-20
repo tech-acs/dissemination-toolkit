@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="mt-2 md:mt-0 text-center text-base text-gray-400 flex">
-            <div>{{ __('Owned by') }}&nbsp;<a href="{{ config('scaffold.owner.url') }}" target="_blank" class="text-blue-400">{{ config('dissemination.owner.name') }}</a></div>
+            <div>{{ __('Owned by') }}&nbsp;<a href="{{ config('dissemination.owner.url') }}" target="_blank" class="text-blue-400">{{ config('dissemination.owner.name') }}</a></div>
         </div>
     </div>
 </footer>

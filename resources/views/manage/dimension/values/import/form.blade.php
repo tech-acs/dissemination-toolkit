@@ -4,16 +4,16 @@
 
             <div>
                 <div class="text-sm pb-3 leading-7">
-                    You are about to upload values for the following dimension:
+                    {{ __('You are about to upload values for the following dimension')}}:
                     <span class="rounded-md border border-gray-100 p-1 font-semibold text-gray-700">{{ $dimension->name }}</span>
-                    <br />Before uploading, please make sure:
+                    <br />{{ __('Before uploading, please make sure')}}:
                     <ul class="list-disc pl-6 py-2 text-gray-600">
-                        <li>The file is an excel file (.xslx)</li>
-                        <li>The excel file must have at least these columns:
+                        <li>{{ __('The file is an excel file')}} (.xslx)</li>
+                        <li>{{ __('The excel file must have at least these columns')}}:
                             <span class="font-semibold">code</span>,
                             <span class="font-semibold">label</span>
                         </li>
-                        <li>Codes must be unique</li>
+                        <li>{{ __('Codes must be unique')}}</li>
                     </ul>
                 </div>
                 <div class="flex items-stretch flex-grow">

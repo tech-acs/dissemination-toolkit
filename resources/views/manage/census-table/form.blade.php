@@ -12,7 +12,7 @@
                                         <label for="file-upload"
                                                class="relative font-semibold text-indigo-600 bg-white rounded-md cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                                                x-on:click="fileName = ''">
-                                            <span x-show="fileName === ''">Click here to upload the file</span>
+                                            <span x-show="fileName === ''">{{ __('Click here to upload the file')}}</span>
                                             <span x-show="fileName !== ''" x-text="fileName"></span>
                                             <input id="file-upload" name="file" type="file" class="sr-only"
                                                    x-on:change="fileName = $event.target.files[0].name">
@@ -20,7 +20,7 @@
                                         <button type="button"
                                                 class="ml-2 text-sm font-medium text-red-600 hover:text-red-500 focus:outline-none focus:underline"
                                                 x-show="fileName !== ''" x-on:click="fileName = ''">
-                                            Clear
+                                            {{ __('Clear')}}
                                         </button>
                                     </div>
                                     <p x-show="fileName === ''" class="text-xs leading-5 text-gray-600">upload up to 100MB</p>

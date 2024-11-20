@@ -28,10 +28,10 @@
                href="{{ route('about') }}">{{ __('Datasets') }}</a>
             @guest
                 <a class="px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5"
-                   href="{{ route('login') }}">Login</a>
+                   href="{{ route('login') }}">{{ __('Login')}}</a>
             @elseauth
                 <a class="px-6 py-2 mt-3 text-center text-white bg-indigo-600 rounded-md lg:ml-5"
-                   href="{{ route('manage.home') }}">Manage</a>
+                   href="{{ route('manage.home') }}">{{ __('Manage')}}</a>
             @endguest
         </div>
     </div>
@@ -156,9 +156,9 @@
     </div>
     @guest
         <div class="hidden mr-3 space-x-4 lg:flex"><a class="px-6 py-2 text-white bg-indigo-600 rounded-md md:ml-5"
-                                                      href="{{ route('login') }}">Login</a></div>
+                                                      href="{{ route('login') }}">{{ __('Login')}}</a></div>
     @elseauth
         <div class="hidden mr-3 space-x-4 lg:flex"><a class="px-6 py-2 text-white bg-indigo-600 rounded-md md:ml-5"
-                                                      href="{{ route('manage.home') }}">Manage</a></div>
+                                                      href="{{ route('manage.home') }}">{{ __('Manage')}}</a></div>
     @endguest
 </nav>
