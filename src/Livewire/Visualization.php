@@ -18,14 +18,6 @@ abstract class Visualization extends Component
     public array $options = [];
     public ?int $vizId = null;
 
-    /*protected function getListeners(): array
-    {
-        return [
-            'dataChanged' => 'updateData',
-            'optionsChanged' => 'updateOptions',
-        ];
-    }*/
-
     public function mount(): void
     {
         $this->htmlId = 'viz-' . str()->random(5);

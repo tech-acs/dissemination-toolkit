@@ -160,45 +160,6 @@ class MapWizardController extends Controller
         session()->put('viz-wizard-resource', $resource);
     }
 
-    private function addCurrentValuesToResource($resource, $options)
-    {
-        $areaIds = array_merge(...array_values($resource->dataParams['geographies']));
-        $geojson = Geospatial::getGeoJsonByAreaId($areaIds ?? []);
-        $mapTrace = [
-            'type' => 'choroplethmap',
-            'featureidkey' => 'properties.name',
-            'locationmode' => 'geojson-id',
-            'meta' => ['columnNames' => ['z' => '', 'locations' => 'geography']],
-            'locationssrc' => 'geography',
-            'geojson' => json_decode($geojson),
-            'showscale' => false,
-        ];
-
-        $setValues = Arr::undot(array_map(fn($option) => $option['value'], $options));
-        $setDataValues = $setValues['data'];
-        $setLayoutValues = $setValues['layout'];
-        foreach ($setDataValues as $key => $value) {
-            if (in_array($key, ['showscale', 'autocolorscale'])) {
-                $setDataValues[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-            }
-        }
-        $resource->data = [array_replace_recursive($mapTrace, $setDataValues)];
-
-        $layout = [
-            ...self::DEFAULT_LAYOUT,
-            'height' => 650,
-            'margin' => ['l' => 0, 'r' => 0, 't' => 0, 'b' => 0],
-            'map' => [
-                'zoom' => config('dissemination.map.starting_zoom'),
-                'center' => config('dissemination.map.center'),
-                'style' => '',
-            ]
-        ];
-        $resource->layout = array_replace_recursive($layout, $setLayoutValues);
-        //dump('mixed', $resource);
-        return $resource;
-    }
-
     private function makeOptions($resource, $visualization = null)
     {
         $indicators = array_filter(array_keys($resource->dataSources), function ($column) {
@@ -249,6 +210,45 @@ class MapWizardController extends Controller
                 'value' => $visualization->layout['map']['style'] ?? 'streets'
             ],
         ];
+    }
+
+    private function addCurrentValuesToResource($resource, $options)
+    {
+        $areaIds = array_merge(...array_values($resource->dataParams['geographies']));
+        $geojson = Geospatial::getGeoJsonByAreaId($areaIds ?? []);
+        $mapTrace = [
+            'type' => 'choroplethmap',
+            'featureidkey' => 'properties.name',
+            'locationmode' => 'geojson-id',
+            'meta' => ['columnNames' => ['z' => '', 'locations' => 'geography']],
+            'locationssrc' => 'geography',
+            'geojson' => json_decode($geojson),
+            'showscale' => false,
+        ];
+
+        $setValues = Arr::undot(array_map(fn($option) => $option['value'], $options));
+        $setDataValues = $setValues['data'];
+        $setLayoutValues = $setValues['layout'];
+        foreach ($setDataValues as $key => $value) {
+            if (in_array($key, ['showscale', 'autocolorscale'])) {
+                $setDataValues[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+            }
+        }
+        $resource->data = [array_replace_recursive($mapTrace, $setDataValues)];
+
+        $layout = [
+            ...self::DEFAULT_LAYOUT,
+            'height' => 650,
+            'margin' => ['l' => 0, 'r' => 0, 't' => 0, 'b' => 0],
+            'map' => [
+                'zoom' => config('dissemination.map.starting_zoom'),
+                'center' => config('dissemination.map.center'),
+                'style' => '',
+            ]
+        ];
+        $resource->layout = array_replace_recursive($layout, $setLayoutValues);
+        //dump('mixed', $resource);
+        return $resource;
     }
 
     private function setupResource(Visualization $visualization = null): void

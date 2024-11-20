@@ -8,6 +8,7 @@ use Uneca\DisseminationToolkit\Livewire\Visualizations\Table;
 use Uneca\DisseminationToolkit\Models\Area;
 use Uneca\DisseminationToolkit\Models\Visualization;
 use Uneca\DisseminationToolkit\Services\AreaTree;
+use Uneca\DisseminationToolkit\Services\Geospatial;
 use Uneca\DisseminationToolkit\Services\QueryBuilder;
 use Uneca\DisseminationToolkit\Services\Sorter;
 use Illuminate\Http\Request;
@@ -54,6 +55,9 @@ class VizAjaxController extends Controller
                 $query = new QueryBuilder($dataParams);
                 $rawData = Sorter::sort($query->get())->all();
                 $instance->preparePayload($rawData);
+                $areaIds = array_merge(...array_values($dataParams['geographies']));
+                $geojson = Geospatial::getGeoJsonByAreaId($areaIds ?? []);
+                $instance->data[0]['geojson'] = json_decode($geojson);
             }
             if ($visualization->type === 'Map') {
                 foreach ($instance->data[0] ?? [] as $key => $value) {
@@ -62,6 +66,7 @@ class VizAjaxController extends Controller
                     }
                 }
             }
+            //logger('Returning..', ['data' => $instance->data]);
             return [
                 'data' => $instance->data,
                 'layout' => $instance->layout,
