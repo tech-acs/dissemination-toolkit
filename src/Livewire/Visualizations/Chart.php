@@ -35,7 +35,12 @@ class Chart extends Visualization
                 $columnNames = Arr::get($trace, 'meta.columnNames', []);
                 foreach($columnNames as $key => $columnName) {
                     if (! is_array($columnName)) {
-                        $traces[$index][$key] = $data[$columnName] ?? null;
+                        if (str($columnName)->contains(' - ')) {
+                            $columns = explode(' - ', $columnName);
+                            $traces[$index][$key] = collect($columns)->map(fn($column) => $data[$column])->values()->toArray();
+                        } else {
+                            $traces[$index][$key] = $data[$columnName] ?? null;
+                        }
                     }
                 }
             }
