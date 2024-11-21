@@ -45,6 +45,16 @@ class StateRecorder extends Component
         session()->put('viz-wizard-resource', $resource);
     }
 
+    #[On('scorecardOptionsShaperEvent')]
+    public function recordScorecardTweaks(array $options): void
+    {
+        //dump($options);
+        $resource = session()->get('viz-wizard-resource');
+        $resource->data[0] = array_replace_recursive($resource->data[0], $options['data']);
+        $resource->layout = array_replace_recursive($resource->layout, $options['layout']);
+        session()->put('viz-wizard-resource', $resource);
+    }
+
     public function render()
     {
         return <<<'blade'

@@ -91,6 +91,14 @@ Route::middleware(['web'])->group(function () {
             Route::post('viz-builder/map', 'store')->name('viz-builder.map.store');
         });
 
+        Route::controller(\Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\ScorecardWizardController::class)->group(function () {
+            Route::get('viz-builder/scorecard/step1', 'step1')->name('viz-builder.scorecard.step1');
+            Route::get('viz-builder/scorecard/step2', 'step2')->name('viz-builder.scorecard.step2');
+            Route::get('viz-builder/scorecard/step3', 'step3')->name('viz-builder.scorecard.step3');
+            Route::get('viz-builder/scorecard/{viz}/edit', 'edit')->name('viz-builder.scorecard.edit');
+            Route::post('viz-builder/scorecard', 'store')->name('viz-builder.scorecard.store');
+        });
+
         Route::resource('story-builder', \Uneca\DisseminationToolkit\Http\Controllers\StoryBuilderController::class)->parameters(['story-builder' => 'story'])->only(['edit', 'update']);
 
         Route::resource('announcement', AnnouncementController::class)->only(['index', 'create', 'store']);

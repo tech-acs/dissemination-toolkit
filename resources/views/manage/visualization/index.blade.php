@@ -16,12 +16,13 @@
 
             <x-dropdown align="right" class="48" contentClasses="py-0 bg-white overflow-hidden">
                 <x-slot name="trigger">
-                    <x-button>{{ __('Create New') }}</x-button>
+                    <x-button>{{ __('Create New Visualization') }}</x-button>
                 </x-slot>
                 <x-slot name="content" class="overflow-hidden py-0">
-                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.chart.step1') }}">{{ __('Chart Visualization') }}</x-dropdown-link>
-                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.table.step1') }}">{{ __('Table Visualization') }}</x-dropdown-link>
-                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.map.step1') }}">{{ __('Map Visualization') }}</x-dropdown-link>
+                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.chart.step1') }}">{{ __('Chart') }}</x-dropdown-link>
+                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.table.step1') }}">{{ __('Table') }}</x-dropdown-link>
+                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.map.step1') }}">{{ __('Map') }}</x-dropdown-link>
+                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.scorecard.step1') }}">{{ __('Scorecard') }}</x-dropdown-link>
                 </x-slot>
             </x-dropdown>
         </div>

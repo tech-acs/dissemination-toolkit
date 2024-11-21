@@ -84,9 +84,11 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         Livewire::component('visualizations.chart', \Uneca\DisseminationToolkit\Livewire\Visualizations\Chart::class);
         Livewire::component('visualizations.table', \Uneca\DisseminationToolkit\Livewire\Visualizations\Table::class);
         Livewire::component('visualizations.map', \Uneca\DisseminationToolkit\Livewire\Visualizations\Map::class);
+        Livewire::component('visualizations.scorecard', \Uneca\DisseminationToolkit\Livewire\Visualizations\Scorecard::class);
         Livewire::component('visualizer', \Uneca\DisseminationToolkit\Livewire\Visualizer::class);
         Livewire::component('table-options-shaper', \Uneca\DisseminationToolkit\Livewire\TableOptionsShaper::class);
         Livewire::component('map-options-shaper', \Uneca\DisseminationToolkit\Livewire\MapOptionsShaper::class);
+        Livewire::component('scorecard-options-shaper', \Uneca\DisseminationToolkit\Livewire\ScorecardOptionsShaper::class);
         Livewire::component('topic-selector', \Uneca\DisseminationToolkit\Livewire\TopicSelector::class);
         Livewire::component('invitation-manager', \Uneca\DisseminationToolkit\Livewire\InvitationManager::class);
         Livewire::component('language-switcher', \Uneca\DisseminationToolkit\Livewire\LanguageSwitcher::class);
