@@ -4,6 +4,7 @@ namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
 use App\Http\Controllers\Controller;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
+use Uneca\DisseminationToolkit\Livewire\Visualizations\Scorecard;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Table;
 use Uneca\DisseminationToolkit\Models\Area;
 use Uneca\DisseminationToolkit\Models\Visualization;
@@ -83,8 +84,23 @@ class VizAjaxController extends Controller
                 'options' => $instance->options,
                 'filterable' => $visualization->is_filterable,
             ];
-        } else {
-            //
+        } else { // Scorecard
+            $instance = new Scorecard();
+            $instance->vizId = $visualization->id;
+            $instance->mount();
+            $path = $request->get('path');
+            if ($path) {
+                $dataParams = $this->updateDataParam($visualization->data_params, $path);
+                $query = new QueryBuilder($dataParams);
+                $rawData = Sorter::sort($query->get())->all();
+                $instance->preparePayload($rawData);
+            }
+            return [
+                'data' => $instance->data,
+                'layout' => $instance->layout,
+                'config' => $instance->config,
+                'filterable' => $visualization->is_filterable,
+            ];
         }
 
     }

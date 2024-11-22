@@ -24,11 +24,6 @@ class Scorecard extends Visualization
     {
         parent::mount();
         $this->config = $this->makeConfig();
-        /*foreach ($this->data[0] ?? [] as $key => $value) {
-            if (in_array($key, ['showscale', 'autocolorscale'])) {
-                $this->data[0][$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-            }
-        }*/
     }
 
     public function makeTraces(Collection $rawData): array
@@ -73,13 +68,8 @@ class Scorecard extends Visualization
     #[On('scorecardOptionsShaperEvent')]
     public function applyOptions(array $options): void
     {
-        $mapTrace = array_replace_recursive($this->data[0], $options['data']);
-        /*foreach ($mapTrace as $key => $value) {
-            if (in_array($key, ['showscale', 'autocolorscale'])) {
-                $mapTrace[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-            }
-        }*/
-        $this->data[0] = $mapTrace;
+        $indicatorTrace = array_replace_recursive($this->data[0], $options['data']);
+        $this->data[0] = $indicatorTrace;
         $this->layout = array_replace_recursive($this->layout, $options['layout']);
         //dump($this->data);
         $this->dispatch("updateResponse.$this->htmlId", $this->data, $this->layout);
