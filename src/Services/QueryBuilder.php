@@ -80,9 +80,6 @@ class QueryBuilder
         return $dimensions
             ->pluck('model')
             ->map(fn ($dimension) => "{$dimension->table_name}.name::text AS {$dimension->table_name}")
-            /*->unless($forCrosstab, function (Collection $collection) {
-                return $collection->prepend("years.name AS year");
-            })*/
             ->prepend("areas.name->>'" . app()->getLocale() . "'::text AS geography")
             ->when($this->indicators->count() > 1, function (Collection $selectList) {
                 return $selectList->prepend("indicators.name->>'" . app()->getLocale() . "' AS indicator");

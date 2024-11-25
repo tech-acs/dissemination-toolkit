@@ -2,6 +2,7 @@
 
     <div class="flex flex-col max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <x-dissemination::message-display />
+        <x-dissemination::error-display />
         <livewire:state-recorder />
 
         <section class="shadow sm:rounded-md sm:overflow-hidden py-5 bg-white sm:p-6">

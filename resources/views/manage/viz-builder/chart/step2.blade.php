@@ -20,7 +20,10 @@
 
             </div>
 
-            <footer class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 pt-5 sm:px-8">
+            <footer class="flex items-center justify-end gap-x-5 border-t border-gray-900/10 px-4 pt-5 sm:px-8">
+                <a href="{{ route("manage.viz-builder.chart.step1") }}" class="cursor-pointer rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                    {{ __('Restart')}}
+                </a>
                 <form action="{{ route('manage.viz-builder.chart.step3') }}" method="post">
                     @csrf
                     <input type="hidden" name="data" id="chart-data" value="{{ json_encode($resource->data) }}" />

@@ -11,9 +11,10 @@
                 <div>
                     <span class="text-xl">{{ $story->title }}</span>
                 </div>
-                <div>
+                <div class="space-x-2">
                     <x-danger-button x-on:click="reset()">{{ __('Reset')}}</x-danger-button>
                     <x-button x-on:click="save()">{{ __('Save')}}</x-button>
+                    <x-button x-on:click="window.history.back()">{{ __('Close')}}</x-button>
                 </div>
             </div>
 

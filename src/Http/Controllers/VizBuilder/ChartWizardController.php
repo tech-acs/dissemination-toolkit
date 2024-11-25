@@ -3,6 +3,7 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 
 use App\Http\Controllers\Controller;
+use Livewire\Livewire;
 use Uneca\DisseminationToolkit\Http\Resources\ChartDesignerResource;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Tag;
@@ -37,7 +38,8 @@ class ChartWizardController extends Controller
     {
         $step = 2;
         if (! $this->isStepValid($step)) {
-            return redirect()->route('manage.viz-builder.chart.step1');
+            return redirect()->route('manage.viz-builder.chart.step1')
+                ->withErrors('You must prepare appropriate data for your visualization before proceeding to the next step');
         }
         $resource = session()->get('viz-wizard-resource');
         return view('dissemination::manage.viz-builder.chart.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource]);
@@ -56,7 +58,6 @@ class ChartWizardController extends Controller
             ->with([
                 'steps' => $this->steps,
                 'currentStep' => 3,
-                //'topics' => $topics,
                 'resource' => $resource,
                 'visualization' => $visualization,
                 'type' => $this->type,

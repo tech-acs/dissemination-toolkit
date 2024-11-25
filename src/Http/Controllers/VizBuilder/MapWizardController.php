@@ -40,7 +40,8 @@ class MapWizardController extends Controller
     {
         $step = 2;
         if (! $this->isStepValid($step)) {
-            return redirect()->route('manage.viz-builder.map.step1');
+            return redirect()->route('manage.viz-builder.map.step1')
+                ->withErrors('You must prepare appropriate data for your visualization before proceeding to the next step');
         }
         $resource = session()->get('viz-wizard-resource');
         $options = $this->makeOptions($resource);
