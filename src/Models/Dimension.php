@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\DB;
@@ -56,4 +57,8 @@ class Dimension extends Model
         return str($this->name)->lower()->snake()->append('_id')->value();
     }
 
+    public function scopeApplicableTo(Builder $query, string $factTable)
+    {
+        $query->whereJsonContains('for', $factTable);
+    }
 }

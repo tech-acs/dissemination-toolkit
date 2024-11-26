@@ -13,10 +13,11 @@
 
         <x-dissemination::message-display />
 
-        <form action="{{route('manage.dataset.store')}}" method="POST">
+        {{--<form action="{{route('manage.dataset.store')}}" method="POST">
             @csrf
             @include('dissemination::manage.dataset.form')
-        </form>
+        </form>--}}
+        <livewire:dataset.create />
 
     </div>
 </x-app-layout>

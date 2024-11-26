@@ -3,11 +3,7 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Http\Requests\DatasetRequest;
 use Uneca\DisseminationToolkit\Models\Dataset;
-use Uneca\DisseminationToolkit\Models\Dimension;
-use Uneca\DisseminationToolkit\Models\Indicator;
-use Uneca\DisseminationToolkit\Services\AreaTree;
 
 class DatasetController extends Controller
 {
@@ -19,16 +15,15 @@ class DatasetController extends Controller
 
     public function create()
     {
-        $indicators = Indicator::orderBy('name')->get();
+        /*$indicators = Indicator::orderBy('name')->get();
         $dimensions = Dimension::orderBy('name')->get();
-        //$topics = Topic::pluck('name', 'id');
         $factTables = config('dissemination.fact_tables');
         $areaLevels = (new AreaTree())->hierarchies;
-        $dataset = new Dataset();
-        return view('dissemination::manage.dataset.create', compact('dataset', 'indicators', 'dimensions', 'factTables', 'areaLevels'));
+        $dataset = new Dataset();*/
+        return view('dissemination::manage.dataset.create');
     }
 
-    public function store(DatasetRequest $request)
+    /*public function store(DatasetRequest $request)
     {
         $dataset = Dataset::create($request->only(['fact_table', 'max_area_level', 'name', 'description']));
         $dataset->indicators()->sync($request->indicators);
@@ -36,19 +31,18 @@ class DatasetController extends Controller
         $inheritedTopics = $dataset->indicators->pluck('topics')->flatten()->pluck('id')->unique();
         $dataset->topics()->sync($inheritedTopics);
         return redirect()->route('manage.dataset.index')->withMessage('Record created');
-    }
+    }*/
 
     public function edit(Dataset $dataset)
     {
-        $indicators = Indicator::orderBy('name')->get();
+        /*$indicators = Indicator::orderBy('name')->get();
         $dimensions = Dimension::orderBy('name')->get();
-        //$topics = Topic::pluck('name', 'id');
         $factTables = config('dissemination.fact_tables');
-        $areaLevels = (new AreaTree())->hierarchies;
-        return view('dissemination::manage.dataset.edit', compact('dataset', 'indicators', 'dimensions', 'factTables', 'areaLevels'));
+        $areaLevels = (new AreaTree())->hierarchies;*/
+        return view('dissemination::manage.dataset.edit', compact('dataset'));
     }
 
-    public function update(Dataset $dataset, DatasetRequest $request)
+    /*public function update(Dataset $dataset, DatasetRequest $request)
     {
         $dataset->update($request->only(['fact_table', 'max_area_level', 'name', 'description']));
         $dataset->indicators()->sync($request->indicators);
@@ -56,7 +50,7 @@ class DatasetController extends Controller
         $inheritedTopics = $dataset->indicators->pluck('topics')->flatten()->pluck('id')->unique();
         $dataset->topics()->sync($inheritedTopics);
         return redirect()->route('manage.dataset.index')->withMessage('Record updated');
-    }
+    }*/
 
     public function destroy(Dataset $dataset)
     {

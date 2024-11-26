@@ -44,6 +44,7 @@ Route::middleware(['web'])->group(function () {
     Route::get('notification', NotificationController::class)->name('notification.index');
     Route::get('api/visualization/{visualization}', [VizAjaxController::class, 'show']);
     Route::get('api/visualization', [VizAjaxController::class, 'index']);
+    Route::get('api/{factTable}/dimensions', \Uneca\DisseminationToolkit\Http\Controllers\DimensionListController::class);
 
     Route::middleware(['auth:sanctum', 'verified', 'enforce_2fa'])->prefix('manage')->name('manage.')->group(function () {
         Route::get('/home', AuthHomeController::class)->name('home');
@@ -57,7 +58,7 @@ Route::middleware(['web'])->group(function () {
         Route::resource('dimension.import-values', \Uneca\DisseminationToolkit\Http\Controllers\DimensionValueImportController::class)->only(['create', 'store']);
         Route::get('dataset/{dataset}/remove', \Uneca\DisseminationToolkit\Http\Controllers\DatasetRemovalController::class)->name('dataset.remove');
         Route::get('dataset/{dataset}/truncate', \Uneca\DisseminationToolkit\Http\Controllers\DatasetTruncationController::class)->name('dataset.truncate');
-        Route::resource('dataset', \Uneca\DisseminationToolkit\Http\Controllers\DatasetController::class);
+        Route::resource('dataset', \Uneca\DisseminationToolkit\Http\Controllers\DatasetController::class)->only(['index', 'create', 'edit', 'destroy']);
         Route::resource('dataset.import', \Uneca\DisseminationToolkit\Http\Controllers\DatasetImportController::class)->only(['create', 'store']);
         Route::resource('visualization', \Uneca\DisseminationToolkit\Http\Controllers\VisualizationController::class)->except(['create', 'show']);
         Route::post('upload-visualization/{visualization}', [\Uneca\DisseminationToolkit\Http\Controllers\VisualizationController::class, 'upload'])->name('visualization.upload');

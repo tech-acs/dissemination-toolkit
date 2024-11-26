@@ -100,6 +100,8 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         Livewire::component('i-need-alpine', \Uneca\DisseminationToolkit\Livewire\INeedAlpine::class);
         Livewire::component('dataset-importer', \Uneca\DisseminationToolkit\Livewire\DatasetImporter::class);
         Livewire::component('review-form', \Uneca\DisseminationToolkit\Livewire\ReviewForm::class);
+        Livewire::component('dataset.create', \Uneca\DisseminationToolkit\Livewire\Dataset\Create::class);
+        Livewire::component('dataset.update', \Uneca\DisseminationToolkit\Livewire\Dataset\Update::class);
     }
 
     public function packageBooted()
