@@ -44,7 +44,6 @@ Route::middleware(['web'])->group(function () {
     Route::get('notification', NotificationController::class)->name('notification.index');
     Route::get('api/visualization/{visualization}', [VizAjaxController::class, 'show']);
     Route::get('api/visualization', [VizAjaxController::class, 'index']);
-    Route::get('api/{factTable}/dimensions', \Uneca\DisseminationToolkit\Http\Controllers\DimensionListController::class);
 
     Route::middleware(['auth:sanctum', 'verified', 'enforce_2fa'])->prefix('manage')->name('manage.')->group(function () {
         Route::get('/home', AuthHomeController::class)->name('home');
@@ -66,6 +65,8 @@ Route::middleware(['web'])->group(function () {
         //Route::get('visualization-deriver', \App\Http\Controllers\VisualizationDeriverController::class)->name('visualization-deriver');
         Route::get('story/{story}/duplicate', \Uneca\DisseminationToolkit\Http\Controllers\StoryDuplicationController::class)->name('story.duplicate');
         Route::resource('story', \Uneca\DisseminationToolkit\Http\Controllers\StoryController::class);
+
+        Route::patch('visualization/{visualization}/change-publish-status', \Uneca\DisseminationToolkit\Http\Controllers\VisualizationPublishStatusController::class)->name('visualization.change-publish-status');
 
         Route::controller(\Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\ChartWizardController::class)->group(function () {
             Route::get('viz-builder/chart/step1', 'step1')->name('viz-builder.chart.step1');

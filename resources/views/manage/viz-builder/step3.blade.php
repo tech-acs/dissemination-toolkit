@@ -69,7 +69,7 @@
                                 </div>
                             </div>
 
-                            <div class="space-y-10 pt-2">
+                            {{--<div class="space-y-10 pt-2">
                                 <div>
                                     <x-label for="page" value="{{ __('Status') }}" />
                                     <div class="flex items-center mt-3 ml-3" x-data="{enabled: @json((bool)old('published', $visualization?->published) ?? false) }">
@@ -92,7 +92,7 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
+                            </div>--}}
                         </div>
 
                         <div class="grid grid-cols-2">

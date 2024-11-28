@@ -22,16 +22,8 @@ return [
         ],
         'starting_zoom' => env('MAP_STARTING_ZOOM', 6),
         'min_zoom' => env('MAP_MIN_ZOOM', 6),
-        //'ignore_orphan_areas' => env('IGNORE_ORPHAN_AREAS', false),
     ],
 
-    /*'cache' => [
-        //'enabled' => env('CACHE_ENABLED', false),
-        'ttl' => env('CACHE_TTL_SECONDS', 60 * 5),
-        'tags' => [],
-    ],
-
-    'schema' => env('DB_SCHEMA', 'data'),*/
     'featured_stories' => env('FEATURED_STORIES', 2),
     'fact_tables' => ['population_facts' => 'Population facts', 'housing_facts' => 'Housing facts'],
     'shapefile' => [

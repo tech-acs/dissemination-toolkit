@@ -6,6 +6,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Process\Process;
+use Spatie\Permission\Models\Permission;
 
 trait PackageTasksTrait
 {
@@ -336,5 +337,22 @@ trait PackageTasksTrait
     protected function replaceInFile($search, $replace, $path): false | int
     {
         return file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
+    }
+
+    protected function createPermissions(): void
+    {
+        $this->components->info("Permissions");
+        $this->components->task('Creating', function () {
+            $permissionGroups = collect(config('app-permissions.groups'));
+            foreach ($permissionGroups ?? [] as $permissionGroup) {
+                foreach ($permissionGroup['permissions'] as $permission) {
+                    Permission::firstOrCreate([
+                        'guard_name' => 'web',
+                        'name' => $permission['permission_name']
+                    ]);
+                }
+            }
+            return true;
+        });
     }
 }

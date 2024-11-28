@@ -20,7 +20,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('dissemination')
-            ->hasConfigFile(['dissemination', 'languages', 'filesystems'])
+            ->hasConfigFile(['dissemination', 'languages', 'filesystems', 'app-permissions'])
             ->hasViews()
             ->hasViewComponents(
                 'dissemination',

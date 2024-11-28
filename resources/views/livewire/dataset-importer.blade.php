@@ -164,7 +164,7 @@
         </div>
     </div>
     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-        <a href="{{ route('manage.area.index') }}"><x-secondary-button class="mr-2">{{ __('Cancel') }}</x-secondary-button></a>
+        <a href="{{ route('manage.dataset.index') }}"><x-secondary-button class="mr-2">{{ __('Cancel') }}</x-secondary-button></a>
         <x-button wire:click="import()">
             {{ __('Import') }}
         </x-button>

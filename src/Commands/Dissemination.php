@@ -27,6 +27,7 @@ class Dissemination extends Command
         $this->installEnvFiles();
         $this->installEmptyWebRoutesFile();
         $this->installJsDependencies();
+        $this->createPermissions();
         $this->cleanup();
 
         info("Installation complete");
