@@ -7,5 +7,6 @@
     <span class="text-gray-400 px-1">|</span>
     <a href="{{ route('manage.visualization.destroy', $row->id) }}" x-on:click.prevent="confirmThenDelete($el)" class="text-red-600">{{ __('Delete') }}</a>
 @endif
+
 <span class="text-gray-400 px-1">|</span>
-<a href="{{ route('manage.visualization.change-publish-status', $row->id) }}" x-on:click.prevent="confirmThenDelete($el)" class="text-red-600">{{ __('Un/Publish') }}</a>
+<x-dissemination::toggle :value="$row->published" route="{{ route('manage.visualization.change-publish-status', $row->id) }}" />

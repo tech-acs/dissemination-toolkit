@@ -71,6 +71,9 @@
                                         @endif
                                         <span class="text-gray-400 px-1">|</span>
                                         <a href="{{ route('manage.dataset.get-template', $record) }}" class="text-red-600 hover:text-red-900">{{ __('Template') }}</a>
+
+                                        <span class="text-gray-400 px-1">|</span>
+                                        <x-dissemination::toggle :value="$record->published" route="{{ route('manage.dataset.change-publish-status', $record->id) }}" />
                                     </td>
                                 </tr>
                             @empty

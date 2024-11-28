@@ -58,6 +58,8 @@ Route::middleware(['web'])->group(function () {
         Route::get('dataset/{dataset}/remove', \Uneca\DisseminationToolkit\Http\Controllers\DatasetRemovalController::class)->name('dataset.remove');
         Route::get('dataset/{dataset}/truncate', \Uneca\DisseminationToolkit\Http\Controllers\DatasetTruncationController::class)->name('dataset.truncate');
         Route::get('dataset/{dataset}/get-template', \Uneca\DisseminationToolkit\Http\Controllers\DatasetTemplateController::class)->name('dataset.get-template');
+        Route::patch('dataset/{dataset}/change-publish-status', \Uneca\DisseminationToolkit\Http\Controllers\DatasetPublishStatusController::class)->name('dataset.change-publish-status');
+
         Route::resource('dataset', \Uneca\DisseminationToolkit\Http\Controllers\DatasetController::class)->only(['index', 'create', 'edit', 'destroy']);
         Route::resource('dataset.import', \Uneca\DisseminationToolkit\Http\Controllers\DatasetImportController::class)->only(['create', 'store']);
         Route::resource('visualization', \Uneca\DisseminationToolkit\Http\Controllers\VisualizationController::class)->except(['create', 'show']);

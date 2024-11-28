@@ -37,6 +37,20 @@ return [
                     'permission_name' => 'approve_review:story',
                 ]
             ],
+        ],
+        [
+            'title' => 'Dataset',
+            'permissions' => [
+                [
+                    'title' => 'Create',
+                    'description' => 'Create/edit/delete data stories',
+                    'permission_name' => 'create:dataset',
+                ], [
+                    'title' => 'Publish',
+                    'description' => 'Publish/unpublish data stories',
+                    'permission_name' => 'publish:publish',
+                ],
+            ],
         ]
     ]
 ];

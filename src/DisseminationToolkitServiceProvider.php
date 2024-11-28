@@ -59,6 +59,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
                 'create_topicables_table',
                 'create_topics_table',
                 'create_visualizations_table',
+                'add_published_column_to_datasets_table',
             ])
             ->hasCommands([
                 \Uneca\DisseminationToolkit\Commands\Dissemination::class,
