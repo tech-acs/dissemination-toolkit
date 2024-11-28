@@ -69,6 +69,8 @@
                                             <span class="text-gray-400 px-1">|</span>
                                             <a href="{{ route('manage.dataset.truncate', $record) }}" class="text-red-600 hover:text-red-900">{{ __('Empty') }}</a>
                                         @endif
+                                        <span class="text-gray-400 px-1">|</span>
+                                        <a href="{{ route('manage.dataset.get-template', $record) }}" class="text-red-600 hover:text-red-900">{{ __('Template') }}</a>
                                     </td>
                                 </tr>
                             @empty
