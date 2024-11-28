@@ -18,13 +18,13 @@
                         <h3 class="text-sm font-medium text-gray-900">
                             <a href="{{route('manage.visualization.index')}}" class="focus:outline-none">
                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                <span>Manage visualizations</span>
+                                <span>{{ __('Manage visualizations')}}</span>
                                 <span aria-hidden="true"> &rarr;</span>
                             </a>
                         </h3>
                         <p class="mt-1 text-sm text-gray-500">
-                            Create, customize, and share interactive data visualizations. Use our builtin visualization types to create
-                            beautiful charts, tables, and diagrams from your data in minutes.
+                            {{ __('Create, customize, and share interactive data visualizations. Use our builtin visualization
+                            types to create beautiful charts, tables, and diagrams from your data in minutes.')}}
                         </p>
                     </div>
                 </div>
@@ -40,13 +40,14 @@
                         <h3 class="text-sm font-medium text-gray-900">
                             <a href="{{route('manage.story.index')}}" class="focus:outline-none">
                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                <span>Manage stories</span>
+                                <span>{{ __('Manage stories')}}</span>
                                 <span aria-hidden="true"> &rarr;</span>
                             </a>
                         </h3>
                         <p class="mt-1 text-sm text-gray-500">
-                            Explore our data story builder to create, customize, and share captivating narratives with ease.
-                            Unleash the power of your data and manage your stories effortlessly, engaging your audience and driving informed decisions
+                            {{ __('Explore our data story builder to create, customize, and share captivating narratives with
+                            ease. Unleash the power of your data and manage your stories effortlessly, engaging your
+                            audience and driving informed decisions')}}
                         </p>
                     </div>
                 </div>
@@ -62,13 +63,13 @@
                         <h3 class="text-sm font-medium text-gray-900">
                             <a href="{{route('manage.topic.index')}}" class="focus:outline-none">
                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                <span>Manage topics</span>
+                                <span>{{ __('Manage topics')}}</span>
                                 <span aria-hidden="true"> &rarr;</span>
                             </a>
                         </h3>
                         <p class="mt-1 text-sm text-gray-500">
-                            Topics can be used to organize indicators, visualizations and stories into meaningful semantic categories.
-                            You are free to add as many topics as you desire.
+                            {{ __('Topics can be used to organize indicators, visualizations and stories into meaningful
+                            semantic categories. You are free to add as many topics as you desire.')}}
                         </p>
                     </div>
                 </div>
@@ -84,13 +85,14 @@
                         <h3 class="text-sm font-medium text-gray-900">
                             <a href="{{route('manage.indicator.index')}}" class="focus:outline-none">
                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                <span>Manage indicators</span>
+                                <span>{{ __('Manage indicators')}}</span>
                                 <span aria-hidden="true"> &rarr;</span>
                             </a>
                         </h3>
                         <p class="mt-1 text-sm text-gray-500">
-                            Simplify indicator management with comprehensive management capabilities. Create, update, delete, and seamlessly
-                            assign indicators to topics for a streamlined approach for managing your data.
+                            {{ __('Simplify indicator management with comprehensive management capabilities. Create, update,
+                            delete, and seamlessly assign indicators to topics for a streamlined approach for managing
+                            your data.')}}
                         </p>
                     </div>
                 </div>
@@ -106,13 +108,14 @@
                         <h3 class="text-sm font-medium text-gray-900">
                             <a href="{{route('manage.dimension.index')}}" class="focus:outline-none">
                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                <span>Manage dimensions</span>
+                                <span>{{ __('Manage dimensions')}}</span>
                                 <span aria-hidden="true"> &rarr;</span>
                             </a>
                         </h3>
                         <p class="mt-1 text-sm text-gray-500">
-                            Dimensions are what contain the descriptive attributes of your indicators. These attributes are used to slice and dice the data in your tables,
-                            allowing users to analyze the data from different perspectives.
+                            {{ __('Dimensions are what contain the descriptive attributes of your indicators. These attributes
+                            are used to slice and dice the data in your tables, allowing users to analyze the data from
+                            different perspectives.')}}
                         </p>
                     </div>
                 </div>
@@ -128,38 +131,17 @@
                         <h3 class="text-sm font-medium text-gray-900">
                             <a href="{{route('manage.dataset.index')}}" class="focus:outline-none">
                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                <span>Manage datasets</span>
+                                <span>{{ __('Manage datasets')}}</span>
                                 <span aria-hidden="true"> &rarr;</span>
                             </a>
                         </h3>
                         <p class="mt-1 text-sm text-gray-500">
-                            Datasets can be created and edited in the Dataset management page. A dataset is a collection of data, generally tabular, that is organized into rows and columns.
+                            {{ __('Datasets can be created and edited in the Dataset management page. A dataset is a
+                            collection of data, generally tabular, that is organized into rows and columns.')}}
                         </p>
                     </div>
                 </div>
             </li>
-            {{--<li class="flow-root py-2">
-                <div class="relative -m-2 flex items-center space-x-4 rounded-xl p-2 focus-within:ring-2 focus-within:ring-indigo-500 hover:bg-gray-50 border hover:border hover:border-green-800">
-                    <div class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-orange-500">
-                        <svg  class="w-6 h-6 text-white" viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" /><path d="M18 14v4h4" /><path d="M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M15 3v4" /><path d="M7 3v4" /><path d="M3 11h16" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-medium text-gray-900">
-                            <a href="{{route('manage.year.index')}}" class="focus:outline-none">
-                                <span class="absolute inset-0" aria-hidden="true"></span>
-                                <span>Manage years</span>
-                                <span aria-hidden="true"> &rarr;</span>
-                            </a>
-                        </h3>
-                        <p class="mt-1 text-sm text-gray-500">
-                            Year management allows you to treat year as a special dimension so that you are able to keep track of indicator data for multiple years.
-                            Year is an integral dimension in census data.
-                        </p>
-                    </div>
-                </div>
-            </li>--}}
 
             <li class="flow-root py-2">
                 <div class="relative -m-2 flex items-center space-x-4 rounded-xl p-2 focus-within:ring-2 focus-within:ring-indigo-500 hover:bg-gray-50 border hover:border hover:border-sky-800">
@@ -172,12 +154,13 @@
                         <h3 class="text-sm font-medium text-gray-900">
                             <a href="{{route('manage.census-table.index')}}" class="focus:outline-none">
                                 <span class="absolute inset-0" aria-hidden="true"></span>
-                                <span>Manage Documents</span>
+                                <span>{{ __('Manage documents')}}</span>
                                 <span aria-hidden="true"> &rarr;</span>
                             </a>
                         </h3>
                         <p class="mt-1 text-sm text-gray-500">
-                            Manage Documents. Our application simplifies the management of documents by allowing you to upload tables along with metadata following the Dublin Core standard.
+                            {{ __('Our application simplifies the management of documents by allowing you to
+                            upload tables along with metadata following the Dublin Core standard.')}}
                         </p>
                     </div>
                 </div>
