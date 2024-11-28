@@ -37,9 +37,12 @@ trait IndicatorTrait {
         }
 
         $this->dimensions = $dataset->dimensions->map(function ($dimension) use ($dataset) {
-            $values = ($dimension->name == 'Year') ?
-                $dataset->availableValuesForDimension($dimension)->map(fn ($v) => ['id' => $v->id, 'name' => $v->name])->all() :
-                $dimension->values()->map(fn ($v) => ['id' => $v->id, 'name' => $v->name])->all();
+            if ($dimension->name == 'Year') {
+                $this->selectedDimensions[] = $dimension->id;
+                $values = $dataset->availableValuesForDimension($dimension)->map(fn ($v) => ['id' => $v->id, 'name' => $v->name])->all();
+            } else {
+                $values = $dimension->values()->map(fn ($v) => ['id' => $v->id, 'name' => $v->name])->all();
+            }
             return [
                 'id' => $dimension->id,
                 'label' => $dimension->name,
