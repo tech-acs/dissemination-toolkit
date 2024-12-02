@@ -12,7 +12,9 @@
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
 
         <div class="text-right">
-            <a href="{{route('manage.dataset.create')}}"><x-button>{{ __('Create new') }}</x-button></a>
+            @can('create:dataset')
+                <a href="{{route('manage.dataset.create')}}"><x-button>{{ __('Create new') }}</x-button></a>
+            @endcan
         </div>
 
         <x-dissemination::message-display />
@@ -59,21 +61,28 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">
                                         {{ $record->observationsCount() }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-900">
-                                        <a href="{{ route('manage.dataset.edit', $record) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
-                                        <span class="text-gray-400 px-1">|</span>
-                                        <a href="{{ route('manage.dataset.destroy', $record) }}" x-on:click.prevent="confirmThenDelete($el)" class="text-red-600">{{ __('Delete') }}</a>
-                                        <span class="text-gray-400 px-1">|</span>
-                                        <a href="{{ route('manage.dataset.import.create', $record) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Import') }}</a>
-                                        @if($record->observationsCount())
+                                    <td class="px-6 py-4  text-center text-sm font-medium text-gray-900">
+                                        @can('edit:dataset')
+                                            <a href="{{ route('manage.dataset.edit', $record) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                                        @endcan
+                                        @can('delete:dataset')
                                             <span class="text-gray-400 px-1">|</span>
-                                            <a href="{{ route('manage.dataset.truncate', $record) }}" class="text-red-600 hover:text-red-900">{{ __('Empty') }}</a>
-                                        @endif
+                                            <a href="{{ route('manage.dataset.destroy', $record) }}" x-on:click.prevent="confirmThenDelete($el)" class="text-red-600">{{ __('Delete') }}</a>
+                                        @endcan
+                                        @can('import:dataset')
+                                            <span class="text-gray-400 px-1">|</span>
+                                            <a href="{{ route('manage.dataset.import', $record) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Import') }}</a>
+                                            @if($record->observationsCount())
+                                                <span class="text-gray-400 px-1">|</span>
+                                                <a href="{{ route('manage.dataset.truncate', $record) }}" class="text-red-600 hover:text-red-900">{{ __('Empty') }}</a>
+                                            @endif
+                                        @endcan
                                         <span class="text-gray-400 px-1">|</span>
-                                        <a href="{{ route('manage.dataset.get-template', $record) }}" class="text-red-600 hover:text-red-900">{{ __('Template') }}</a>
-
-                                        <span class="text-gray-400 px-1">|</span>
-                                        <x-dissemination::toggle :value="$record->published" route="{{ route('manage.dataset.change-publish-status', $record->id) }}" />
+                                        <a href="{{ route('manage.dataset.download-template', $record) }}" class="text-red-600 hover:text-red-900">{{ __('Template') }}</a>
+                                        @can('publish-and-unpublish:dataset')
+                                            <span class="text-gray-400 px-1">|</span>
+                                            <x-dissemination::toggle :value="$record->published" route="{{ route('manage.dataset.change-publish-status', $record->id) }}" />
+                                        @endcan
                                     </td>
                                 </tr>
                             @empty

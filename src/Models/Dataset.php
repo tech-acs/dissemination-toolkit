@@ -37,6 +37,11 @@ class Dataset extends Model
         return $this->belongsToMany(Year::class);
     }
 
+    public function scopePublished($query)
+    {
+        return $query->where('published', true);
+    }
+
     public function observationsCount(): ?int
     {
         try {
@@ -89,8 +94,12 @@ class Dataset extends Model
         ];
     }
 
-    public function fileTemplate(): Collection
+    public function templateFileColumnHeaders(): array
     {
-
+        return [
+            'Area Code',
+            ...$this->dimensions->pluck('name')->map(fn ($name) => "$name code")->toArray(),
+            ...$this->indicators->pluck('name')->toArray()
+        ];
     }
 }

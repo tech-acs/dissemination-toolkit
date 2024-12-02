@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Uneca\DisseminationToolkit\Models\Visualization;
 
-class VisualizationPublishStatusController extends Controller
+class VisualizationPublishedStatusController extends Controller
 {
     public function __invoke(Request $request, Visualization $visualization)
     {

@@ -36,7 +36,7 @@ class VisualizationController extends Controller
             ->view('dissemination::manage.visualization.index');
     }
 
-    public function edit(Visualization $visualization)
+    /*public function edit(Visualization $visualization)
     {
         $tags = Tag::all();
         $topics = Topic::pluck('name', 'id');
@@ -51,7 +51,7 @@ class VisualizationController extends Controller
         $visualization->topics()->sync($request->get('topics'));
         return redirect()->route('manage.visualization.index')
             ->withMessage("The visualization has been updated");
-    }
+    }*/
 
     public function destroy(Visualization $visualization)
     {
@@ -60,7 +60,7 @@ class VisualizationController extends Controller
             ->withMessage("The visualization has been deleted");
     }
 
-    public function upload(Visualization $visualization, Request $request)
+    /*public function upload(Visualization $visualization, Request $request)
     {
         if ($request->hasFile('imageData')) {
             $image = $request->file('imageData');
@@ -81,5 +81,5 @@ class VisualizationController extends Controller
         }
         return response()->json(['message' => 'No image available to upload', 'image_path' => $request->all()]);
 
-    }
+    }*/
 }

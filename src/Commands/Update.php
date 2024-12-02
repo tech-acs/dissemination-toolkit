@@ -18,6 +18,7 @@ class Update extends Command
         {--assets : Copies assets (css, js and images)}
         {--color-palettes : Copies color palettes from dissemination}
         {--npm : Installs node dependencies}
+        {--permissions : Create permissions}
         {--copy-env : Copies .env.example from kit to .env and also generates key}';
 
     public $description = 'Update the Dashboard Starter Kit';
@@ -56,9 +57,9 @@ class Update extends Command
         if ($runAll || $this->option('color-palettes')) {
             $this->copyColorPalettes();
         }
-        /*if ($runAll || $this->option('stubs')) {
-            $this->publishStubs();
-        }*/
+        if ($runAll || $this->option('permissions')) {
+            $this->createPermissions();
+        }
         if ($runAll || $this->option('npm')) {
             $this->installJsDependencies();
         }

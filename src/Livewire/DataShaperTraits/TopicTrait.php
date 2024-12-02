@@ -10,7 +10,6 @@ trait TopicTrait {
 
     public function mountTopicTrait()
     {
-        //$this->topics = Topic::has('indicators')->pluck('name', 'id')->all();
         $this->topics = Topic::has('datasets')->pluck('name', 'id')->all();
     }
 
@@ -20,10 +19,11 @@ trait TopicTrait {
             'geographyLevels', 'geographies', 'selectedGeographies', 'years', 'selectedYears',
             'dimensions', 'selectedDimensions', 'selectedDimensionValues', 'pivotableDimensions', 'pivotColumn', 'pivotRow', 'nestingPivotColumn');
         $topic = Topic::find($topicId);
-        //$this->datasets = $topic?->datasets->pluck('name', 'id')->all() ?? [];
-        $this->datasets = $topic?->datasets->mapWithKeys(function ($dataset) {
-            return [$dataset->id => $dataset->info()];
-        })->all();
+        $this->datasets = $topic?->datasets()
+            ->published()
+            ->get()
+            ->mapWithKeys(fn($dataset) => [$dataset->id => $dataset->info()])
+            ->all();
         $this->nextSelection = 'dataset';
 
         $this->dispatch('dataShaperSelectionMade', $this->makeReadableDataParams('topic', $topic->name));

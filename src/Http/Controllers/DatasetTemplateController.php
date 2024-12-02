@@ -10,13 +10,8 @@ class DatasetTemplateController extends Controller
 {
     public function __invoke(Dataset $dataset)
     {
-        $columnHeaders = [
-            'Area Code',
-            ...$dataset->dimensions->pluck('name')->map(fn ($name) => "$name code")->toArray(),
-            ...$dataset->indicators->pluck('name')->toArray()
-        ];
         SimpleExcelWriter::streamDownload("{$dataset->name}.xlsx")
-            ->addHeader($columnHeaders)
+            ->addHeader($dataset->templateFileColumnHeaders())
             ->toBrowser();
     }
 }

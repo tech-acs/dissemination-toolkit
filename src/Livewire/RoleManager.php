@@ -4,6 +4,7 @@ namespace Uneca\DisseminationToolkit\Livewire;
 
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
+use Uneca\DisseminationToolkit\Enums\PermissionsEnum;
 
 class RoleManager extends Component
 {
@@ -13,11 +14,10 @@ class RoleManager extends Component
 
     public function mount()
     {
-        $this->permissionGroups = collect(config('app-permissions.groups'));
+        $this->permissionGroups = PermissionsEnum::grouped();
         foreach (($this->permissionGroups ?? []) as $permissionGroup) {
-            foreach ($permissionGroup['permissions'] as $permission) {
-                //Permission::firstOrCreate(['guard_name' => 'web', 'name' => $permission['permission_name']]);
-                $this->permissions[$permission['permission_name']] = $this->role->hasPermissionTo($permission['permission_name']);
+            foreach ($permissionGroup as $permissionName => $permissionLabel) {
+                $this->permissions[$permissionName] = $this->role->hasPermissionTo($permissionName);
             }
         }
     }

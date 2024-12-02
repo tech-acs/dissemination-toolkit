@@ -74,22 +74,22 @@ class DatasetImporter extends Component
         foreach ($this->columnMapping['dimensions'] as $dimensionId => $columnName) {
             $dimension = Dimension::find($dimensionId);
             $lookups[$dimensionId] = [
-                'lookup' => DB::table($dimension->table_name)->pluck('id', 'code')->all(),
+                'lookup' => array_change_key_case(DB::table($dimension->table_name)->pluck('id', 'code')->all(), CASE_LOWER),
                 'fk' => $dimension->foreign_key,
             ];
         }
         $lookups['geography'] = [
-            'lookup' => Area::pluck('id', 'code')->all(),
+            'lookup' => array_change_key_case(Area::pluck('id', 'code')->all(), CASE_LOWER),
             'fk' => 'area_id'
         ];
         return $lookups;
     }
 
-    private function lookItUp($key, $dimension, $lookups): array
+    /*private function lookItUp($key, $dimension, $lookups): array
     {
         $map = $lookups[$dimension];
         return [$map['fk'], $map['lookup'][$key] ?? null];
-    }
+    }*/
 
     public function import()
     {

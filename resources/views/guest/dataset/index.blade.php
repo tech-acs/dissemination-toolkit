@@ -43,17 +43,17 @@
                         </div>
 
                         <div>
-                            <div class="p-6 grid grid-cols-3 text-sm pt-8 text-stone-500">
+                            <div class="p-6 grid grid-cols-2 text-sm pt-8 text-stone-500">
                                 <div>
                                     <svg class="size-7 mb-3" viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7" /><path d="M9 4v13" /><path d="M15 7v5" /><path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" /><path d="M19 18v.01" /></svg>
                                     <div class="text-gray-500">{{ __('Granularity')}}</div>
                                     <div class="font-medium">{{ $record['granularity'] }}</div>
                                 </div>
-                                <div>
+                                {{--<div>
                                     <svg class="size-7 mb-3" viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M8 11h8v7h-8z" /><path d="M8 15h8" /><path d="M11 11v7" /></svg>
                                     <div class="text-gray-500">{{ __('Fact table')}}</div>
                                     <div class="font-medium">{{ $record['fact_table'] }}</div>
-                                </div>
+                                </div>--}}
                                 <div>
                                     <svg class="size-7 mb-3" viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 5l0 14" /><path d="M10 5l0 14" /><path d="M14 5l0 14" /><path d="M18 5l0 14" /><path d="M3 17l18 -10" /></svg>
                                     <div class="text-gray-500">{{ __('Observations')}}</div>

@@ -38,7 +38,7 @@ class ImportDatasetJob implements ShouldQueue
     private function lookItUp($key, $dimension, $lookups): array
     {
         $map = $lookups[$dimension];
-        return [$map['fk'], $map['lookup'][$key] ?? null];
+        return [$map['fk'], $map['lookup'][strtolower($key)] ?? null];
     }
 
     public function handle()
@@ -51,13 +51,11 @@ class ImportDatasetJob implements ShouldQueue
             $chunk->each(function (array $row, $rowIndexWithinAChunk) use ($chunkIndex, $inserted, &$entries) {
                 $commonForMultipleIndicators = ['dataset_id' => $this->dataset->id];
                 foreach ($this->columnMapping['dimensions'] as $dimensionId => $dimensionColumn) {
-                    list($foreignKeyCol, $valueId) = $this->lookItUp($row[$dimensionColumn], $dimensionId,
-                        $this->lookups);
+                    list($foreignKeyCol, $valueId) = $this->lookItUp($row[$dimensionColumn], $dimensionId, $this->lookups);
                     $commonForMultipleIndicators[$foreignKeyCol] = $valueId;
                 }
                 foreach ($this->columnMapping['others'] as $dimensionId => $dimensionColumn) {
-                    list($foreignKeyCol, $valueId) = $this->lookItUp($row[$dimensionColumn], $dimensionId,
-                        $this->lookups);
+                    list($foreignKeyCol, $valueId) = $this->lookItUp($row[$dimensionColumn], $dimensionId, $this->lookups);
                     $commonForMultipleIndicators[$foreignKeyCol] = $valueId;
                 }
                 foreach ($this->columnMapping['indicators'] as $indicatorId => $valueColumn) {

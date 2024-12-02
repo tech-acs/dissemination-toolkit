@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Process\Process;
 use Spatie\Permission\Models\Permission;
+use Uneca\DisseminationToolkit\Enums\PermissionsEnum;
 
 trait PackageTasksTrait
 {
@@ -343,14 +344,12 @@ trait PackageTasksTrait
     {
         $this->components->info("Permissions");
         $this->components->task('Creating', function () {
-            $permissionGroups = collect(config('app-permissions.groups'));
-            foreach ($permissionGroups ?? [] as $permissionGroup) {
-                foreach ($permissionGroup['permissions'] as $permission) {
-                    Permission::firstOrCreate([
-                        'guard_name' => 'web',
-                        'name' => $permission['permission_name']
-                    ]);
-                }
+            $permissions = collect(PermissionsEnum::cases())->map(fn($permission) => $permission->value);
+            foreach ($permissions as $permission) {
+                Permission::firstOrCreate([
+                    'guard_name' => 'web',
+                    'name' => $permission
+                ]);
             }
             return true;
         });
