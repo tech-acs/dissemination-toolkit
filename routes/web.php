@@ -114,34 +114,34 @@ Route::middleware(['web'])->group(function () {
         Route::delete('visualization/{visualization}', [VisualizationManagementControllerAlias::class, 'destroy'])->name('visualization.destroy')
             ->can(PermissionsEnum::DELETE_VIZ);
         Route::get('viz-builder/chart/api/get', [ChartWizardController::class, 'ajaxGetChart']);
-        Route::controller(ChartWizardController::class)->group(function () {
+        Route::middleware('permission:create:viz|edit:viz')->controller(ChartWizardController::class)->group(function () {
             Route::get('viz-builder/chart/step1', 'step1')->name('viz-builder.chart.step1');
             Route::get('viz-builder/chart/step2', 'step2')->name('viz-builder.chart.step2');
             Route::post('viz-builder/chart/step3', 'step3')->name('viz-builder.chart.step3');
             Route::get('viz-builder/chart/{viz}/edit', 'edit')->name('viz-builder.chart.edit');
             Route::post('viz-builder/chart', 'store')->name('viz-builder.chart.store');
-        })->middleware(['can:create:viz', 'can:edit:viz']);
-        Route::controller(TableWizardController::class)->group(function () {
+        });
+        Route::middleware('permission:create:viz|edit:viz')->controller(TableWizardController::class)->group(function () {
             Route::get('viz-builder/table/step1', 'step1')->name('viz-builder.table.step1');
             Route::get('viz-builder/table/step2', 'step2')->name('viz-builder.table.step2');
             Route::get('viz-builder/table/step3', 'step3')->name('viz-builder.table.step3');
             Route::get('viz-builder/table/{viz}/edit', 'edit')->name('viz-builder.table.edit');
             Route::post('viz-builder/table', 'store')->name('viz-builder.table.store');
-        })->middleware(['can:create:viz', 'can:edit:viz']);
-        Route::controller(MapWizardController::class)->group(function () {
+        });
+        Route::middleware('permission:create:viz|edit:viz')->controller(MapWizardController::class)->group(function () {
             Route::get('viz-builder/map/step1', 'step1')->name('viz-builder.map.step1');
             Route::get('viz-builder/map/step2', 'step2')->name('viz-builder.map.step2');
             Route::get('viz-builder/map/step3', 'step3')->name('viz-builder.map.step3');
             Route::get('viz-builder/map/{viz}/edit', 'edit')->name('viz-builder.map.edit');
             Route::post('viz-builder/map', 'store')->name('viz-builder.map.store');
-        })->middleware(['can:create:viz', 'can:edit:viz']);
-        Route::controller(ScorecardWizardController::class)->group(function () {
+        });
+        Route::middleware('permission:create:viz|edit:viz')->controller(ScorecardWizardController::class)->group(function () {
             Route::get('viz-builder/scorecard/step1', 'step1')->name('viz-builder.scorecard.step1');
             Route::get('viz-builder/scorecard/step2', 'step2')->name('viz-builder.scorecard.step2');
             Route::get('viz-builder/scorecard/step3', 'step3')->name('viz-builder.scorecard.step3');
             Route::get('viz-builder/scorecard/{viz}/edit', 'edit')->name('viz-builder.scorecard.edit');
             Route::post('viz-builder/scorecard', 'store')->name('viz-builder.scorecard.store');
-        })->middleware(['can:create:viz', 'can:edit:viz']);
+        });
 
         Route::resource('census-table', DocumentManagementController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
 

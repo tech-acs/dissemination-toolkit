@@ -50,7 +50,7 @@ class StoryController extends Controller
             $path = $request->file('image')->storeAs('stories', $request->file('image')->getClientOriginalName(), 'public');
             $request->merge(['featured_image' => "storage/$path"]);
         }
-        $story = Auth::user()->stories()->create($request->only(['title',  'description', 'published', 'featured', 'is_filterable', 'is_reviewable', 'featured_image']));
+        $story = Auth::user()->stories()->create($request->only(['title',  'description', 'featured', 'is_filterable', 'is_reviewable', 'featured_image']));
         $story->update(['html' => '']);//(new StoryTemplateStore)->get($request->get('template_id'))->getHtml()]);
         $updatedTags = Tag::prepareForSync($request->get('tags', ''));
         $story->tags()->sync($updatedTags->pluck('id'));
@@ -71,7 +71,7 @@ class StoryController extends Controller
             $path = $request->file('image')->storeAs('stories', $request->file('image')->getClientOriginalName(), 'public');
             $request->merge(['featured_image' => "storage/$path"]);
         }
-        $story->update($request->only(['title', 'description', 'published', 'featured', 'is_filterable', 'is_reviewable', 'featured_image']));
+        $story->update($request->only(['title', 'description', 'featured', 'is_filterable', 'is_reviewable', 'featured_image']));
         $updatedTags = Tag::prepareForSync($request->get('tags'));
         $story->tags()->sync($updatedTags->pluck('id'));
         $story->topics()->sync($request->get('topics'));

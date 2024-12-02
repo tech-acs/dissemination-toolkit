@@ -11,9 +11,11 @@
 
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
 
-        <div class="text-right">
-            <a href="{{route('manage.story.create')}}"><x-button>{{ __('Create new') }}</x-button></a>
-        </div>
+        @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_STORY)
+            <div class="text-right">
+                <a href="{{route('manage.story.create')}}"><x-button>{{ __('Create new') }}</x-button></a>
+            </div>
+        @endcan
 
         <x-dissemination-smart-table :$smartTableData custom-action-sub-view="dissemination::manage.story.custom-action" />
     </div>

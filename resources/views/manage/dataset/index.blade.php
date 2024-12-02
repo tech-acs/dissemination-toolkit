@@ -12,7 +12,7 @@
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
 
         <div class="text-right">
-            @can('create:dataset')
+            @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_DATASET)
                 <a href="{{route('manage.dataset.create')}}"><x-button>{{ __('Create new') }}</x-button></a>
             @endcan
         </div>
@@ -62,14 +62,14 @@
                                         {{ $record->observationsCount() }}
                                     </td>
                                     <td class="px-6 py-4  text-center text-sm font-medium text-gray-900">
-                                        @can('edit:dataset')
+                                        @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::EDIT_DATASET)
                                             <a href="{{ route('manage.dataset.edit', $record) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
                                         @endcan
-                                        @can('delete:dataset')
+                                        @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::DELETE_DATASET)
                                             <span class="text-gray-400 px-1">|</span>
                                             <a href="{{ route('manage.dataset.destroy', $record) }}" x-on:click.prevent="confirmThenDelete($el)" class="text-red-600">{{ __('Delete') }}</a>
                                         @endcan
-                                        @can('import:dataset')
+                                        @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::IMPORT_DATASET)
                                             <span class="text-gray-400 px-1">|</span>
                                             <a href="{{ route('manage.dataset.import', $record) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Import') }}</a>
                                             @if($record->observationsCount())
@@ -79,7 +79,7 @@
                                         @endcan
                                         <span class="text-gray-400 px-1">|</span>
                                         <a href="{{ route('manage.dataset.download-template', $record) }}" class="text-red-600 hover:text-red-900">{{ __('Template') }}</a>
-                                        @can('publish-and-unpublish:dataset')
+                                        @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::PUBLISH_AND_UNPUBLISH_DATASET)
                                             <span class="text-gray-400 px-1">|</span>
                                             <x-dissemination::toggle :value="$record->published" route="{{ route('manage.dataset.change-publish-status', $record->id) }}" />
                                         @endcan

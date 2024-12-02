@@ -12,19 +12,19 @@
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
 
         <div class="flex justify-end gap-4">
-            {{--<a href="{{ route('manage.viz-builder.chart.prepare-data') }}"><x-button>{{ __('Create New') }}</x-button></a>--}}
-
-            <x-dropdown align="right" class="48" contentClasses="py-0 bg-white overflow-hidden">
-                <x-slot name="trigger">
-                    <x-button>{{ __('Create New Visualization') }}</x-button>
-                </x-slot>
-                <x-slot name="content" class="overflow-hidden py-0">
-                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.chart.step1') }}">{{ __('Chart') }}</x-dropdown-link>
-                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.table.step1') }}">{{ __('Table') }}</x-dropdown-link>
-                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.map.step1') }}">{{ __('Map') }}</x-dropdown-link>
-                    <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.scorecard.step1') }}">{{ __('Scorecard') }}</x-dropdown-link>
-                </x-slot>
-            </x-dropdown>
+            @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_VIZ)
+                <x-dropdown align="right" class="48" contentClasses="py-0 bg-white overflow-hidden">
+                    <x-slot name="trigger">
+                        <x-button>{{ __('Create New Visualization') }}</x-button>
+                    </x-slot>
+                    <x-slot name="content" class="overflow-hidden py-0">
+                        <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.chart.step1') }}">{{ __('Chart') }}</x-dropdown-link>
+                        <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.table.step1') }}">{{ __('Table') }}</x-dropdown-link>
+                        <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.map.step1') }}">{{ __('Map') }}</x-dropdown-link>
+                        <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.scorecard.step1') }}">{{ __('Scorecard') }}</x-dropdown-link>
+                    </x-slot>
+                </x-dropdown>
+            @endcan
         </div>
 
         <x-dissemination::message-display />

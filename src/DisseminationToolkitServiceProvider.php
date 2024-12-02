@@ -148,6 +148,8 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         $router->pushMiddlewareToGroup('web', \Uneca\DisseminationToolkit\Http\Middleware\Language::class);
         $router->aliasMiddleware('enforce_2fa', \Uneca\DisseminationToolkit\Http\Middleware\RedirectIf2FAEnforced::class);
         //$router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
+        $router->aliasMiddleware('permission', \Spatie\Permission\Middleware\PermissionMiddleware::class);
+        $router->aliasMiddleware('role', \Spatie\Permission\Middleware\RoleMiddleware::class);
 
         /*$this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);

@@ -22,7 +22,7 @@
                         </select>
                         <x-input-error for="topics" class="mt-2" />
                     </div>
-                    <div>
+                    {{--<div>
                         <x-label for="published" value="{{ __('Status') }}" />
                         <div class="flex items-center mt-3 ml-3" x-data="{enabled: @json($story->published ?? false) }" x-cloak>
                             <label for="status">
@@ -43,7 +43,7 @@
                                 <span class="text-sm text-gray-900">{{ __('Published') }}</span>
                             </label>
                         </div>
-                    </div>
+                    </div>--}}
                 </div>
 
                 <div class="space-y-6">
