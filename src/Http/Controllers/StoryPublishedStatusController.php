@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Uneca\DisseminationToolkit\Models\Story;
 use Illuminate\Http\Request;
 
-class StoryPublishStatusController extends Controller
+class StoryPublishedStatusController extends Controller
 {
     public function __invoke(Request $request, Story $story)
     {

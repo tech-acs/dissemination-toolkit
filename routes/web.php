@@ -34,13 +34,15 @@ use Uneca\DisseminationToolkit\Http\Controllers\RoleController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryBuilderController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryController as StoryManagementController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryDuplicationController;
-use Uneca\DisseminationToolkit\Http\Controllers\StoryPublishStatusController;
+use Uneca\DisseminationToolkit\Http\Controllers\StoryPublishedStatusController;
+use Uneca\DisseminationToolkit\Http\Controllers\StoryRestrictedStatusController;
 use Uneca\DisseminationToolkit\Http\Controllers\TagController;
 use Uneca\DisseminationToolkit\Http\Controllers\TopicController;
 use Uneca\DisseminationToolkit\Http\Controllers\UserController;
 use Uneca\DisseminationToolkit\Http\Controllers\UserSuspensionController;
 use Uneca\DisseminationToolkit\Http\Controllers\VisualizationController as VisualizationManagementControllerAlias;
 use Uneca\DisseminationToolkit\Http\Controllers\VisualizationPublishedStatusController;
+use Uneca\DisseminationToolkit\Http\Controllers\VisualizationRestrictedStatusController;
 use Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\ChartWizardController;
 use Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\MapWizardController;
 use Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\ScorecardWizardController;
@@ -105,14 +107,18 @@ Route::middleware(['web'])->group(function () {
         Route::get('story/{story}/duplicate', StoryDuplicationController::class)->name('story.duplicate')->can(PermissionsEnum::CREATE_STORY);
         Route::get('story-builder/{story}', [StoryBuilderController::class, 'edit'])->name('story-builder.edit')->can(PermissionsEnum::EDIT_STORY);
         Route::patch('story-builder/{story}', [StoryBuilderController::class, 'update'])->name('story-builder.update')->can(PermissionsEnum::EDIT_STORY);
-        Route::patch('story/{story}/change-published-status', StoryPublishStatusController::class)->name('story.change-published-status')
+        Route::patch('story/{story}/change-published-status', StoryPublishedStatusController::class)->name('story.change-published-status')
             ->can(PermissionsEnum::PUBLISH_AND_UNPUBLISH_STORY);
+        Route::patch('story/{story}/change-restricted-status', StoryRestrictedStatusController::class)->name('story.change-restricted-status')
+            ->can(PermissionsEnum::EDIT_STORY);
 
         Route::get('visualization', [VisualizationManagementControllerAlias::class, 'index'])->name('visualization.index');
         Route::patch('visualization/{visualization}/change-published-status', VisualizationPublishedStatusController::class)->name('visualization.change-published-status')
             ->can(PermissionsEnum::PUBLISH_AND_UNPUBLISH_VIZ);
         Route::delete('visualization/{visualization}', [VisualizationManagementControllerAlias::class, 'destroy'])->name('visualization.destroy')
             ->can(PermissionsEnum::DELETE_VIZ);
+        Route::patch('visualization/{visualization}/change-restricted-status', VisualizationRestrictedStatusController::class)->name('visualization.change-restricted-status')
+            ->can(PermissionsEnum::EDIT_VIZ);
         Route::get('viz-builder/chart/api/get', [ChartWizardController::class, 'ajaxGetChart']);
         Route::middleware('permission:create:viz|edit:viz')->controller(ChartWizardController::class)->group(function () {
             Route::get('viz-builder/chart/step1', 'step1')->name('viz-builder.chart.step1');
