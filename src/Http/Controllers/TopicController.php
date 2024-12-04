@@ -29,7 +29,7 @@ class TopicController extends Controller
             ->editable('manage.topic.edit')
             ->deletable('manage.topic.destroy')
             ->searchable(['name', 'description'])
-            ->sortBy('name')
+            ->sortBy('rank')
             ->downloadable()
             ->view('dissemination::manage.topic.index');
     }
@@ -41,7 +41,7 @@ class TopicController extends Controller
 
     public function store(TopicRequest $request)
     {
-        Topic::create($request->only(['name',  'description']));
+        Topic::create($request->validated());
         return redirect()->route('manage.topic.index')->withMessage('Record created');
     }
 
@@ -52,7 +52,7 @@ class TopicController extends Controller
 
     public function update(Topic $topic, TopicRequest $request)
     {
-        $topic->update($request->only(['name', 'description']));
+        $topic->update($request->validated());
         return redirect()->route('manage.topic.index')->withMessage('Record updated');
     }
 

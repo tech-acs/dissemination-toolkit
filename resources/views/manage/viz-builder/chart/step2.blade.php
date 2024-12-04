@@ -20,18 +20,29 @@
 
             </div>
 
-            <footer class="flex items-center justify-end gap-x-5 border-t border-gray-900/10 px-4 pt-5 sm:px-8">
-                <a href="{{ route("manage.viz-builder.chart.step1") }}" class="cursor-pointer rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                    {{ __('Restart')}}
-                </a>
-                <form action="{{ route('manage.viz-builder.chart.step3') }}" method="post">
-                    @csrf
-                    <input type="hidden" name="data" id="chart-data" value="{{ json_encode($resource->data) }}" />
-                    <input type="hidden" name="layout" id="chart-layout" value="{{ json_encode($resource->layout) }}" />
-                    <button type="submit" class="cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Next
-                    </button>
-                </form>
+            <footer class="flex items-center justify-between border-t border-gray-900/10 px-4 pt-5 sm:px-8">
+                <div class="flex gap-x-5">
+                    <x-secondary-button><a href="{{ route('manage.visualization.index') }}">{{ __('Cancel') }}</a></x-secondary-button>
+                    <a href="{{ route("manage.viz-builder.chart.step1") }}" class="uppercase tracking-widest cursor-pointer rounded-md bg-white px-3 py-2 text-xs font-semibold text-red-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                        {{ __('Restart')}}
+                    </a>
+                </div>
+
+                <div class="flex gap-x-5">
+                    <a href="#" type="button" class="uppercase tracking-widest rounded-md bg-indigo-50 px-3 py-2 ring-1 ring-indigo-200 text-xs font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100 cursor-pointer">
+                        {{ __('Data')}}
+                    </a>
+
+                    <form action="{{ route('manage.viz-builder.chart.step3') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="data" id="chart-data" value="{{ json_encode($resource->data) }}" />
+                        <input type="hidden" name="layout" id="chart-layout" value="{{ json_encode($resource->layout) }}" />
+                        <button type="submit" class="uppercase tracking-widest cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Next
+                        </button>
+                    </form>
+                </div>
+
             </footer>
 
             <x-dissemination::toast />

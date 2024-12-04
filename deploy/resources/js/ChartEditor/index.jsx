@@ -14,7 +14,13 @@ if (rootElement) {
         if (has(trace, 'meta.columnNames')) {
             console.log({trace})
             Object.keys(trace.meta.columnNames).forEach((key) => {
-                data[index][key] = response.data.dataSources[data[index][`${key}src`]];
+                const columnName = trace.meta.columnNames[key];
+                if (columnName.includes(' - ')) {
+                    const columns = columnName.split(' - ')
+                    data[index][key] = columns.map(column => response.data.dataSources[column])
+                } else {
+                    data[index][key] = response.data.dataSources[data[index][`${key}src`]]
+                }
             })
         }
     })

@@ -11,11 +11,16 @@
                 <x-dissemination::textarea name="description" rows="3">{{old('description', $topic->description ?? null)}}</x-dissemination::textarea>
                 <x-input-error for="description" class="mt-2" />
             </div>
-            {{--<div>
+            <div>
+                <x-label for="code" value="{{ __('Code') }} *" />
+                <x-input id="code" name="code" class="w-50 mt-1" value="{{ old('code', $topic->code ?? null) }}" />
+                <x-input-error for="code" class="mt-2" />
+            </div>
+            <div>
                 <x-label for="rank" value="{{ __('Rank') }}" />
                 <x-input id="rank" name="rank" type="number" class="w-20 mt-1" value="{{ old('rank', $topic->rank ?? null) }}" />
                 <x-input-error for="rank" class="mt-2" />
-            </div>--}}
+            </div>
             {{--<div>
                 <x-label for="indicators" value="{{ __('Indicators') }}" />
                 <select id="indicators" name="indicators[]" multiple class="mt-1 space-y-1 text-base p-1 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">

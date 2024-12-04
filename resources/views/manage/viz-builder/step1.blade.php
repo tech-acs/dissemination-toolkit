@@ -24,8 +24,9 @@
                 </div>
             </div>
 
-            <footer class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 pt-5 sm:px-8">
-                <a href="{{ route("manage.viz-builder.$type.step2") }}" class="cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            <footer class="flex items-center justify-between gap-x-6 border-t border-gray-900/10 px-4 pt-5 sm:px-8">
+                <x-secondary-button><a href="{{ route('manage.visualization.index') }}">{{ __('Cancel') }}</a></x-secondary-button>
+                <a href="{{ route("manage.viz-builder.$type.step2") }}" class="uppercase tracking-widest cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     Next
                 </a>
             </footer>

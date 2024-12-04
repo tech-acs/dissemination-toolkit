@@ -10,7 +10,16 @@ trait TopicTrait {
 
     public function mountTopicTrait()
     {
-        $this->topics = Topic::has('datasets')->pluck('name', 'id')->all();
+        $this->topics = Topic::has('datasets')
+            ->orderBy('rank')
+            ->get()
+            ->filter(function ($topic) {
+                return $topic->datasets->reduce(function ($carry, $dataset) {
+                    return $carry || $dataset->observationsCount();
+                }, false);
+            })
+            ->pluck('name', 'id')
+            ->all();
     }
 
     public function updatedSelectedTopic(int $topicId): void
@@ -20,8 +29,8 @@ trait TopicTrait {
             'dimensions', 'selectedDimensions', 'selectedDimensionValues', 'pivotableDimensions', 'pivotColumn', 'pivotRow', 'nestingPivotColumn');
         $topic = Topic::find($topicId);
         $this->datasets = $topic?->datasets()
-            ->published()
             ->get()
+            ->filter(fn($dataset) => $dataset->observationsCount())
             ->mapWithKeys(fn($dataset) => [$dataset->id => $dataset->info()])
             ->all();
         $this->nextSelection = 'dataset';
