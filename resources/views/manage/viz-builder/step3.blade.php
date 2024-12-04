@@ -26,7 +26,7 @@
                         @csrf
                         <div>
                             <x-label for="title" value="{{ __('Title') }} *" />
-                            <input type="text" name="title" value="{{ old('title', $visualization?->title ?? null) }}" class="min-w-0 mt-1 flex-1 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block w-full px-3" />
+                            <x-dissemination::multi-lang-input id="title" name="title" type="text" value="{{old('title', $visualization?->title ?? null)}}" />
                             <x-input-error for="title" class="mt-2" />
                         </div>
                         <div>
