@@ -17,6 +17,7 @@ use Uneca\DisseminationToolkit\Http\Controllers\DimensionTableCreationController
 use Uneca\DisseminationToolkit\Http\Controllers\DimensionValueController;
 use Uneca\DisseminationToolkit\Http\Controllers\DimensionValueImportController;
 use Uneca\DisseminationToolkit\Http\Controllers\DocumentManagementController;
+use Uneca\DisseminationToolkit\Http\Controllers\DocumentPublishedStatusController;
 use Uneca\DisseminationToolkit\Http\Controllers\Guest\DocumentController;
 use Uneca\DisseminationToolkit\Http\Controllers\Guest\DataExplorerController;
 use Uneca\DisseminationToolkit\Http\Controllers\Guest\DatasetController;
@@ -57,9 +58,9 @@ Route::middleware(['web'])->group(function () {
     Route::get('visualization/{visualization}', [VisualizationController::class, 'show'])->name('visualization.show');
     Route::get('story', [StoryController::class, 'index'])->name('story.index');
     Route::get('story/{story}', [StoryController::class, 'show'])->name('story.show');
-    Route::get('census-table', [DocumentController::class, 'index'])->name('census-table.index');
-    Route::get('census-table/{id}', [DocumentController::class, 'show'])->name('census-table.show');
-    Route::get('census-table/download/{Document}', [DocumentController::class, 'download'])->name('census-table.download');
+    Route::get('document', [DocumentController::class, 'index'])->name('document.index');
+    Route::get('document/{id}', [DocumentController::class, 'show'])->name('document.show');
+    Route::get('document/download/{Document}', [DocumentController::class, 'download'])->name('document.download');
     Route::get('dataset', DatasetController::class)->name('dataset.index');
     Route::get('dataset/{dataset}/download', DatasetDownloadController::class)->name('dataset.download');
 
@@ -72,13 +73,36 @@ Route::middleware(['web'])->group(function () {
 
     Route::middleware(['auth:sanctum', 'verified', 'enforce_2fa'])->prefix('manage')->name('manage.')->group(function () {
         Route::get('/home', AuthHomeController::class)->name('home');
-        Route::resource('topic', TopicController::class);
-        Route::resource('indicator', IndicatorController::class);
-        Route::get('dimension/create-table', DimensionTableCreationController::class)->name('dimension.create-table');
-        Route::resource('dimension', DimensionController::class);
-        Route::resource('year', YearController::class);
-        Route::resource('dimension.values', DimensionValueController::class);
-        Route::resource('dimension.import-values', DimensionValueImportController::class)->only(['create', 'store']);
+
+        //Route::resource('topic', TopicController::class);
+        Route::get('topic', [TopicController::class, 'index'])->name('topic.index');
+        Route::get('topic/create', [TopicController::class, 'create'])->name('topic.create')->can(PermissionsEnum::CREATE_TOPIC);
+        Route::post('topic', [TopicController::class, 'store'])->name('topic.store')->can(PermissionsEnum::CREATE_TOPIC);
+        Route::get('topic/{topic}/edit', [TopicController::class, 'edit'])->name('topic.edit')->can(PermissionsEnum::EDIT_TOPIC);
+        Route::patch('topic/{topic}', [TopicController::class, 'update'])->name('topic.update')->can(PermissionsEnum::EDIT_TOPIC);
+        Route::delete('topic/{topic}', [TopicController::class, 'destroy'])->name('topic.destroy')->can(PermissionsEnum::DELETE_TOPIC);
+
+        //Route::resource('indicator', IndicatorController::class);
+        Route::get('indicator', [IndicatorController::class, 'index'])->name('indicator.index');
+        Route::get('indicator/create', [IndicatorController::class, 'create'])->name('indicator.create')->can(PermissionsEnum::CREATE_INDICATOR);
+        Route::post('indicator', [IndicatorController::class, 'store'])->name('indicator.store')->can(PermissionsEnum::CREATE_INDICATOR);
+        Route::get('indicator/{indicator}/edit', [IndicatorController::class, 'edit'])->name('indicator.edit')->can(PermissionsEnum::EDIT_INDICATOR);
+        Route::patch('indicator/{indicator}', [IndicatorController::class, 'update'])->name('indicator.update')->can(PermissionsEnum::EDIT_INDICATOR);
+        Route::delete('indicator/{indicator}', [IndicatorController::class, 'destroy'])->name('indicator.destroy')->can(PermissionsEnum::DELETE_INDICATOR);
+
+        //Route::resource('dimension', DimensionController::class);
+        Route::get('dimension/create-table', DimensionTableCreationController::class)->name('dimension.create-table')->can(PermissionsEnum::CREATE_DIMENSION);
+        Route::get('dimension', [DimensionController::class, 'index'])->name('dimension.index');
+        Route::get('dimension/create', [DimensionController::class, 'create'])->name('dimension.create')->can(PermissionsEnum::CREATE_DIMENSION);
+        Route::post('dimension', [DimensionController::class, 'store'])->name('dimension.store')->can(PermissionsEnum::CREATE_DIMENSION);
+        Route::get('dimension/{dimension}/edit', [DimensionController::class, 'edit'])->name('dimension.edit')->can(PermissionsEnum::EDIT_DIMENSION);
+        Route::patch('dimension/{dimension}', [DimensionController::class, 'update'])->name('dimension.update')->can(PermissionsEnum::EDIT_DIMENSION);
+        Route::delete('dimension/{dimension}', [DimensionController::class, 'destroy'])->name('dimension.destroy')->can(PermissionsEnum::DELETE_DIMENSION);
+
+        Route::middleware('permission:manage-values:dimension')->group(function () {
+            Route::resource('dimension.values', DimensionValueController::class);
+            Route::resource('dimension.import-values', DimensionValueImportController::class)->only(['create', 'store']);
+        });
 
         //Route::resource('dataset', DatasetManagementController::class)->only(['index', 'create', 'edit', 'destroy']);
         Route::get('dataset', [DatasetManagementController::class, 'index'])->name('dataset.index');
@@ -149,7 +173,15 @@ Route::middleware(['web'])->group(function () {
             Route::post('viz-builder/scorecard', 'store')->name('viz-builder.scorecard.store');
         });
 
-        Route::resource('census-table', DocumentManagementController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
+        //Route::resource('document', DocumentManagementController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
+        Route::get('document', [DocumentManagementController::class, 'index'])->name('document.index');
+        Route::get('document/create', [DocumentManagementController::class, 'create'])->name('document.create')->can(PermissionsEnum::CREATE_DOCUMENT);
+        Route::post('document', [DocumentManagementController::class, 'store'])->name('document.store')->can(PermissionsEnum::CREATE_DOCUMENT);
+        Route::get('document/{document}/edit', [DocumentManagementController::class, 'edit'])->name('document.edit')->can(PermissionsEnum::EDIT_DOCUMENT);
+        Route::patch('document/{document}', [DocumentManagementController::class, 'update'])->name('document.update')->can(PermissionsEnum::EDIT_DOCUMENT);
+        Route::delete('document/{document}', [DocumentManagementController::class, 'destroy'])->name('document.destroy')->can(PermissionsEnum::DELETE_DOCUMENT);
+        Route::patch('document/{document}/change-published-status', DocumentPublishedStatusController::class)->name('document.change-published-status')
+            ->can(PermissionsEnum::PUBLISH_AND_UNPUBLISH_DOCUMENT);
 
         Route::resource('announcement', AnnouncementController::class)->only(['index', 'create', 'store']);
 

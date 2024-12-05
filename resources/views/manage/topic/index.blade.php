@@ -10,16 +10,17 @@
     </x-slot>
 
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-
+        @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_TOPIC)
         <div class="text-right">
             <a href="{{route('manage.topic.create')}}"><x-button>{{ __('Create new') }}</x-button></a>
         </div>
+        @endcan
 
         <x-dissemination::message-display />
 
         <x-dissemination::error-display />
 
-        <x-dissemination-smart-table :$smartTableData />
+        <x-dissemination-smart-table :$smartTableData custom-action-sub-view="dissemination::manage.topic.custom-action" />
 
     </div>
 </x-app-layout>

@@ -23,7 +23,7 @@
             <a class="w-full px-4 py-2 -ml-4 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none"
                href="{{ route('story.index') }}">{{ __('Data Stories') }}</a>
             <a class="w-full px-4 py-2 -ml-4 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none"
-               href="{{ route('census-table.index') }}">{{ __('Documents') }}</a>
+               href="{{ route('document.index') }}">{{ __('Documents') }}</a>
             <a class="w-full px-4 py-2 -ml-4 text-gray-500 rounded-md hover:text-indigo-500 focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none"
                href="{{ route('about') }}">{{ __('Datasets') }}</a>
             @guest
@@ -85,8 +85,8 @@
                     {{ __('Data Stories') }}
                 </a>
             </li>
-            <li class="mr-3"><a href="{{ route('census-table.index') }}"
-                                class="{{ request()->routeIs('census-table.*') ? 'border border-indigo-300 bg-indigo-50' : '' }} group inline-block px-4 py-2 text-base font-normal text-gray-800 no-underline rounded-md hover:bg-indigo-500 hover:text-white focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none">
+            <li class="mr-3"><a href="{{ route('document.index') }}"
+                                class="{{ request()->routeIs('document.*') ? 'border border-indigo-300 bg-indigo-50' : '' }} group inline-block px-4 py-2 text-base font-normal text-gray-800 no-underline rounded-md hover:bg-indigo-500 hover:text-white focus:text-indigo-500 focus:bg-indigo-100 focus:outline-none">
                     <div class="flex justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-indigo-500 group-hover:bg-indigo-500 group-hover:text-white" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

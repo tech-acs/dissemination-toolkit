@@ -19,7 +19,7 @@
                     <x-nav-link href="{{ route('manage.indicator.index') }}" :active="request()->routeIs('manage.indicator.*')">{{ __('Indicators') }}</x-nav-link>
                     <x-nav-link href="{{ route('manage.dimension.index') }}" :active="request()->routeIs('manage.dimension.*')">{{ __('Dimensions') }}</x-nav-link>
                     <x-nav-link href="{{ route('manage.dataset.index') }}" :active="request()->routeIs('manage.dataset.*')">{{ __('Datasets') }}</x-nav-link>
-                    <x-nav-link href="{{ route('manage.census-table.index') }}" :active="request()->routeIs('manage.census-table.*')">{{ __('Documents') }}</x-nav-link>
+                    <x-nav-link href="{{ route('manage.document.index') }}" :active="request()->routeIs('manage.document.*')">{{ __('Documents') }}</x-nav-link>
                 </div>
             </div>
 
@@ -220,7 +220,7 @@
             <x-responsive-nav-link href="{{ route('manage.indicator.index') }}" :active="request()->routeIs('manage.indicator.*')">{{ __('Indicators') }}</x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('manage.dimension.index') }}" :active="request()->routeIs('manage.dimension.*')">{{ __('Dimensions') }}</x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('manage.dataset.index') }}" :active="request()->routeIs('manage.dataset.*')">{{ __('Datasets') }}</x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('manage.census-table.index') }}" :active="request()->routeIs('manage.census-table.*')">{{ __('Documents') }}</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('manage.document.index') }}" :active="request()->routeIs('manage.document.*')">{{ __('Documents') }}</x-responsive-nav-link>
 
             @can('Super User')
                 <div class="border-t border-gray-200"></div>

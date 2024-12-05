@@ -2,10 +2,10 @@
 
     <x-slot name="header">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
-            {{ __('Topics') }}
+            {{ __('Census tables') }}
         </h3>
         <p class="mt-2 max-w-7xl text-sm text-gray-500">
-            {{ __('Edit existing topic') }}
+            {{ __('Edit an existing census table') }}
         </p>
     </x-slot>
 
@@ -13,10 +13,10 @@
 
         <x-dissemination::message-display />
 
-        <form action="{{route('manage.topic.update', $topic)}}" method="POST">
-            @method('PATCH')
+        <form action="{{route('manage.document.update', $document)}}" method="POST" enctype="multipart/form-data">
             @csrf
-            @include('dissemination::manage.topic.form')
+            @method('PATCH')
+            @include('dissemination::manage.document.form')
         </form>
 
     </div>

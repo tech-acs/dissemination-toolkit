@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                                 <div class="ml-4 flex-shrink-0">
-                                    <a href="{{ route('census-table.download', $censusTable->id) }}"
+                                    <a href="{{ route('document.download', $censusTable->id) }}"
                                        class="inline-flex items-end text-sm font-semibold text-indigo-600 shadow-sm gap-x-1 hover:text-indigo-800 hover:border-b-2 hover:border-b-indigo-800 ">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                              class="-ml-0.5 h-5 w-5 animate-bounce" >

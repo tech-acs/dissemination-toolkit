@@ -10,15 +10,16 @@
     </x-slot>
 
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-
+        @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_INDICATOR)
         <div class="text-right">
             <a href="{{ route('manage.indicator.create') }}"><x-button>{{ __('Create new') }}</x-button></a>
         </div>
+        @endcan
 
         <x-dissemination::message-display />
         <x-dissemination::error-display />
 
-        <x-dissemination-smart-table :$smartTableData />
+        <x-dissemination-smart-table :$smartTableData custom-action-sub-view="dissemination::manage.indicator.custom-action" />
 
     </div>
 </x-app-layout>

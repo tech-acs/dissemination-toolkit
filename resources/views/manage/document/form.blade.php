@@ -1,7 +1,7 @@
 <div class="shadow sm:rounded-md sm:overflow-hidden">
     <div class="px-4 py-5 space-y-6 bg-white sm:p-6">
         <div class="grid grid-cols-2 gap-6">
-            <div x-data="{ fileName: '{{ $censusTable->file_name ?? '' }}'}"
+            <div x-data="{ fileName: '{{ $document->file_name ?? '' }}'}"
                  class="col-span-full" x-cloak>
                 <div class="px-4 py-5 space-y-6 bg-white sm:p-6">
                     <div class="grid grid-cols-2 gap-6">
@@ -43,7 +43,7 @@
                                     <input id="type-{{ $type->id }}" name="dataset_type" value="{{ $type->id }}"
                                            type="radio"
                                            class="w-4 h-4 p-2.5 text-indigo-600 border-gray-300 focus:ring-indigo-600"
-                                            @checked($type->id == ($censusTable->dataset_type->value ?? \Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum::CensusTable->value ) )>
+                                            @checked($type->id == ($document->dataset_type->value ?? \Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum::CensusTable->value ) )>
                                     <label for="type-{{ $type->id }}"
                                            class="block ml-3 text-sm font-medium leading-6 text-gray-900">{{ $type->name }}</label>
                                 </div>
@@ -59,14 +59,14 @@
             <div>
                 <x-label for="title" value="{{ __('Title') }} *"/>
                 <x-dissemination::multi-lang-input id="title" name="title" type="text"
-                                              value="{{old('title', $censusTable->title ?? null)}}"/>
+                                              value="{{old('title', $document->title ?? null)}}"/>
                 <x-input-error for="title" class="mt-2"/>
             </div>
             <div>
                 <x-label for="description" value="{{ __('Description') }}" class="inline"/>
                 <x-dissemination::locale-display/>
                 <x-dissemination::textarea id="description" name="description"
-                                      rows="3">{{old('description', $censusTable->description ?? null)}}</x-dissemination::textarea>
+                                      rows="3">{{old('description', $document->description ?? null)}}</x-dissemination::textarea>
                 <x-input-error for="description" class="mt-2"/>
             </div>
         </div>
@@ -74,18 +74,18 @@
             <div>
                 <x-label for="data_source" value="{{ __('Data source') }} *"/>
                 <x-dissemination::multi-lang-input id="data_source" name="data_source" type="text"
-                                              value="{{old('data_source', $censusTable->data_source ?? null)}}"/>
+                                              value="{{old('data_source', $document->data_source ?? null)}}"/>
                 <x-input-error for="data_source" class="mt-2"/>
             </div>
             <div>
                 <x-label for="producer" value="{{ __('Producer') }} *" />
-                <x-dissemination::multi-lang-input id="producer" name="producer" type="text" value="{{old('producer', $censusTable->producer ?? null)}}"/>
+                <x-dissemination::multi-lang-input id="producer" name="producer" type="text" value="{{old('producer', $document->producer ?? null)}}"/>
                 <x-input-error for="producer" class="mt-2"/>
             </div>
 
             <div>
                 <x-label for="publisher" value="{{ __('Publisher') }} *" />
-                <x-dissemination::multi-lang-input id="publisher" name="publisher" type="text" value="{{old('publisher', $censusTable->publisher ?? null)}}"/>
+                <x-dissemination::multi-lang-input id="publisher" name="publisher" type="text" value="{{old('publisher', $document->publisher ?? null)}}"/>
                 <x-input-error for="publisher" class="mt-2"/>
             </div>
             <div>
@@ -93,7 +93,7 @@
                 <x-input
                         class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                         id="published_date" name="published_date" type="date" max="{{now()}}"
-                        value="{{ old('published_date', $censusTable->published_date ?? '') }}"/>
+                        value="{{ old('published_date', $document->published_date ?? '') }}"/>
                 <x-input-error for="published_date" class="mt-2"/>
             </div>
 
@@ -101,7 +101,7 @@
                 <x-label for="topics" value="{{ __('Topics') }} *" />
                 <select size="5" multiple id="topics" name="topics[]" class="mt-1 p-2 text-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md">
                     @foreach($topics as $id => $topicName)
-                        <option class="p-1 mb-1 rounded" value="{{ $id }}" @selected(in_array($id, old('topics', $censusTable->topics->pluck('id')->all())))>{{ $topicName }}</option>
+                        <option class="p-1 mb-1 rounded" value="{{ $id }}" @selected(in_array($id, old('topics', $document->topics->pluck('id')->all())))>{{ $topicName }}</option>
                     @endforeach
                 </select>
                 <x-input-error for="topics" class="mt-2" />
@@ -109,8 +109,8 @@
 
             <div class="">
                 <x-label for="tags" value="{{ __('Tags') }}"/>
-                @if(isset($censusTable))
-                    <x-dissemination::tags :value="\Uneca\DisseminationToolkit\Models\Tag::tagsToJsArray($censusTable->tags())" class="mt-1"/>
+                @if(isset($document))
+                    <x-dissemination::tags :value="\Uneca\DisseminationToolkit\Models\Tag::tagsToJsArray($document->tags())" class="mt-1"/>
                 @else
                     <x-dissemination::tags class="mt-1"/>
                 @endif
@@ -119,13 +119,13 @@
 
             <div class="col-span-2">
                 <x-label for="comment" value="{{ __('Comment') }}" class="inline"/>
-                <x-dissemination::textarea id="comment" name="comment" rows="2">{{old('comment', $censusTable->comment ?? null)}}</x-dissemination::textarea>
+                <x-dissemination::textarea id="comment" name="comment" rows="2">{{old('comment', $document->comment ?? null)}}</x-dissemination::textarea>
                 <x-input-error for="comment" class="mt-2"/>
             </div>
 
-            <div class="">
+            {{--<div class="">
                 <x-label for="published" value="{{ __('Status') }}"/>
-                <div class="flex items-center mt-3 ml-3" x-data="{enabled: @json($censusTable->published ?? false) }" x-cloak>
+                <div class="flex items-center mt-3 ml-3" x-data="{enabled: @json($document->published ?? false) }" x-cloak>
                     <label for="status">
                         <span class="text-sm text-gray-500">{{ __('Draft') }}</span>
                     </label>
@@ -144,12 +144,12 @@
                         <span class="text-sm text-gray-900">{{ __('Published') }}</span>
                     </label>
                 </div>
-            </div>
+            </div>--}}
 
         </div>
     </div>
     <div class="px-4 py-3 text-right bg-gray-50 sm:px-6">
-        <x-secondary-button class="mr-2"><a href="{{ route('manage.census-table.index') }}">{{ __('Cancel') }}</a>
+        <x-secondary-button class="mr-2"><a href="{{ route('manage.document.index') }}">{{ __('Cancel') }}</a>
         </x-secondary-button>
         <x-button>
             {{ __('Submit') }}

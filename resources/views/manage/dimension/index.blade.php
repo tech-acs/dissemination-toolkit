@@ -10,10 +10,11 @@
     </x-slot>
 
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-
+        @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_DIMENSION)
         <div class="text-right">
             <a href="{{ route('manage.dimension.create') }}"><x-button>{{ __('Create new') }}</x-button></a>
         </div>
+        @endcan
 
         <x-dissemination::message-display />
         <x-dissemination::error-display />

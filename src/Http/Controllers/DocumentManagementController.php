@@ -49,13 +49,13 @@ class DocumentManagementController extends Controller
                 SmartTableColumn::make('updated')
                     ->setBladeTemplate('{{ $row->updated_at->diffForHumans() }}'),
             ])
-            ->showable('census-table.show')
-            ->editable('manage.census-table.edit')
-            ->deletable('manage.census-table.destroy')
+            ->showable('document.show')
+            ->editable('manage.document.edit')
+            ->deletable('manage.document.destroy')
             ->searchable(['title', 'type'])
             ->sortBy('title')
             ->downloadable()
-            ->view('dissemination::manage.census-table.index');
+            ->view('dissemination::manage.document.index');
     }
 
     public function create()
@@ -64,7 +64,7 @@ class DocumentManagementController extends Controller
         $indicators = Indicator::all();
         $types = CensusTableTypeEnum::getTypes();
         $censusTable = (new Document());
-        return view('dissemination::manage.census-table.create', compact('topics', 'indicators', 'types', 'censusTable'));
+        return view('dissemination::manage.document.create', compact('topics', 'indicators', 'types', 'censusTable'));
     }
 
     public function store(CensusTableRequest $request)
@@ -72,64 +72,48 @@ class DocumentManagementController extends Controller
         if (!($request->hasFile('file') && $request->file('file')->isValid())) {
             return redirect()->back()->withErrors(['file' => 'File is required']);
         }
-        $fileInfo = $this->uploadCensusFile($request, 'public', 'census-tables');
+        $fileInfo = $this->uploadCensusFile($request, 'public', 'documents');
 
         $request->merge($fileInfo);
         $request->merge(['user_id' => Auth::id()]);
 
-        $censusTable = Document::create($request->all());
-        $censusTable->topics()->sync($request->get('topics'));
+        $document = Document::create($request->all());
+        $document->topics()->sync($request->get('topics'));
 
         $updatedTags = Tag::prepareForSync($request->get('tags', ''));
-        $censusTable->tags()->sync($updatedTags->pluck('id'));
-        return redirect()->route('manage.census-table.index', $censusTable)->withMessage('Census Table created');
+        $document->tags()->sync($updatedTags->pluck('id'));
+        return redirect()->route('manage.document.index')->withMessage('Document created');
     }
 
-    public function edit(Document $censusTable)
+    public function edit(Document $document)
     {
-        $topics = Topic::all();
+        $topics = Topic::pluck('name', 'id');
         $indicators = Indicator::all();
         $types = CensusTableTypeEnum::getTypes();
-        $censusTable->load(['topics', 'tags']);
-        $selectedTopics = $censusTable->topics->pluck('id')->toArray();
-        return view('dissemination::manage.census-table.edit', compact(
-            'censusTable',
-            'topics',
-            'indicators',
-            'selectedTopics',
-            'types'
-        ));
+        $document->load(['topics', 'tags']);
+        $selectedTopics = $document->topics->pluck('id')->toArray();
+        return view('dissemination::manage.document.edit', compact('document', 'topics', 'indicators', 'selectedTopics', 'types'));
     }
-    public function update(CensusTableRequest $request, Document $censusTable)
+
+    public function update(CensusTableRequest $request, Document $document)
     {
-        $requestUpdate = $request->only(['title',
-            'description',
-            'producer',
-            'publisher',
-            'published_date',
-            'published',
-            'data_source',
-            'comment',
-            'dataset_type']);
+        $requestUpdate = $request->only(['title', 'description', 'producer', 'publisher', 'data_source', 'comment', 'dataset_type']);
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
-            $fileInfo = $this->uploadCensusFile($request, 'public', 'census-tables');
+            $fileInfo = $this->uploadCensusFile($request, 'public', 'documents');
             $requestUpdate = array_merge($requestUpdate, $fileInfo);
         }
-
-        $censusTable->update($requestUpdate);
-
-        $censusTable->topics()->sync($request->get('topics'));
-
+        $document->update($requestUpdate);
+        $document->topics()->sync($request->get('topics'));
         $updatedTags = Tag::prepareForSync($request->get('tags', ''));
-        $censusTable->tags()->sync($updatedTags->pluck('id'));
+        $document->tags()->sync($updatedTags->pluck('id'));
 
-        return redirect()->route('manage.census-table.index', $censusTable)->withMessage('Census table updated');
+        return redirect()->route('manage.document.index')->withMessage('Document updated');
     }
 
-    public function destroy(Document $censusTable)
+    public function destroy(Document $document)
     {
-        $censusTable->delete();
-        Storage::disk('public')->move($censusTable->file_path, 'archive/' . $censusTable->file_name);
-        return redirect()->route('manage.census-table.index');
+        $document->delete();
+        Storage::disk('public')->move($document->file_path, 'archive/' . $document->file_name);
+        return redirect()->route('manage.document.index')->withMessage('Document deleted');
     }
 }

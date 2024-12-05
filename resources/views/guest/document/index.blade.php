@@ -160,7 +160,7 @@
                                                     <div class="flex justify-between">
                                                         <div class="w-5/6">
                                                             <h4 class="text-lg font-bold text-gray-900 line-clamp-1">
-                                                                <a href="{{ route('census-table.show', $record->id) }}"
+                                                                <a href="{{ route('document.show', $record->id) }}"
                                                                    class="inline-flex justify-center gap-x-1">
                                                                     <span>{!! \Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum::getTypeIcon($record->dataset_type) !!}</span>
                                                                     {{$record->title}}
@@ -193,11 +193,11 @@
 
                                                     </div>
                                                     <div class="flex text-sm font-medium sm:mt-4">
-                                                        <a href="{{ route('census-table.show', $record->id) }}"
+                                                        <a href="{{ route('document.show', $record->id) }}"
                                                            class="inline-flex items-center text-sm font-semibold text-indigo-600 transition duration-150 ease-in-out shadow-sm gap-x-1 hover:text-indigo-800 hover:border-b-2 hover:border-b-indigo-800">View
                                                             detail</a>
                                                         <div class="pl-4 ml-4 border-l border-gray-200 sm:ml-6 sm:pl-6">
-                                                            <a href="{{ route('census-table.download', $record->id) }}"
+                                                            <a href="{{ route('document.download', $record->id) }}"
                                                                class="inline-flex items-center text-sm font-semibold text-indigo-600 align-middle shadow-sm gap-x-1 hover:text-indigo-800 hover:border-b-2 hover:border-b-indigo-800">
                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                      viewBox="0 0 24 24" fill="currentColor"

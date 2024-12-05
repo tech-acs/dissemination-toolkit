@@ -70,7 +70,7 @@ class DocumentController extends Controller
         $tags = Tag::whereHas('documents')
             ->withCount('documents')->orderByDesc('documents_count')->orderBy('name')->get();
 
-        return view('dissemination::guest.census-table.index', compact('records', 'sortOptions', 'censusYears', 'tags', 'types'));
+        return view('dissemination::guest.document.index', compact('records', 'sortOptions', 'censusYears', 'tags', 'types'));
     }
     public function show($id)
     {
@@ -80,7 +80,7 @@ class DocumentController extends Controller
             ->increment('view_count', 1, ['updated_at' => $censusTable->updated_at]);
 
         $censusTable->updated_by = $censusTable->user->name;
-        return view('dissemination::guest.census-table.show', compact('censusTable'));
+        return view('dissemination::guest.document.show', compact('censusTable'));
     }
     public function download(Document $censusTable)
     {
