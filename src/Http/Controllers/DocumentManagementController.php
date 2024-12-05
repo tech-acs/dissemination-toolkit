@@ -63,8 +63,8 @@ class DocumentManagementController extends Controller
         $topics = Topic::pluck('name', 'id');
         $indicators = Indicator::all();
         $types = CensusTableTypeEnum::getTypes();
-        $censusTable = (new Document());
-        return view('dissemination::manage.document.create', compact('topics', 'indicators', 'types', 'censusTable'));
+        $document = (new Document());
+        return view('dissemination::manage.document.create', compact('topics', 'indicators', 'types', 'document'));
     }
 
     public function store(CensusTableRequest $request)
