@@ -60,7 +60,8 @@ trait PackageTasksTrait
         "react-chart-editor" => "^0.46.1",
         "react-dom" => "^16.14.0",
         "react-modal" => "^3.16.1",
-        "tailwindcss" => "^3.4.0"
+        "tailwindcss" => "^3.4.0",
+        "d3-format" => "^3.1.0",
     ];
 
     public array $phpDependencies = [

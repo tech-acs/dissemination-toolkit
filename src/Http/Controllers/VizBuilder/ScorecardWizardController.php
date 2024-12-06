@@ -77,7 +77,8 @@ class ScorecardWizardController extends Controller
         $title = $request->get('title');
         $description = $request->get('description');
         //$isFilterable = $request->boolean('filterable');
-        $isPublished = $request->boolean('published');
+        $isReviewable = $request->boolean('is_reviewable');
+        //$isPublished = $request->boolean('published');
         $resource = session()->get('viz-wizard-resource');
 
         $vizInfo = [
@@ -87,7 +88,8 @@ class ScorecardWizardController extends Controller
             'data' => $resource->data,
             'layout' => $resource->layout,
             'is_filterable' => false,
-            'published' => $isPublished,
+            'is_reviewable' => $isReviewable,
+            //'published' => $isPublished,
             'thumbnail' => $resource->thumbnail,
         ];
         if ($resource?->vizId) {

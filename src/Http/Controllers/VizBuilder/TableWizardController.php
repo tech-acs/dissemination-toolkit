@@ -86,7 +86,7 @@ class TableWizardController extends Controller
         $description = $request->get('description');
         $isFilterable = $request->boolean('filterable');
         $isReviewable = $request->boolean('is_reviewable');
-        $isPublished = $request->boolean('published');
+        //$isPublished = $request->boolean('published');
         $resource = session()->get('viz-wizard-resource');
         $vizInfo = [
             'title' => $title,
@@ -94,7 +94,7 @@ class TableWizardController extends Controller
             'description' => $description,
             'is_filterable' => $isFilterable,
             'is_reviewable' => $isReviewable,
-            'published' => $isPublished,
+            //'published' => $isPublished,
             'options' => $resource->options,
             //'thumbnail' => $resource?->thumbnail,
         ];
