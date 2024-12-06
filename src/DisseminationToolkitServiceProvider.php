@@ -48,8 +48,9 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
                 'create_dataset_indicator_table',
                 'create_datasets_table',
                 'create_dimensions_table',
-                'create_housing_facts_table',
-                'create_population_facts_table',
+                /*'create_housing_facts_table',
+                'create_population_facts_table',*/
+                'create_fact_tables',
                 'create_indicators_table',
                 'create_organization_table',
                 'create_reviews_table',

@@ -9,9 +9,10 @@
         </p>
 </x-slot>
 
-<div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8" x-data="confirmedDeletion">
 
 <div class="text-right">
+    <a href="{{route('manage.dimension.values.delete-all', $dimension)}}" x-on:click.prevent="confirmThenDelete($el)" class="mr-4"><x-danger-button>{{ __('Delete All') }}</x-danger-button></a>
     <a href="{{ route('manage.dimension.import-values.create', $dimension) }}" class="mr-4"><x-button>{{ __('Import') }}</x-button></a>
     <a href="{{ route('manage.dimension.values.create', $dimension) }}"><x-button>{{ __('Create new') }}</x-button></a>
 </div>
@@ -53,7 +54,7 @@
 <div class="mt-2 flex flex-col">
 <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg" x-data="confirmedDeletion">
+        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
             <x-dissemination::delete-confirmation />
 

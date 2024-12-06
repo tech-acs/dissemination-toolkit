@@ -47,11 +47,16 @@ class DynamicDimensionModel
         return false;
     }
 
-    public function delete()
+    public function delete(): bool
     {
         if ($this->id) {
             return $this->builder->delete($this->id);
         }
         return false;
+    }
+
+    public function truncate()
+    {
+        return $this->builder->truncate();
     }
 }

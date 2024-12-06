@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 
 class DimensionController extends Controller
 {
+    private function makeTableName(string $dimensionName): string
+{
+    return str($dimensionName)->lower()->snake()->toString();
+}
+
     public function index(Request $request)
     {
         return (new SmartTableData(Dimension::query(), $request))
@@ -24,8 +29,8 @@ class DimensionController extends Controller
                                         @if(! $row->is_complete)
                                             <a title="Value set is incomplete (must contain code _T)"><x-dissemination::icon.exclamation-circle class="-mt-0.5" /></a>
                                         @endif'),
-                SmartTableColumn::make('for')->setLabel('Applies to')
-                    ->setBladeTemplate('{{ implode(" | ", $row->for) }}'),
+                /*SmartTableColumn::make('for')->setLabel('Applies to')
+                    ->setBladeTemplate('{{ implode(" | ", $row->for) }}'),*/
             ])
             ->editable('manage.dimension.edit')
             ->searchable(['name', 'table_name'])
@@ -39,11 +44,6 @@ class DimensionController extends Controller
         $factTables = config('dissemination.fact_tables', []);
         $dimension = new Dimension();
         return view('dissemination::manage.dimension.create', compact('factTables', 'dimension'));
-    }
-
-    private function makeTableName(string $dimensionName): string
-    {
-        return str($dimensionName)->lower()->snake()->toString();
     }
 
     public function store(DimensionRequest $request)

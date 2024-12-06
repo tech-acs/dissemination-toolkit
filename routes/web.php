@@ -14,6 +14,7 @@ use Uneca\DisseminationToolkit\Http\Controllers\DatasetTemplateController;
 use Uneca\DisseminationToolkit\Http\Controllers\DatasetTruncationController;
 use Uneca\DisseminationToolkit\Http\Controllers\DimensionController;
 use Uneca\DisseminationToolkit\Http\Controllers\DimensionTableCreationController;
+use Uneca\DisseminationToolkit\Http\Controllers\DimensionTableTruncationController;
 use Uneca\DisseminationToolkit\Http\Controllers\DimensionValueController;
 use Uneca\DisseminationToolkit\Http\Controllers\DimensionValueImportController;
 use Uneca\DisseminationToolkit\Http\Controllers\DocumentManagementController;
@@ -101,22 +102,19 @@ Route::middleware(['web'])->group(function () {
 
         Route::middleware('permission:manage-values:dimension')->group(function () {
             Route::resource('dimension.values', DimensionValueController::class);
+            Route::delete('dimension/{dimension}/value/truncate', DimensionTableTruncationController::class)->name('dimension.values.delete-all');
             Route::resource('dimension.import-values', DimensionValueImportController::class)->only(['create', 'store']);
         });
 
         //Route::resource('dataset', DatasetManagementController::class)->only(['index', 'create', 'edit', 'destroy']);
         Route::get('dataset', [DatasetManagementController::class, 'index'])->name('dataset.index');
-        Route::get('dataset/create', [DatasetManagementController::class, 'create'])->name('dataset.create')
-            ->can(PermissionsEnum::CREATE_DATASET);
-        Route::get('dataset/{dataset}/edit', [DatasetManagementController::class, 'edit'])->name('dataset.edit')
-            ->can(PermissionsEnum::EDIT_DATASET);
-        Route::delete('dataset/{dataset}', [DatasetManagementController::class, 'destroy'])->name('dataset.destroy')
-            ->can(PermissionsEnum::DELETE_DATASET);
-        Route::get('dataset/{dataset}/import', [DatasetImportController::class, 'create'])->name('dataset.import')
-            ->can(PermissionsEnum::IMPORT_DATASET);
-        //Route::get('dataset/{dataset}/remove', DatasetRemovalController::class)->name('dataset.remove');
-        Route::get('dataset/{dataset}/truncate', DatasetTruncationController::class)->name('dataset.truncate')
-            ->can(PermissionsEnum::IMPORT_DATASET);
+        Route::get('dataset/create', [DatasetManagementController::class, 'create'])->name('dataset.create')->can(PermissionsEnum::CREATE_DATASET);
+        Route::post('dataset', [DatasetManagementController::class, 'store'])->name('dataset.store')->can(PermissionsEnum::CREATE_DATASET);
+        Route::get('dataset/{dataset}/edit', [DatasetManagementController::class, 'edit'])->name('dataset.edit')->can(PermissionsEnum::EDIT_DATASET);
+        Route::patch('dataset/{dataset}', [DatasetManagementController::class, 'update'])->name('dataset.update')->can(PermissionsEnum::EDIT_DATASET);
+        Route::delete('dataset/{dataset}', [DatasetManagementController::class, 'destroy'])->name('dataset.destroy')->can(PermissionsEnum::DELETE_DATASET);
+        Route::get('dataset/{dataset}/import', [DatasetImportController::class, 'create'])->name('dataset.import')->can(PermissionsEnum::IMPORT_DATASET);
+        Route::get('dataset/{dataset}/truncate', DatasetTruncationController::class)->name('dataset.truncate')->can(PermissionsEnum::IMPORT_DATASET);
         Route::get('dataset/{dataset}/download-template', DatasetTemplateController::class)->name('dataset.download-template');
         Route::patch('dataset/{dataset}/change-publish-status', DatasetPublishStatusController::class)->name('dataset.change-publish-status')
             ->can(PermissionsEnum::PUBLISH_AND_UNPUBLISH_DATASET);

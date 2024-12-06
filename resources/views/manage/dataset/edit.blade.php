@@ -13,13 +13,13 @@
 
         <x-dissemination::message-display />
 
-        {{--<form action="{{route('manage.dataset.update', $dataset)}}" method="POST">
+        <form action="{{route('manage.dataset.update', $dataset)}}" method="POST">
             @method('PATCH')
             @csrf
             @include('dissemination::manage.dataset.form')
-        </form>--}}
+        </form>
 
-        <livewire:dataset.update :dataset="$dataset" />
+        {{--<livewire:dataset.update :dataset="$dataset" />--}}
 
     </div>
 </x-app-layout>

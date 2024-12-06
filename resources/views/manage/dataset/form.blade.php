@@ -37,25 +37,30 @@
                         </select>
                         <x-input-error for="max_area_level" class="mt-2" />
                     </div>
+
+                    @if (count($factTables) > 1)
+                        <div>
+                            <x-label for="fact_table" value="{{ __('Fact table') }} *" />
+                            <select id="fact_table" name="fact_table" class="mt-1 pr-10 space-y-1 text-sm p-1 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
+                                <option value="">{{ __('Select fact table') }}</option>
+                                @foreach($factTables ?? [] as $factTable => $name)
+                                    <option class="p-1 rounded" value="{{ $factTable }}" @selected($factTable == old('fact_table', $dataset->fact_table ?? null))>
+                                        {{ $name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error for="fact_table" class="mt-2" />
+                        </div>
+                    @else
+                        <input type="hidden" name="fact_table" value="{{ array_key_first($factTables) }}" class="invisible">
+                    @endif
                 </div>
 
                 <div class="space-y-8">
-                    <div>
-                        <x-label for="fact_table" value="{{ __('Fact table') }} *" />
-                        <select id="fact_table" name="fact_table" class="mt-1 pr-10 space-y-1 text-sm p-1 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
-                            <option value="">{{ __('Select fact table') }}</option>
-                            @foreach($factTables ?? [] as $factTable => $name)
-                                <option class="p-1 rounded" value="{{ $factTable }}" @selected($factTable == old('fact_table', $dataset->fact_table ?? null))>
-                                    {{ $name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <x-input-error for="fact_table" class="mt-2" />
-                    </div>
 
                     <div>
                         <x-label for="dimensions" value="{{ __('Dimensions') }} *" />
-                        <select size="5" id="dimensions" name="dimensions[]" multiple class="mt-1 p-2 text-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md">
+                        <select size="8" id="dimensions" name="dimensions[]" multiple class="mt-1 p-2 text-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md">
                             @foreach($dimensions ?? [] as $dimension)
                                 <option class="p-1 mb-1 rounded" value="{{ $dimension?->id }}" @selected( in_array($dimension->id, old('dimensions', $dataset->dimensions->pluck('id')->all() ?? null)) )>
                                     {{ $dimension->name }}
@@ -64,6 +69,8 @@
                         </select>
                         <x-input-error for="dimensions" class="mt-2" />
                     </div>
+
+
                 </div>
 
             </div>

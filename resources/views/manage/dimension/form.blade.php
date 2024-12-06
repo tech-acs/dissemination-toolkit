@@ -36,22 +36,27 @@
                 </select>
                 <x-input-error for="sorting_type" class="mt-2"/>
             </div>
-            <div>
-                <x-label for="for" value="{{ __('Applies to') }} *"/>
-                <div class="p-2 space-y-2">
-                    @foreach($factTables as $tableName => $label)
-                        <div class="relative flex items-start">
-                            <div class="flex h-6 items-center">
-                                <input id="{{ $tableName }}" name="for[]" value="{{ $tableName }}" @checked(in_array($tableName, old('for', $dimension->for ?? []))) type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+
+            @if (count($factTables) > 1)
+                <div>
+                    <x-label for="for" value="{{ __('Applies to') }} *"/>
+                    <div class="p-2 space-y-2">
+                        @foreach($factTables as $tableName => $label)
+                            <div class="relative flex items-start">
+                                <div class="flex h-6 items-center">
+                                    <input id="{{ $tableName }}" name="for[]" value="{{ $tableName }}" @checked(in_array($tableName, old('for', $dimension->for ?? []))) type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                                </div>
+                                <div class="ml-3 text-sm leading-6">
+                                    <label for="{{ $tableName }}" class="text-gray-900">{{ $label }}</label>
+                                </div>
                             </div>
-                            <div class="ml-3 text-sm leading-6">
-                                <label for="{{ $tableName }}" class="text-gray-900">{{ $label }}</label>
-                            </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
+                    <x-input-error for="for" class="mt-2"/>
                 </div>
-                <x-input-error for="for" class="mt-2"/>
-            </div>
+            @else
+                <input id="{{ array_key_first($factTables) }}" name="for[]" value="{{ array_key_first($factTables) }}" @checked(true) type="checkbox" class="hidden">
+            @endif
         </div>
     </div>
     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
