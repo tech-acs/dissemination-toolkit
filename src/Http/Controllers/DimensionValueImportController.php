@@ -45,7 +45,7 @@ class DimensionValueImportController extends Controller
                 $totalRows++;
                 try {
                     (new DynamicDimensionModel($dimension->table_name))
-                        ->create(['name' => $row['label'], 'code' => $row['code']]);
+                        ->create(['name' => $row['label'], 'code' => $row['code'], 'rank' => $row['rank'] ?? null]) ;
                     $inserted++;
                 } catch (\Exception $e) {
                     $errors++;

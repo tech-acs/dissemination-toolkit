@@ -35,6 +35,10 @@ class CreateDimensionAction
             ],
             'name' => [
                 'type' => 'string',
+            ],
+            'rank' => [
+                'type' => 'integer',
+                'parameters' => ['nullable' => true],
             ]
         ];
         $tableName = $dimension->table_name;

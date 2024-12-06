@@ -37,7 +37,7 @@ class IndicatorController extends Controller
 
     public function store(IndicatorRequest $request)
     {
-        $indicator = Indicator::create($request->only(['name', 'description']));
+        $indicator = Indicator::create($request->only(['name', 'description', 'code']));
         $indicator->topics()->sync($request->get('topics'));
         return redirect()->route('manage.indicator.index')->withMessage('Record created');
     }
@@ -50,10 +50,11 @@ class IndicatorController extends Controller
 
     public function update(Indicator $indicator, IndicatorRequest $request)
     {
-        $indicator->update($request->only(['name', 'description']));
+        $indicator->update($request->only(['name', 'description', 'code']));
         $indicator->topics()->sync($request->get('topics'));
         return redirect()->route('manage.indicator.index')->withMessage('Record updated');
     }
+
     public function destroy(Indicator $indicator)
     {
         //Check if the indicator has any related datasets

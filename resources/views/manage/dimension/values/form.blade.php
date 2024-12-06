@@ -7,9 +7,14 @@
                 <x-input-error for="name" class="mt-2" />
             </div>
             <div>
-                <x-label for="table_name" value="{{ __('Code') }} *" />
+                <x-label for="code" value="{{ __('Code') }} *" />
                 <x-input id="code" name="code" type="text" value="{{ old('code', $entry->code ?? null) }}" />
                 <x-input-error for="code" class="mt-2" />
+            </div>
+            <div>
+                <x-label for="rank" value="{{ __('Rank') }}" />
+                <x-input id="rank" name="rank" type="number" value="{{ old('rank', $entry->rank ?? null) }}" />
+                <x-input-error for="rank" class="mt-2" />
             </div>
         </div>
     </div>

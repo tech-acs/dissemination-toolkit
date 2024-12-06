@@ -11,6 +11,11 @@
                 <x-dissemination::textarea name="description" rows="3">{{ old('description', $dataset->description ?? null) }}</x-dissemination::textarea>
                 <x-input-error for="description" class="mt-2" />
             </div>
+            <div>
+                <x-label for="code" value="{{ __('Code') }} *" />
+                <x-input id="code" name="code" class="w-50 mt-1" value="{{ old('code', $dataset->code ?? null) }}" />
+                <x-input-error for="code" class="mt-2" />
+            </div>
             <div class="grid grid-cols-2">
                 <div class="space-y-8">
                     <div>
@@ -54,11 +59,28 @@
                     @else
                         <input type="hidden" name="fact_table" value="{{ array_key_first($factTables) }}" class="invisible">
                     @endif
+
+                    <div>
+                        <x-label for="data_source" value="{{ __('Data source') }}" />
+                        <x-input id="data_source" name="data_source" class="w-3/4 mt-1" value="{{ old('data_source', $dataset->data_source ?? null) }}" />
+                        <x-input-error for="data_source" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-label for="data_date" value="{{ __('Data date') }}" />
+                        <x-input id="data_date" name="data_date" type="date" class="w-3/4 mt-1" value="{{ old('data_date', $dataset->data_date ?? null) }}" />
+                        <x-input-error for="data_date" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-label for="language" value="{{ __('Language') }}" />
+                        <x-input id="language" name="language" class="w-3/4 mt-1" value="{{ old('language', $dataset->language ?? null) }}" />
+                        <x-input-error for="language" class="mt-2" />
+                    </div>
                 </div>
 
                 <div class="space-y-8">
-
-                    <div>
+                    <div class="mt-2">
                         <x-label for="dimensions" value="{{ __('Dimensions') }} *" />
                         <select size="8" id="dimensions" name="dimensions[]" multiple class="mt-1 p-2 text-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md">
                             @foreach($dimensions ?? [] as $dimension)
@@ -70,6 +92,17 @@
                         <x-input-error for="dimensions" class="mt-2" />
                     </div>
 
+                    <div>
+                        <x-label for="contributor" value="{{ __('Contributor') }}" />
+                        <x-input id="contributor" name="contributor" class="w-3/4 mt-1" value="{{ old('contributor', $dataset->contributor ?? null) }}" />
+                        <x-input-error for="contributor" class="mt-2" />
+                    </div>
+
+                    <div>
+                        <x-label for="format" value="{{ __('Format') }}" />
+                        <x-input id="format" name="format" class="w-3/4 mt-1" value="{{ old('format', $dataset->format ?? null) }}" />
+                        <x-input-error for="format" class="mt-2" />
+                    </div>
 
                 </div>
 

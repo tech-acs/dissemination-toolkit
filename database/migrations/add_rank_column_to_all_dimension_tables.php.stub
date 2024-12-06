@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        $dimensions = Dimension::get('table_name');
+        foreach ($dimensions as $dimension) {
+            if (Schema::hasTable($dimension->table_name) && !Schema::hasColumn($dimension->table_name, 'rank')) {
+                Schema::table($dimension->table_name, function (Blueprint $table) {
+                    $table->integer('rank')->nullable();
+                });
+            }
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        $dimensions = Dimension::get('table_name');
+        foreach ($dimensions as $dimension) {
+            if (Schema::hasTable($dimension->table_name) && Schema::hasColumn($dimension->table_name, 'rank')) {
+                Schema::table($dimension->table_name, function (Blueprint $table) {
+                    $table->dropColumn('rank');
+                });
+            }
+        }
+    }
+};

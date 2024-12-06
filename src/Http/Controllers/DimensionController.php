@@ -49,7 +49,7 @@ class DimensionController extends Controller
     public function store(DimensionRequest $request)
     {
         $request->merge(['table_name' => $this->makeTableName($request->get('name'))]);
-        $dimension = Dimension::create($request->only(['name', 'description', 'table_name', 'sorting_type', 'for']));
+        $dimension = Dimension::create($request->only(['name', 'description', 'code', 'table_name', 'sorting_type', 'for']));
         if ($dimension) {
             $successful = (new CreateDimensionAction)->handle($dimension);
             if (! $successful) {
@@ -68,7 +68,7 @@ class DimensionController extends Controller
 
     public function update(Dimension $dimension, DimensionRequest $request)
     {
-        $dimension->update($request->only(['name', 'description', 'sorting_type', 'for']));
+        $dimension->update($request->only(['name', 'description', 'code', 'sorting_type', 'for']));
         return redirect()->route('manage.dimension.index')->withMessage('Dimension updated');
     }
 

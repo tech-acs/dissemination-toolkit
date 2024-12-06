@@ -26,7 +26,7 @@ class DimensionValueController extends Controller
     public function store(Request $request, Dimension $dimension)
     {
         $result = (new DynamicDimensionModel($dimension->table_name))
-            ->create(['name' => $request->get('name'), 'code' => $request->get('code')]);
+            ->create(['name' => $request->get('name'), 'code' => $request->get('code'), 'rank' => $request->get('rank')]);
         return redirect()->route('manage.dimension.values.index', $dimension)->withMessage('Record created');
     }
 
@@ -39,7 +39,7 @@ class DimensionValueController extends Controller
     public function update(Request $request, Dimension $dimension, $entryId)
     {
         $result = (new DynamicDimensionModel($dimension->table_name, $entryId))
-            ->update(['name' => $request->get('name'), 'code' => $request->get('code')]);
+            ->update(['name' => $request->get('name'), 'code' => $request->get('code'), 'rank' => $request->get('rank')]);
         return redirect()->route('manage.dimension.values.index', $dimension)->withMessage('Record updated');
     }
 

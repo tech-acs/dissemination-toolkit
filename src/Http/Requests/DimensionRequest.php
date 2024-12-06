@@ -3,6 +3,7 @@
 namespace Uneca\DisseminationToolkit\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class DimensionRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class DimensionRequest extends FormRequest
     {
         return [
             'name' => 'required|regex:/^[A-Za-z ]+$/',
-            //'table_name' => 'required|alpha_dash:ascii|lowercase',
+            'code' => ['required', 'min:1', Rule::unique('dimensions')->ignore($this->dimension),],
             'for' => 'required|min:1'
         ];
     }

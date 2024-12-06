@@ -25,7 +25,7 @@ class TopicRequest extends FormRequest
         return [
             'name' => 'required|min:2',
             'description' => 'nullable',
-            'code' => ['required', 'min:2', Rule::unique('topics')->ignore($this->topic),],
+            'code' => ['required', 'min:1', Rule::unique('topics')->ignore($this->topic),],
             'rank' => 'nullable',
         ];
     }

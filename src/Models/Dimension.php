@@ -26,7 +26,7 @@ class Dimension extends Model
     public function values()
     {
         if ($this->table_exists) {
-            return DB::table($this->table_name)->get();
+            return DB::table($this->table_name)->orderBy('rank')->get();
         }
         return false;
     }
