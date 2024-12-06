@@ -17,3 +17,6 @@ window.DynamicText = DynamicText;
 
 import EasyMDE from "easymde";
 window.EasyMDE = EasyMDE;
+
+import LeafletMap from "./LeafletMap.js";
+window.LeafletMap = LeafletMap;

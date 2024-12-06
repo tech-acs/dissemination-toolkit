@@ -1,0 +1,167 @@
+@import "leaflet/dist/leaflet.css";
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+/* Add CSS styling for the side panel */
+.side-panel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.legend-scale {
+    display: flex;
+    width: auto;
+    margin-top: 5px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+}
+.legend-color-gradient{
+    width: 20px;
+}
+.legend-labels-gradient{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.h .legend-labels-gradient{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5px ;
+    min-width: 100px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.legend-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.legend-labels span {
+    width: 20px;
+    text-align: center;
+}
+
+.v .legend-color-gradient{
+    width: 20px;
+    height: 100%;
+}
+.h .legend-color-gradient{
+    height: 20px;
+    width: 100%;
+}
+
+.h .legend-labels span {
+    height: 20px;
+    text-align: center;
+    padding: 5px;
+}
+
+.legend-scale.h{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.legend-scale.v{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 5px;
+}
+
+.leaflet-range-control {
+    background-color: #fff;
+}
+
+.leaflet-range-control.vertical {
+    width: 26px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    text-align: center;
+}
+
+.leaflet-range-control.horizontal {
+    height: 26px;
+    padding-right: 5px;
+}
+
+.leaflet-range-control .leaflet-range-icon {
+    display: inline-block;
+    float: left;
+    width: 26px;
+    height: 26px;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+DQogICAgPHBhdGggZD0iTTE1IDE3djJoMnYtMmgydi0yaC0ydi0yaC0ydjJoLTJ2Mmgyem01LTE1SDRjLTEuMSAwLTIgLjktMiAydjE2YzAgMS4xLjkgMiAyIDJoMTZjMS4xIDAgMi0uOSAyLTJWNGMwLTEuMS0uOS0yLTItMnpNNSA1aDZ2Mkg1VjV6bTE1IDE1SDRMMjAgNHYxNnoiLz4NCjwvc3ZnPg==');
+}
+
+.leaflet-range-control input[type=range] {
+    display: block;
+    cursor: pointer;
+    width: 100%;
+    margin: 0px;
+}
+
+.leaflet-range-control input[type=range][orient=horizontal] {
+    margin-top: 5px;
+    width: 150px;
+}
+
+.leaflet-range-control input[type=range][orient=vertical] {
+    height: 150px;
+    writing-mode: bt-lr;
+
+    /*
+     * -webkit-appearance is non-standard and may break in the future:
+     * https://developer.mozilla.org/en-US/docs/Web/CSS/-moz-appearance
+     * However, for now it's the only way to get a vertical range input on Chrome.
+     */
+    -webkit-appearance: slider-vertical;
+}
+
+/* Hack to target IE 10 & 11 */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .leaflet-range-control.vertical {
+        padding-bottom: 15px;
+    }
+
+    .leaflet-range-control input[type=range][orient=vertical] {
+        writing-mode: bt-lr;
+        width: 45px;
+        margin-left: -11px;
+    }
+}

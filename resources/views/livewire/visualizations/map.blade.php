@@ -1,8 +1,12 @@
+@push('scripts')
+    @vite(['resources/css/map.css'])
+@endpush
 <div class="relative z-0 px-4 py-5 sm:px-6">
     <div
         id="{{ $htmlId }}"
-        class="chart"
-        x-init="new PlotlyChart('{{ $htmlId }}')"
+        class="map"
+        style="height: calc(100vh - 360px);"
+        x-init="new LeafletMap('{{ $htmlId }}')"
         data-data='@json($data)'
         data-layout='@json($layout)'
         data-config='@json($config)'

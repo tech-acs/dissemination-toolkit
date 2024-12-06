@@ -1,308 +1,467 @@
 import L from 'leaflet';
-import isUndefined from 'lodash/isUndefined';
-import isNull from 'lodash/isNull';
-import isEmpty from 'lodash/isEmpty';
-import keyBy from 'lodash/keyBy';
 import { DoublyLinkedList } from './DataStructures';
+import {colorbrewer} from "./ColorBrewer.js";
+import {format as d3format} from "d3-format";
+import {max, min} from "lodash/math.js";
+import _ from 'lodash';
+const baseMapOptions =      [
+    {
+        name: "Blank Background",
+        url: "",
+        options: {
+            "center": [0, 0],
+            "minZoom": 5,
+            "maxZoom": 20
+        },
+    },
 
+    {
+        name:"Google Hybrid",
+        url:"http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}",
+        options:{
+            minZoom: 5,
+            maxZoom: 20,
+            subdomains: ["mt0","mt1","mt2","mt3"]
+        },
+    },
+    {
+        name:"Open Topo Map",
+        url:"https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+        options:{
+            minZoom: 5,
+            maxZoom: 17
+        },
+    },
+    {
+        name: "CartoDB",
+        url: "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png",
+        options:
+            {
+                minZoom: 4,
+                maxZoom: 19,
+            }
+    },{
+        name: "Open Street Map",
+        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        options:
+            {
+                minZoom: 4,
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }
+    }
+]
+const defaultStyle = {
+    fillColor: '#ffffff',
+    weight: 1,
+    opacity: 1,
+    color: 'black',
+    fillOpacity: 0.7
+};
 export default class LeafletMap {
+    id;
+    rootElement;
+    vizId;
     map;
-    mapOptions;
+    mapOptions ={
+        attributionControl: false,
+        renderer: L.canvas(),
+    };
     styles;
-    selectedStyle;
-    geojsonLayerGroup;
     options;
     indicators = {};
     locale;
     levels = [];
     nav;
-    levelDisplayControl;
-    infoBox;
+    layout ={}
+    config = [];
+    filterable = false;
+    geoJsons = [];
+    basemapLayers = {};
 
-    constructor(mapContainer, options) {
-        this.options = options;
-        this.collectDataPassedViaDataAttributes(mapContainer);
-        this.initializeMap(mapContainer, options.basemaps);
-        this.addControls();
-        this.initializeGeojsonLayer(this.levels);
-        this.registerDomEventListeners();
-        this.registerLivewireEventListeners();
-    }
+    constructor(mapContainerId) {
+        this.id = mapContainerId;
+        this.rootElement = document.getElementById(mapContainerId);
 
-    extractDataAttributeSafely(el, attribute) {
-        try {
-            return JSON.parse(el.dataset[attribute]);
-        } catch (e) {
-            console.log(`Please set all the required data-* attributes on the element (${attribute} missing)`);
+        // Set locale
+        // this.locale = this.mapOptions?.locale || 'en';
+
+        // Initialize the map
+        //basemaps is in data-layout attribute inside map.style
+
+        this.vizId = this.rootElement.getAttribute('viz-id')
+        this.rootElement.innerHTML = ''
+        if(this.vizId){
+            this.fetchData(this.vizId)
+                .then(() => {
+                    this.initializeMap(this.rootElement,this.layout.map.style);
+                    this.addControls();
+                    this.initializeGeojsonLayer();
+                    this.updateMapDataAndLayout(this.data,this.layout);
+                    this.registerLivewireEventListeners();
+                })
+        } else {
+            this.data = JSON.parse(this.rootElement.dataset['data'])
+            this.geojson = L.geoJSON(this.data[0].geojson);
+            this.layout = JSON.parse(this.rootElement.dataset['layout'])
+            this.config = JSON.parse(this.rootElement.dataset['config'])
+            this.initializeMap(this.rootElement,this.layout.basemaps);
+            this.initializeGeojsonLayer();
+            this.addControls();
+            this.updateMapDataAndLayout(this.data,this.layout);
+            this.registerLivewireEventListeners();
         }
-        return undefined;
     }
 
-    collectDataPassedViaDataAttributes(el) {
-        this.mapOptions = this.extractDataAttributeSafely(el, 'mapOptions');
-        this.indicators = this.extractDataAttributeSafely(el, 'indicators');
-        this.levels = this.extractDataAttributeSafely(el,'levels');
-        this.styles = this.extractDataAttributeSafely(el, 'styles');
+    async fetchData(vizId, filterPath = '') {
+        const response = await axios.get(`${ajaxBaseURL}/api/visualization/${vizId}?path=${filterPath}`);
+        console.log('Fetched chart via axios:', response.data);
+        this.data = response.data.data;
+        this.geojson = L.geoJSON(this.data[0].geojson);
+        this.layout = response.data.layout;
+        this.config = response.data.config;
+        this.filterable = response.data.filterable;
     }
 
-    initializeMap(mapContainer, basemaps) {
-        this.locale = this.mapOptions.locale;
+    initializeMap(mapContainer, baseMap) {
         this.map = L.map(mapContainer, this.mapOptions);
-        let basemapLayers = {};
-        let basemapsCount = basemaps.length;
-        basemaps.forEach( (basemap, index) => {
-            let basemapLayer = new L.tileLayer(basemap.url, basemap.options);
+
+        this.map.setView(
+            this.geojson.getBounds().getCenter(), 6    );
+        this.addBaseMapsToMap();
+    }
+    addBaseMapsToMap(){
+        let basemapsCount = baseMapOptions.length;
+        baseMapOptions.forEach((basemap, index) => {
+            let basemapLayer = new L.TileLayer(basemap.url, basemap.options);
             if (basemapsCount === index + 1) {
                 this.map.addLayer(basemapLayer);
             }
-            basemapLayers[basemap.name] = basemapLayer;
+            this.basemapLayers[basemap.name] = basemapLayer;
         });
-        L.control.layers(basemapLayers).addTo(this.map);
+        L.control.layers(this.basemapLayers).addTo(this.map);
         this.nav = new DoublyLinkedList(this.levels);
     }
-
-    switchLayers() {
-        const levelLayers = this.geojsonLayerGroup.getLayers();
-        levelLayers[this.nav.position].options.show();
-        if (this.nav.fitTo !== null) {
-            this.map.fitBounds(this.nav.fitTo);
-        }
-        if (this.nav.prevPos !== this.nav.position) {
-            levelLayers[this.nav.prevPos].options.hide();
-        }
-        this.levelDisplayControl.update(this.nav.current());
+    initializeGeojsonLayer(){
+        this.geojsonLayerGroup = L.layerGroup().addTo(this.map);
+        // this.geojsonLayerGroup.addLayer(this.geojson);
     }
+    updateMapDataAndLayout(data, layout){
+        data.forEach((trace) => {
+            let options = this.getOptions(trace,layout);
+            this.setTooltipConfig(options);
+            this.addTraceToMap(trace,options);
+            this.addLegendToMap(options);
+            this.addInfoToMap(options);
+            if (layout.map.style) {
+                // Remove the current base map layer
+                Object.values(this.basemapLayers).forEach(layer => {
+                    if (this.map.hasLayer(layer)) {
+                        this.map.removeLayer(layer);
+                    }
+                });
 
-    addControls() {
-        //this.map.addControl(L.control.zoom({position: 'bottomright'}));
-        let zoomOut = L.control({position: 'bottomright'});
-        zoomOut.onAdd = () => {
-            const container = L.DomUtil.create('div', 'leaflet-control info');
-            let span = L.DomUtil.create('span', 'font-medium text-base cursor-pointer', container);
-            span.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zoom-out" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">\n' +
-                '   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>\n' +
-                '   <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>\n' +
-                '   <path d="M7 10l6 0"></path>\n' +
-                '   <path d="M21 21l-6 -6"></path>\n' +
-                '</svg>';
-            span.title = 'Zoom out';
-            span.onclick = () => {
-                if (this.nav.moveBackward()) {
-                    const levelLayers = this.geojsonLayerGroup.getLayers();
-                    this.nav.fitTo = levelLayers[this.nav.position].getBounds();
-                    this.switchLayers();
-                    this.infoBox.hide();
+                // Add the new base map layer
+                if (this.basemapLayers[layout.map.style]) {
+                    this.basemapLayers[layout.map.style].addTo(this.map);
                 }
             }
-            L.DomEvent.disableClickPropagation(container);
-            L.DomEvent.disableScrollPropagation(container);
-            return container;
-        }
-        zoomOut.addTo(this.map);
-
-        this.infoBox = L.control({position: 'bottomright'});
-        this.infoBox.onAdd = () => {
-            const container = L.DomUtil.create('div', 'info legend leaflet-bar hidden');
-            container.id = 'info-box';
-            L.DomUtil.create('span', 'font-medium text-sm', container);
-            L.DomEvent.disableClickPropagation(container);
-            L.DomEvent.disableScrollPropagation(container);
-            return container;
-        };
-        this.infoBox.update = (infoHtml, ephemeral = false) => {
-            let infoBox = L.DomUtil.get('info-box');
-            infoBox.innerHTML = infoHtml;
-            L.DomUtil.removeClass(infoBox,'hidden');
-            if (ephemeral) {
-                setTimeout(() => {
-                    L.DomUtil.addClass(infoBox,'hidden');
-                }, 5000);
-            }
-        };
-        this.infoBox.hide = () => {
-            let infoBox = L.DomUtil.get('info-box');
-            L.DomUtil.addClass(infoBox,'hidden');
-        };
-        this.infoBox.addTo(this.map);
-
-        this.levelDisplayControl = L.control({position: 'topright'});
-        this.levelDisplayControl.onAdd = () => {
-            const levelDisplayContainer = L.DomUtil.create('div', 'leaflet-control info');
-            let span = L.DomUtil.create('span', 'font-medium text-base font-medium', levelDisplayContainer);
-            span.innerText = this.nav.current();
-            L.DomEvent.disableClickPropagation(levelDisplayContainer);
-            L.DomEvent.disableScrollPropagation(levelDisplayContainer);
-            return levelDisplayContainer;
-        }
-        this.levelDisplayControl.update = function (levelName) {
-            this._container.firstChild.innerText = levelName;
-        }
-        this.levelDisplayControl.addTo(this.map);
-
-        let indicatorMenu = L.control({position: 'topleft'});
-        indicatorMenu.onAdd = () => {
-            const menuContainer = L.DomUtil.create('div', 'leaflet-control info');
-            if (isEmpty(this.indicators)) {
-                L.DomUtil.addClass(menuContainer,'hidden');
-            } else {
-                L.DomUtil.removeClass(menuContainer,'hidden');
-            }
-            let index = 0;
-            for (const [classPath, indicatorName] of Object.entries(this.indicators)) {
-                const label = L.DomUtil.create('label', 'flex items-center px-2 py-1 cursor-pointer focus:outline-none', menuContainer);
-                const input = L.DomUtil.create('input', 'h-3 w-3 text-indigo-600 border-gray-300 focus:ring-indigo-500', label);
-                input.type = 'radio';
-                input.name = 'indicator[]';
-                input.value = classPath;
-                if (index === 0) {
-                    input.checked = true;
-                    index++;
+        });
+        this.map.flyToBounds(this.geoJson.getBounds());
+    }
+    setTooltipConfig(options){
+        this.tooltip =
+            {
+                style: {
+                    className: 'leaflet-tooltip'
+                },  getContent: (feature,values) => {
+                    let info = options.info;
+                    if(info.infos) {
+                        return options.infos[options.locations.indexOf(_.get(feature, options.layout.featureidkey??'name'))];
+                    }else {
+                        return '<h4><b>' + feature.properties.name + '</b></h4>' + (feature?.properties ?
+                            values[info.locations.indexOf(_.get(feature, options.layout.featureidkey??'name'))]??''
+                            : 'Hover over an area');
+                    }
                 }
-                let span = L.DomUtil.create('span', 'ml-3 font-medium text-xs', label);
-                span.innerText = indicatorName;
-                input.onchange = e => {
-                    let selectedIndicator = e.target.value
-                    Livewire.dispatch('indicatorSelected', {mapIndicator: selectedIndicator})
-                };
-            }
-            L.DomEvent.disableClickPropagation(menuContainer);
-            L.DomEvent.disableScrollPropagation(menuContainer);
-            return menuContainer;
+            };
+    }
+    addTraceToMap(trace,options){
+        this.geoJson = L.geoJSON(trace.geojson, {
+            style: options.style,
+            onEachFeature: options.onEachFeature
+        }).addTo(this.map);
+        this.geoJsons.push(this.geoJson);
+    }
+    addLegendToMap(options) {
+        if(options.layout.showlegend === 'No')
+        {
+            return;
         }
-        indicatorMenu.addTo(this.map);
-
-        let legend = L.control({position: 'bottomleft'});
-        legend.onAdd = () => {
-            let legendContainer = L.DomUtil.create('div', 'info legend hidden');
-            legendContainer.id = 'legend';
-            return legendContainer;
-        };
-        legend.addTo(this.map);
-    }
-
-    setLegend(legendData) {
-        let legend = L.DomUtil.get('legend');
-        if (isEmpty(legendData)) {
-            L.DomUtil.addClass(legend,'hidden');
-        } else {
-            L.DomUtil.removeClass(legend,'hidden');
-        }
-        L.DomUtil.empty(legend);
-        for (const [color, label] of Object.entries(legendData)) {
-            legend.innerHTML += `<i style="background-color: ${color};"></i> ${label}<br>`;
-        }
-    }
-
-    highlightFeature(e) {
-        const layer = e.target;
-        layer.setStyle({weight: 3});
-        layer.bringToFront();
-    }
-
-    resetHighlight(e) {
-        this.geojsonLayerGroup.getLayers()[this.nav.position].setStyle({weight: 1});
-    }
-
-    initializeGeojsonLayer(levels) {
-        this.geojsonLayerGroup = L.layerGroup();
-        const levelsCount = levels.length;
-        let emptyGeojson = {
-            "type": "FeatureCollection",
-            "features": []
-        };
-        for (let i = 0; i < levelsCount; i++) {
-            let paneName = `pane${i}`;
-            this.map.createPane(paneName);
-            this.geojsonLayerGroup.addLayer(L.geoJSON(emptyGeojson, {
-                pane: paneName,
-                level: i,
-                style: () => {
-                    return this.styles.default;
-                },
-                show: () => this.map.getPane(paneName).style.display = '',
-                hide: () => this.map.getPane(paneName).style.display = 'none',
-                onEachFeature: (feature, layer) => {
-                    layer.bindTooltip(feature.properties.name[this.locale], {permanent: false, direction: 'center'});
-                    layer.on({
-                        mouseover: (e) => this.highlightFeature(e),
-                        mouseout: (e) => this.resetHighlight(e),
-                        click: (e) => {
-                            this.nav.fitTo = e.target.getBounds();
-                            //console.log(this.nav, this.nav.canMoveForward())
-                            let feature = e.target.feature;
-                            if (this.nav.canMoveForward()) {
-                                Livewire.dispatch('mapClicked', {path: feature.properties.path});
-                            }
-                            if ((feature.properties.info !== undefined) && (feature.properties.info !== null)) {
-                                this.infoBox.update(feature.properties.info);
-                            } else {
-                                this.infoBox.hide();
-                            }
-                            //console.log({trigger: 'map click', action: 'about to emit (mapClicked) to livewire (updateMap method) path:' + feature.properties.path})
+        this.legend = L.control({position: options.legend.position});
+        this.legend.onAdd = function (map) {
+            const div = L.DomUtil.create('div', 'info legend');
+            if (options.legend?.type === 'categorical') {
+                const div = L.DomUtil.create('div', 'info legend');
+                for (let i = 0; i < options.legend.colors.length; i++) {
+                    const legendItem = L.DomUtil.create('div', 'legend-item', div);
+                    legendItem.innerHTML +=
+                        '<i style="background:' + options.legend.colors[i] + '" ></i> ' +
+                        options.legend.labels[i] + '<br>';
+                    legendItem.onmouseover = function (e) {
+                        map.eachLayer(function (layer) {
+                            layer.fireEvent('highlightFeature', {colorIndex: i});
+                        });
+                        legendItem.onmouseout = function (e) {
+                            map.eachLayer(function (layer) {
+                                layer.fireEvent('mouseout');
+                            });
                         }
-                    });
+
+                    }
                 }
-            }));
-        }
-        this.geojsonLayerGroup.addTo(this.map);
-    }
+                L.DomEvent.disableClickPropagation(div);
 
-    registerDomEventListeners() {
-        document.addEventListener('DOMContentLoaded', () => {
-            Livewire.dispatch('mapReady');
-        });
-    }
 
-    registerLivewireEventListeners() {
-        Livewire.on('indicatorSwitched', ({style, legend}) => {
-            console.log({style, legend})
-            this.selectedStyle = style;
-            this.setLegend(legend);
-
-            const levelLayers = this.geojsonLayerGroup.getLayers();
-            const bounds = levelLayers[0].getBounds();
-            if (bounds.isValid()) {
-                this.nav.reset();
-                this.nav.fitTo = bounds;
-                this.switchLayers();
-                this.infoBox.hide();
-            }
-        });
-
-        Livewire.on('backendResponse', ({geojson, level, data}) => {
-            console.log({geojson, level, data})
-            if (geojson !== null) {
-                if (level > this.nav.position) {
-                    this.nav.moveForward();
-                }
-                this.render(geojson, level);
-                this.switchLayers();
-                this.applyIndicatorDataToMap(level, data);
+                return div;
             } else {
-                console.log('No sub-maps found');
+
+                if(options.legend.orientation === 'Vertical')
+                {
+                    console.log('Vertical');
+                    const div_scale = L.DomUtil.create('div', 'legend-scale ');
+                    const linearGradient = 'linear-gradient(to bottom, ' + options.legend.colors.join(',') + ')';
+
+                    div_scale.innerHTML += '<div class="legend-color-gradient" style="background:' + linearGradient + '"></div>';
+                    div_scale.innerHTML += '<div class="legend-labels-gradient"><span>'+options.legend.labels[0]+
+                        '</span><span>' +options.legend.labels[options.legend.labels.length-1]+'</span></div>';
+                    div.appendChild(div_scale);
+                }
+                else{
+                    const div_scale = L.DomUtil.create('div', 'legend-scale h');
+                    const linearGradient = 'linear-gradient(to right, ' + options.legend.colors.join(',') + ')';
+                    div_scale.innerHTML += '<div class="legend-color-gradient" style="background:' + linearGradient + '"></div>';
+                    div_scale.innerHTML += '<div class="legend-labels-gradient"><span>'+options.legend.labels[0]+
+                        '</span><span>' +options.legend.labels[options.legend.labels.length-1]+'</span></div>';
+                    div.appendChild(div_scale);
+                }
+
+                return div;
             }
-        });
+        };
+
+        this.legend.addTo(this.map);
     }
 
-    applyIndicatorDataToMap(level, data) {
-        const currentLayer = this.geojsonLayerGroup.getLayers()[level];
-        //currentLayer.resetStyle();
-        const areaKeyedData = keyBy(data, 'area_code');
-        currentLayer.getLayers().forEach(feature => {
-            let data = areaKeyedData[feature.feature.properties.code];
-            //console.log({data, areaKeyedData, code: feature.feature.properties.code, data})
-            if (! isUndefined(data)) {
-                feature.setStyle(this.styles[this.selectedStyle][data.style]);
-                const displayValue = isNull(data.display_value) ? data.value : data.display_value;
-                feature.setTooltipContent(feature.feature.properties.name[this.locale] + ': ' + displayValue);
-                feature.feature.properties.info = data.info;
+    addInfoToMap(options){
+        this.info = L.control({position: options.info.position});
+        this.info.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+        this.info.update = function (feature,values) {
+            let info = options.info;
+            if(info.infos) {
+                this._div.innerHTML = info.infos[info.locations.indexOf(_.get(feature, options.layout.featureidkey??'name'))];
             }
+            else {
+                this._div.innerHTML = '<h4>Area</h4>' + (feature?.properties ?
+                    '<b>' + feature.properties.name + '</b><br />' + values[info.locations.indexOf(_.get(feature,options.layout.featureidkey??'name'))]??''
+                    : 'Hover over an area');
+            }
+        };
+        this.info.addTo(this.map);
+    }
+    getOptions(customData,customLayout){
+        const z = customData.z.map((value) => Number(value));
+
+        const layout = {
+            steps: 6,
+            colorpallette: 'Blues',
+            ...customLayout,
+        }
+        const trace = {
+            zmin: min(z),
+            zmax: max(z),
+            style: defaultStyle,
+            colorbar:{
+                tickformat: '.2f',
+            },
+            legend: {
+                position: 'bottomright',
+                format: '.2f',
+                type: 'continuous',
+                colors: [],
+                labels: [],
+                range: [],
+            },
+            ...layout,
+            ...customData,
+            geojson: undefined,
+        };
+        const colorPallette = colorbrewer[trace.colorpallette][layout.steps];
+        return {
+            style: (feature) => {
+                const index = trace.locations.indexOf(_.get(feature, trace.featureidkey??'name'));
+                if (index < 0) {
+                    return {
+                        fillOpacity: 0,
+                        weight: 0,
+                        opacity: 1,
+                    }
+                }
+                const normalizedValue = (Number(trace.z[index]) - trace.zmin) / (trace.zmax - trace.zmin);
+                const colorIndex = Math.ceil((normalizedValue * layout.steps)-1);
+                return {
+                    ...trace.style,
+                    fillColor: colorPallette[colorIndex>0?colorIndex:0],
+                    colorIndex: colorIndex,
+                }
+            },
+            onEachFeature: (feature, layer) => {
+
+                layer.on({
+                    mouseover: (e) => {
+                        const layer = e.target;
+                        layer.setStyle({
+                            weight: 1,
+                            color: 'white',
+                            dashArray: '',
+                            fillOpacity: 0.7
+                        });
+
+                        layer.bringToFront();
+                        layer.bindTooltip(this.tooltip.getContent(feature, trace.z));
+                        layer.openTooltip();
+                        this.info.update(layer.feature,trace.z);
+                    },
+                    mouseout: (e) => {
+                        this.geoJson.resetStyle();
+                        layer.closeTooltip();
+
+
+                    },
+                    click: (e) => {
+                        const feature = e.target.feature;
+                        Livewire.dispatch('area-selected',{path: feature.properties.path});
+                    },
+                    highlightFeature: (e) => {
+                        const layer = e.target;
+                        if(layer.options.colorIndex === e.colorIndex) {
+
+                            layer.setStyle({
+                                weight: 2,
+                                color: 'white',
+                                dashArray: '-',
+                                fillOpacity: 1
+                            });
+                            layer.bringToFront();
+                            layer.bindTooltip(this.tooltip.getContent(feature, trace.z));
+                            layer.openTooltip();
+                            this.info.update(layer.feature,trace.z);
+                        }
+                        else {
+                            layer.setStyle({
+                                fillOpacity: 0.4,
+                                dashArray: '.',
+                            });
+                        }
+                    }
+                });
+            },
+            legend: {
+                position: 'bottomright',
+                type: trace.legend?.type??'continuous',
+                colors: colorPallette,
+                labels: colorPallette.map((color, index) => {
+                        const formatter = d3format(trace.legend?.format??'.2f');
+                        if(trace.legend?.type === 'categorical'){
+
+                            const min = formatter(Number(trace.zmin) + index * ((Number(trace.zmax) - Number(trace.zmin)) / (layout.steps)),trace.legend?.format);
+                            const max = formatter(Number(trace.zmin) + (index + 1) * ((Number(trace.zmax) - Number(trace.zmin)) / (layout.steps)),trace.legend?.format??'.2f');
+
+                            return `${min} - ${max}`;
+                        }
+                        else{
+                            if(index === 0){
+                                return formatter(Number(trace.zmin) + index * ((Number(trace.zmax) - Number(trace.zmin)) / (layout.steps)),trace.legend?.format);
+                            }else
+                            {
+                                return formatter(Number(trace.zmin) + index * ((Number(trace.zmax) - Number(trace.zmin)) / (layout.steps)),trace.legend?.format);
+                            }
+                        }
+                    }
+                ),
+                ...trace.legend
+            },
+            info: {
+                position: 'bottomleft',
+                infos: trace.infos,
+                locations: trace.locations,
+
+            },
+            layout: {
+                ...trace,
+            }
+        };
+
+    }
+    addControls(){
+        // L.control.scale().addTo(this.map);
+        // L.control.fullscreen().addTo(this.map);
+        // L.control.locate().addTo(this.map);
+        // L.control.layers().addTo(this.map);
+    }
+    refocusMap(){
+        this.map.invalidateSize(true);
+        if(this.geojson){
+            console.log(this.geojson.getBounds());
+            // this.map.flyToBounds(this.geojson.getBounds());
+        }
+    }
+    registerLivewireEventListeners(filterable){
+        Livewire.on(`updateResponse.${this.id}`, (dataAndLayout) => {
+            console.log('Received updateResponse: ' + this.id, dataAndLayout);
+            this.clearMap();
+            const [data, layout] = dataAndLayout;
+            this.updateMapDataAndLayout(data, layout);
         });
+        if(filterable){
+            Livewire.on(`filterChanged`, ({filter}) => {
+                console.log({filter})
+                const [areaName, filterPath] = Object.entries(filter)[0] ?? '';
+                this.fetchData(this.vizId, filterPath)
+                    .then(() => {
+                        this.updateMapDataAndLayout(this.data, this.layout);
+                    })
+            });
+        }
+
+        if (filterable) {
+            Livewire.on(`filterChanged`, ({filter}) => {
+                console.log({filter})
+                const [areaName, filterPath] = Object.entries(filter)[0] ?? '';
+                this.fetchData(this.vizId, filterPath)
+                    .then(() => {
+                        console.log({Path: filterPath, Filtered: this.data})
+                        this.updateMapDataAndLayout(this.data, this.layout);
+                    })
+            });
+        }
+    }
+    clearMap(){
+        this.geoJsons.forEach((geoJson)=>{
+            this.map.removeLayer(geoJson);
+        });
+        this.geoJsons = [];
+        if(this.legend){
+            this.map.removeControl(this.legend);
+        }
+        if(this.info){
+            this.map.removeControl(this.info);
+        }
+        this.map.closePopup();
     }
 
-    render(geojson, level) {
-        const targetLayer = this.geojsonLayerGroup.getLayers()[level];
-        targetLayer.addData(geojson);
-        //console.log({targetLayer:level, currentLevel:this.nav.current(), geojson, count:Object.keys(targetLayer._layers).length})
-    };
 }
