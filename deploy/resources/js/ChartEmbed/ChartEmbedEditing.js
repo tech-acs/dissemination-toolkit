@@ -51,8 +51,10 @@ export default class ChartEmbedEditing extends Plugin {
                 let vizType = modelElement.getAttribute('type')
 
                 let vizInit
-                if (vizType === 'Chart' || vizType === 'Map' || vizType === 'Scorecard') {
+                if (vizType === 'Chart') {
                     vizInit = `new PlotlyChart('${id}')`
+                } else if(vizType === 'Map'){
+                    vizInit = `new LeafletMap('${id}')`
                 } else if (vizType === 'Table') {
                     vizInit = `new AgGridTable('${id}')`
                 }
@@ -61,6 +63,7 @@ export default class ChartEmbedEditing extends Plugin {
                     'id': id,
                     'viz-id': modelElement.getAttribute('viz-id'),
                     'type': vizType,
+                    'class': vizType,
                     'x-init': vizInit
                 } );
             }
@@ -73,9 +76,13 @@ export default class ChartEmbedEditing extends Plugin {
                 let vizType = modelElement.getAttribute('type')
 
                 let vizInit
-                if (vizType === 'Chart' || vizType === 'Map' || vizType === 'Scorecard') {
+                if (vizType === 'Chart') {
                     vizInit = `new PlotlyChart('${id}')`
-                } else if (vizType === 'Table') {
+                }
+                else if (vizType === 'Map') {
+                    vizInit = `new LeafletMap('${id}')`
+                }
+                else if (vizType === 'Table') {
                     vizInit = `new AgGridTable('${id}')`
                 }
 
@@ -86,7 +93,7 @@ export default class ChartEmbedEditing extends Plugin {
 
                 const vizContainer = writer.createContainerElement(
                     'div',
-                    {'x-init': vizInit},
+                    {'x-init': vizInit,'class': vizType},
                     vizRootElement
                 );
 

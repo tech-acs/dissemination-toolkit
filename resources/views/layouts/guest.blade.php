@@ -6,7 +6,7 @@
         <link rel="icon" href="{{asset('images/favicon.svg', config('dissemination.secure'))}}" />
         <title>{{ config('app.name') }}</title>
 
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/map.css'])
 
         <style>
             [x-cloak] {
