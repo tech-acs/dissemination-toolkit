@@ -15,12 +15,12 @@ class DocumentController extends Controller
     public function index(Request $request)
     {
         $query = Document::published()
-            ->when($request->has('keyword'), function (Builder $query) use ($request) {
+            ->when(! empty($request->get('keyword')), function (Builder $query) use ($request) {
                 $locale = app()->getLocale();
                 $query->where("title->$locale", 'ilike', '%' . $request->get('keyword') . '%');
                 $query->orWhere("description->$locale", 'ilike', '%' . $request->get('keyword') . '%');
             })
-            ->when($request->has('topic'), function (Builder $query) use ($request) {
+            ->when(! empty($request->get('topic')), function (Builder $query) use ($request) {
                 $query->whereHas('topics', function (Builder $query) use ($request) {
                     if ($request->get('topic') == 0) {
                         return;
@@ -38,8 +38,7 @@ class DocumentController extends Controller
         $toYear = $request->get('toYear');
         if ($fromYear && $toYear) {
             if ($fromYear > $toYear) {
-                return redirect()->back()->withErrors(['fromYear' => 'From year ('
-                    . $fromYear . ') must be less than to year (' . $toYear . ') for filtering']);
+                return redirect()->back()->withErrors(['fromYear' => "From year ($fromYear) must be less than to year ($toYear) for filtering"]);
             }
             $query->whereRaw("date_part('year', published_date) between $fromYear and $toYear");
         } elseif ($fromYear) {
@@ -72,6 +71,7 @@ class DocumentController extends Controller
 
         return view('dissemination::guest.document.index', compact('records', 'sortOptions', 'censusYears', 'tags', 'types'));
     }
+
     public function show($id)
     {
         $censusTable = Document::published()->findOrFail($id);
@@ -82,6 +82,7 @@ class DocumentController extends Controller
         $censusTable->updated_by = $censusTable->user->name;
         return view('dissemination::guest.document.show', compact('censusTable'));
     }
+
     public function download(Document $censusTable)
     {
         $censusTable = Document::published()->findOrFail($censusTable->id);
@@ -91,10 +92,6 @@ class DocumentController extends Controller
         return Storage::disk('public')->download($censusTable->file_path, $censusTable->file_name);
     }
 
-    /**
-     * @param Request $request
-     * @return string[]
-     */
     private function setSortOrder(string $sortBy): array
     {
         switch ($sortBy) {
@@ -126,9 +123,6 @@ class DocumentController extends Controller
         return array($sortBy, $sortOrder);
     }
 
-    /**
-     * @return string[]
-     */
     private function getSortOptions(): array
     {
         return [
@@ -141,9 +135,6 @@ class DocumentController extends Controller
         ];
     }
 
-    /**
-     * @return mixed
-     */
     private function getCensusYears()
     {
         return Document::published()->

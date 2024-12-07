@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <livewire:i-need-alpine />
     <div class="container mx-auto">
         @include('dissemination::partials.nav')
 

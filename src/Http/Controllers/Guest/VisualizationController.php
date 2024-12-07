@@ -13,7 +13,7 @@ class VisualizationController extends Controller
     public function index(Request $request)
     {
         $records = Visualization::published()
-            ->when($request->has('keyword'), function (Builder $query) use ($request) {
+            ->when(! empty($request->get('keyword')), function (Builder $query) use ($request) {
                 $locale = app()->getLocale();
                 $keyword = $request->get('keyword');
                 $query->where("title->{$locale}", 'ilike', "%{$keyword}%")
@@ -24,7 +24,8 @@ class VisualizationController extends Controller
             ->when(! empty($request->get('topic')), function (Builder $query) use ($request) {
                 $query->whereRelation('topics', 'topic_id', '=', $request->get('topic'));
             })
-            ->get()->sortByDesc('updated_at');
+            ->get()
+            ->sortByDesc('updated_at');
         $topics = Topic::all();
         return view('dissemination::guest.visualization.index', compact('records', 'topics'));
     }

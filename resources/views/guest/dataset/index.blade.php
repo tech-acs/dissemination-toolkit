@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <livewire:i-need-alpine />
     <div class="container mx-auto">
         @include('dissemination::partials.nav')
 
@@ -74,7 +75,11 @@
 
                     </div>
                 @empty
-
+                    <div class="col-span-3 justify-center items-center py-6">
+                        <div class="text-center text-3xl p-4 text-gray-500">
+                            {{ __('There are no published datasets to display at the moment') }}
+                        </div>
+                    </div>
                 @endforelse
 
             </div>

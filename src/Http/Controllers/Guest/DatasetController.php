@@ -14,7 +14,7 @@ class DatasetController extends Controller
     {
         $records = Dataset::query()
             ->published()
-            ->when($request->has('keyword'), function (Builder $query) use ($request) {
+            ->when(! empty($request->get('keyword')), function (Builder $query) use ($request) {
                 $locale = app()->getLocale();
                 $query->where("name->{$locale}", 'ilike', '%' . $request->get('keyword') . '%');
             })
