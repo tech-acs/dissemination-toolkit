@@ -62,6 +62,8 @@ trait PackageTasksTrait
         "react-modal" => "^3.16.1",
         "tailwindcss" => "^3.4.0",
         "d3-format" => "^3.1.0",
+        "leaflet-image"=> "^0.4.0",
+
     ];
 
     public array $phpDependencies = [
