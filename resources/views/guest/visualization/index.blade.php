@@ -29,15 +29,8 @@
                         <div class="group w-full rounded-md bg-white shadow-md ring-1 ring-indigo-300 hover:bg-indigo-50 hover:ring-indigo-500 hover:ring-2">
                             <a href="{{ route('visualization.show', $record->id) }}" class="group-hover:bg-indigo-50 rounded-md grid grid-cols-5 overflow-hidden">
 
-                                    @if($record->type === 'Table')
-                                        <div class="col-span-2 overflow-hidden justify-center items-center text-indigo-300">
-                                            <x-dissemination::icon.table class="w-2/3 group-hover:text-indigo-500"/>
-                                        </div>
-                                    @else($record->type === 'Chart')
+
                                         <img class="col-span-2" src="{{ $record->thumbnail }}" alt="">
-                                    {{--@elseif($record->type === 'Map')
-                                        <x-dissemination::icon.map class="w-2/3 group-hover:text-indigo-500" url="{{$record->id}}"/>--}}
-                                    @endif
 
                                 <div class="p-3 cursor-pointer flex-col flex overflow-hidden col-span-3">
                                     <h5 class="line-clamp-2 text-lg text-indigo-900 font-semibold">{{ $record->title }}</h5>

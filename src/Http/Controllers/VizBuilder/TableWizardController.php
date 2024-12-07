@@ -96,7 +96,7 @@ class TableWizardController extends Controller
             'is_reviewable' => $isReviewable,
             //'published' => $isPublished,
             'options' => $resource->options,
-            //'thumbnail' => $resource?->thumbnail,
+            'thumbnail' => $resource->thumbnail,
         ];
 
         if ($resource?->vizId) {

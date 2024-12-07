@@ -63,6 +63,7 @@ trait PackageTasksTrait
         "tailwindcss" => "^3.4.0",
         "d3-format" => "^3.1.0",
         "leaflet-image"=> "^0.4.0",
+        "html2canvas-pro"=> "^1.5.8"
 
     ];
 

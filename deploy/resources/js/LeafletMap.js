@@ -117,25 +117,38 @@ export default class LeafletMap {
         if (shouldCaptureThumbnail) {
             console.log('Capturing and sending thumbnail...', this.vizId);
             this.captureThumbnail().then((imageData) => {
+                console.log('Captured map image:', imageData);
+                const loadingIndicator = document.getElementById('loading-indicator');
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'block';
+                }
                 Livewire.dispatch('thumbnailCaptured', {imageData})
             });
         }
 
     }
 
-    captureThumbnail(){
+    captureThumbnail() {
         return new Promise((resolve, reject) => {
-            leafletImage(this.map, (err, canvas) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(canvas.toDataURL());
-                }
-            });
-        } );
-    }
+            if (!this.map) {
+                reject(new Error('Map is not initialized'));
+                return;
+            }
 
-    async fetchData(vizId, filterPath = '') {
+
+
+            this.map.whenReady(() => {
+                leafletImage(this.map, (err, canvas) => {
+
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(canvas.toDataURL());
+                    }
+                });
+            });
+        });
+    }async fetchData(vizId, filterPath = '') {
         const response = await axios.get(`${ajaxBaseURL}/api/visualization/${vizId}?path=${filterPath}`);
         console.log('Fetched chart via axios:', response.data);
         this.data = response.data.data;
