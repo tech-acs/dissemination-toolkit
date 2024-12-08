@@ -16,7 +16,7 @@ class TableDesignerResource implements JsonSerializable
         //public array $defaultLayout = [],
         public array $dataParams = [],
         public array $rawData = [],
-        //public ?string $thumbnail = null,
+        public ?string $thumbnail = null,
     )
     {}
 

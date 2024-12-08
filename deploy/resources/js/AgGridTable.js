@@ -1,4 +1,5 @@
 import { createGrid } from 'ag-grid-community';
+import html2canvas from "html2canvas-pro";
 
 export default class AgGridTable {
     id;
@@ -35,7 +36,58 @@ export default class AgGridTable {
 
         console.log({htmlId, options: this.options})
         this.registerLivewireEventListeners();
+        const shouldCaptureThumbnail = document.getElementById('should-capture-thumbnail')?.value
+        if (shouldCaptureThumbnail) {
+            console.log('Capturing and sending thumbnail...', this.vizId);
+            this.captureThumbnail().then((imageData) => {
+                const loadingIndicator = document.getElementById('loading-indicator');
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'block';
+                }
+                Livewire.dispatch('thumbnailCaptured', {imageData})
+            });
+        }
+
     }
+
+    captureThumbnail() {
+        return new Promise((resolve, reject) => {
+            html2canvas(this.rootElement, {
+                useCORS: true, // Enable cross-origin handling for images
+                allowTaint: false, // Disallow tainted canvas
+                scale: 2, // Increase resolution for a high-quality image
+                backgroundColor: null, // Preserve transparency
+                onclone: (clonedDocument) => {
+                    const clonedElement = clonedDocument.getElementById(this.id);
+
+                    // Adjust cloned element to match visible styles
+                    clonedElement.style.width = `${this.rootElement.width}px`;
+                    clonedElement.style.height = `${this.rootElement.height}px`;
+
+                    // Ensure custom properties or unsupported colors are handled
+                    clonedDocument.querySelectorAll('*').forEach((element) => {
+                        const computedStyle = getComputedStyle(element);
+                        if (computedStyle.backgroundColor.includes('color(')) {
+                            element.style.backgroundColor = 'transparent'; // Fallback for unsupported colors
+                        }
+                    });
+
+                    // Optionally remove or adjust any elements that should not appear in the thumbnail
+                    const unnecessaryElements = clonedElement.querySelectorAll('.exclude-from-thumbnail');
+                    unnecessaryElements.forEach(el => el.remove());
+                },
+            })
+                .then((canvas) => {
+                    // Convert the canvas to a data URL
+                    resolve(canvas.toDataURL('image/png'));
+                })
+                .catch((error) => {
+                    console.error('Error capturing thumbnail:', error);
+                    reject(error);
+                });
+        });
+    }
+
 
     registerLivewireEventListeners() {
         Livewire.on(`updateTable.${this.id}`, (event) => {

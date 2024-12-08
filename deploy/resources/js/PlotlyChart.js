@@ -67,6 +67,10 @@ export default class PlotlyChart {
             Plotly.toImage(this.id, { format: 'png', width: 600, height: 400 })
                 .then((imageData) => {
                     console.log({imageData});
+                    const loadingIndicator = document.getElementById('loading-indicator');
+                    if (loadingIndicator) {
+                        loadingIndicator.style.display = 'block';
+                    }
                     Livewire.dispatch('thumbnailCaptured', {imageData})
                 })
                 .catch((error) => console.error('Error converting plot to image:', error));
