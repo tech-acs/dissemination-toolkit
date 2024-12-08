@@ -28,7 +28,7 @@ abstract class Visualization extends Component
             $this->layout = $visualization->layout;
             $this->options = $visualization->options;
             $query = new QueryBuilder($visualization->data_params);
-            $this->rawData = Sorter::sort($query->get())->all();
+            $this->rawData = $query->get()->all();//Sorter::sort($query->get());
         }
         if (! empty($this->rawData)) {
             $this->preparePayload($this->rawData);

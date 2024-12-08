@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
+use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\SortingTrait;
 use Uneca\DisseminationToolkit\Models\Dataset;
 use Uneca\DisseminationToolkit\Models\Dimension;
 use Uneca\DisseminationToolkit\Models\Indicator;
@@ -22,7 +23,7 @@ use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\YearTrait;
 
 class DataShaper extends Component
 {
-    use TopicTrait, DatasetTrait, IndicatorTrait, GeographyTrait, YearTrait, DimensionTrait, PivotingTrait;
+    use TopicTrait, DatasetTrait, IndicatorTrait, GeographyTrait, YearTrait, DimensionTrait, SortingTrait, PivotingTrait;
 
     #[Url]
     public int|null $prefillIndicatorId = 0;
@@ -95,6 +96,7 @@ class DataShaper extends Component
             'pivotColumn' => $this->pivotColumn,
             'pivotRow' => $this->pivotRow,
             'nestingPivotColumn' => $this->nestingPivotColumn,
+            'sortingColumn' => $this->sortingColumn,
         ];
     }
 
@@ -144,6 +146,31 @@ class DataShaper extends Component
         }
     }
 
+    private function setSortableColumns(): void
+    {
+        $this->sortableColumns = [];
+        //if (count($this->selectedIndicators) === 1) {
+            $dimensions = collect($this->selectedDimensions)
+                ->mapWithKeys(fn ($dimensionId) => [$dimensionId => $this->selectedDimensionValues[$dimensionId]])
+                ->map(function ($dimensionValueIds, $dimensionId) {
+                    $dimension = Dimension::find($dimensionId);
+                    return [
+                        'column' => $dimension->table_name . '.rank',
+                        'label' => $dimension->name,
+                    ];
+                });
+            if ($dimensions->isNotEmpty()) {
+                $this->sortableColumns = [
+                    ...$dimensions,
+                    [
+                        'column' => 'geography',
+                        'label' => 'Geography',
+                    ],
+                ];
+            }
+        //}
+    }
+
     public function apply(): void
     {
         $queryParameters = $this->makeDataParam();
@@ -176,7 +203,8 @@ class DataShaper extends Component
             }
         } else {
             $query = new QueryBuilder($queryParameters);
-            $rawData = Sorter::sort($query->get());
+            //dump($queryParameters, $query->toSql());
+            $rawData = $query->get();//Sorter::sort($query->get());
             $this->dispatch(
                 "dataShaperEvent",
                 rawData: $rawData,

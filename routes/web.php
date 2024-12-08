@@ -146,6 +146,7 @@ Route::middleware(['web'])->group(function () {
             Route::get('viz-builder/chart/step1', 'step1')->name('viz-builder.chart.step1');
             Route::get('viz-builder/chart/step2', 'step2')->name('viz-builder.chart.step2');
             Route::post('viz-builder/chart/step3', 'step3')->name('viz-builder.chart.step3');
+            Route::get('viz-builder/chart/step3', 'step3Get')->name('viz-builder.chart.step3-get');
             Route::get('viz-builder/chart/{viz}/edit', 'edit')->name('viz-builder.chart.edit');
             Route::post('viz-builder/chart', 'store')->name('viz-builder.chart.store');
         });

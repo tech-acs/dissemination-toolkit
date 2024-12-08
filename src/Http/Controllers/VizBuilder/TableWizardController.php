@@ -158,7 +158,7 @@ class TableWizardController extends Controller
     {
         if ($visualization) {
             $query = new QueryBuilder($visualization->data_params);
-            $rawData = Sorter::sort($query->get())->all();
+            $rawData = $query->get()->all();
             $resource = new TableDesignerResource(
                 dataSources: toDataFrame(collect($rawData))->toArray(),
                 //data: $visualization->data,

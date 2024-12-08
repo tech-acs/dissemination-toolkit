@@ -14,6 +14,7 @@
                             <span class="font-semibold">label</span>
                         </li>
                         <li>{{ __('Codes must be unique')}}</li>
+                        <li>{{ __('A rank column (of numeric values), if included, will be used for sorting') }}</li>
                     </ul>
                 </div>
                 <div class="flex items-stretch flex-grow">

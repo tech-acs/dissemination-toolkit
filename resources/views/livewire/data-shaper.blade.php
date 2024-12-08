@@ -7,6 +7,7 @@
             @include('dissemination::data-explorer.partials.geography')
             {{--@include('data-explorer.partials.years')--}}
             @include('dissemination::data-explorer.partials.dimensions')
+            @include('dissemination::data-explorer.partials.sorting')
             @include('dissemination::data-explorer.partials.pivoting')
         </div>
         <div class="flex justify-end mt-6">

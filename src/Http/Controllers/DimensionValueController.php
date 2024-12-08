@@ -13,7 +13,7 @@ class DimensionValueController extends Controller
     {
         $records = collect();
         if ($dimension->table_exists) {
-            $records = (new DynamicDimensionModel($dimension->table_name))->all();
+            $records = (new DynamicDimensionModel($dimension->table_name))->orderBy('rank')->get();
         }
         return view('dissemination::manage.dimension.values.index', compact('dimension', 'records'));
     }
@@ -26,7 +26,11 @@ class DimensionValueController extends Controller
     public function store(Request $request, Dimension $dimension)
     {
         $result = (new DynamicDimensionModel($dimension->table_name))
-            ->create(['name' => $request->get('name'), 'code' => $request->get('code'), 'rank' => $request->get('rank')]);
+            ->create([
+                'name' => $request->get('name'),
+                'code' => $request->get('code'),
+                'rank' => $request->integer('rank')
+            ]);
         return redirect()->route('manage.dimension.values.index', $dimension)->withMessage('Record created');
     }
 
@@ -39,7 +43,11 @@ class DimensionValueController extends Controller
     public function update(Request $request, Dimension $dimension, $entryId)
     {
         $result = (new DynamicDimensionModel($dimension->table_name, $entryId))
-            ->update(['name' => $request->get('name'), 'code' => $request->get('code'), 'rank' => $request->get('rank')]);
+            ->update([
+                'name' => $request->get('name'),
+                'code' => $request->get('code'),
+                'rank' => $request->integer('rank')
+            ]);
         return redirect()->route('manage.dimension.values.index', $dimension)->withMessage('Record updated');
     }
 

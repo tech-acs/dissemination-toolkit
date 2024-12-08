@@ -27,7 +27,8 @@
                 @endif
                 <x-input-error for="table_name" class="mt-2"/>
             </div>--}}
-            <div>
+
+            {{--<div>
                 <x-label for="sorting_type" value="{{ __('Value sorting type') }}"/>
                 <select id="sorting_type" name="sorting_type"
                         class="mt-1 pr-10 space-y-1 text-base p-1 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
@@ -40,7 +41,7 @@
                     @endforeach
                 </select>
                 <x-input-error for="sorting_type" class="mt-2"/>
-            </div>
+            </div>--}}
 
             @if (count($factTables) > 1)
                 <div>

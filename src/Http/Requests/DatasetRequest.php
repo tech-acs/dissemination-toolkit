@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Uneca\DisseminationToolkit\Models\Dimension;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,6 +26,7 @@ class DatasetRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:5',
+            'code' => ['required', 'min:1', Rule::unique('datasets')->ignore($this->dataset),],
             'indicators' => 'required|exists:indicators,id',
             'dimensions' => [
                 'required', 'array',

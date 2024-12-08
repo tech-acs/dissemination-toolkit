@@ -54,7 +54,7 @@ class VizAjaxController extends Controller
                 $dataParams = $this->updateDataParam($visualization->data_params, $path);
                 //logger('Data params', ['original' => $visualization->data_params['geographies'], 'new' => $dataParams['geographies']]);
                 $query = new QueryBuilder($dataParams);
-                $rawData = Sorter::sort($query->get())->all();
+                $rawData = $query->get()->all();//Sorter::sort($query->get())->all();
                 $instance->preparePayload($rawData);
                 $areaIds = array_merge(...array_values($dataParams['geographies']));
                 $geojson = Geospatial::getGeoJsonByAreaId($areaIds ?? []);
@@ -92,7 +92,7 @@ class VizAjaxController extends Controller
             if ($path) {
                 $dataParams = $this->updateDataParam($visualization->data_params, $path);
                 $query = new QueryBuilder($dataParams);
-                $rawData = Sorter::sort($query->get())->all();
+                $rawData = $query->get()->all();//Sorter::sort($query->get());
                 $instance->preparePayload($rawData);
             }
             return [

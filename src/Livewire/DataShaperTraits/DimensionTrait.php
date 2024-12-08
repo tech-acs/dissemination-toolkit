@@ -11,7 +11,8 @@ trait DimensionTrait {
 
     public function updatedSelectedDimensions($key)
     {
-        $this->reset('pivotableDimensions', 'pivotColumn', 'pivotRow', 'nestingPivotColumn');
+        $this->reset('pivotableDimensions', 'pivotColumn', 'pivotRow', 'nestingPivotColumn', 'sortingColumn');
+        $this->setSortableColumns();
         $this->setPivotableDimensions();
         $this->nextSelection = 'apply';
 

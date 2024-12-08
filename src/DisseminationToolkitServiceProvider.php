@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit;
 
+use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;

@@ -19,6 +19,7 @@ class QueryBuilder
     private string $valueColumnInResult = 'result';
     private string $sql = '';
     private string $schema;
+    private string $sortingColumn;
 
     private ?Pivoting $pivoting = null;
 
@@ -35,6 +36,7 @@ class QueryBuilder
                 'valueIds' => $dimensionValueIds,
             ];
         });
+        $this->sortingColumn = $queryParameter['sortingColumn'] ?? '';
         if (! is_null($queryParameter['pivotColumn']) && ! is_null($queryParameter['pivotRow'])) {
             $this->pivoting = new Pivoting($queryParameter['pivotColumn'], $queryParameter['pivotRow'] ?? 0, $queryParameter['nestingPivotColumn']);
         }
@@ -47,7 +49,7 @@ class QueryBuilder
             $select = $this->pivoting->select();
             $from = $this->makeFrom($this->dataset->dimensions);
             $where = $this->makeWhere($this->dimensions);
-            $orderBy = $this->makeOrderBy($this->dimensions);
+            $orderBy = '1, 2'; //$this->makeOrderBy($this->dimensions);
             $this->sql = vsprintf(
                 "SELECT %s, %s.%s::text AS %s FROM %s WHERE %s ORDER BY %s",
                 [$select, $this->dataset->fact_table, $this->valueColumnInFactTable, $this->valueColumnInResult, $from, $where, $orderBy]
@@ -63,10 +65,10 @@ class QueryBuilder
             if ($this->indicators->count() > 1) {
                 //$valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS "values' . self::VALUE_COLUMN_INVISIBLE_MARKER . '"';
                 $valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS values';
-                $orderBy = "indicator, areas.path";
+                $orderBy = "indicator, geography";
             } else {
                 $valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS "' . $this->indicators->first()->name . self::VALUE_COLUMN_INVISIBLE_MARKER . '"';
-                $orderBy = "areas.path";
+                $orderBy = $this->makeOrderBy($this->dimensions);//"areas.path";
             }
             $this->sql = vsprintf(
                 "SELECT %s, %s FROM %s WHERE %s ORDER BY %s",
@@ -141,22 +143,7 @@ class QueryBuilder
 
     private function makeOrderBy(Collection $dimensions): string
     {
-        return '1, 2';
-        $excludedDimensions = $this->dataset->dimensions->pluck('id')->diff($dimensions->keys());
-
-        $orderByDimensions = $this->dataset->dimensions
-            ->map(function ($dimension) use ($dimensions, $excludedDimensions) {
-                if ($excludedDimensions->contains($dimension->id)) {
-                    return "{$dimension->table_name}.code = '_T'";
-                } else {
-                    $filter = collect($dimensions[$dimension->id]['valueIds'])
-                        ->map(fn ($v) => "$dimension->table_name.id = '{$v}'")
-                        ->join(' OR ');
-                    return empty($filter) ? null : str($filter)->wrap('(', ')')->toString();
-                }
-            })
-            ->join(', ');
-        return $orderByDimensions;
+        return empty($this->sortingColumn) ? 'geography' : $this->sortingColumn;
     }
 
     private function moveIndicatorsToTheirOwnColumns(Collection $result): Collection

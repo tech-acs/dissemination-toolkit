@@ -256,7 +256,7 @@ class ScorecardWizardController extends Controller
     {
         if ($visualization) {
             $query = new QueryBuilder($visualization->data_params);
-            $rawData = Sorter::sort($query->get())->all();
+            $rawData = $query->get()->all();//Sorter::sort($query->get())->all();
             $resource = new ChartDesignerResource(
                 dataSources: toDataFrame(collect($rawData))->toArray(),
                 data: $visualization->data,

@@ -3,7 +3,7 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 
 use App\Http\Controllers\Controller;
-use Livewire\Livewire;
+use Illuminate\Support\Facades\Validator;
 use Uneca\DisseminationToolkit\Http\Resources\ChartDesignerResource;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Tag;
@@ -64,12 +64,41 @@ class ChartWizardController extends Controller
             ]);
     }
 
-    public function store(VisualizationRequest $request)
+    public function step3Get()
+    {
+        $step = 3;
+        //$this->recordChartDesign(json_decode($request->get('data'), true), json_decode($request->get('layout'), true));
+        if (! $this->isStepValid($step)) {
+            return redirect()->route('manage.viz-builder.chart.design');
+        }
+        $resource = session()->get('viz-wizard-resource');
+        $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Chart::class]);
+        return view('dissemination::manage.viz-builder.step3')
+            ->with([
+                'steps' => $this->steps,
+                'currentStep' => 3,
+                'resource' => $resource,
+                'visualization' => $visualization,
+                'type' => $this->type,
+            ]);
+    }
+
+    public function store(Request $request)
     {
         $step = 3;
         if (! $this->isStepValid($step)) {
-            return redirect()->route('manage.viz-builder.chart.prepare-data');
+            return redirect()->route('manage.viz-builder.chart.step1');
         }
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('manage.viz-builder.chart.step3-get')->withErrors($validator)->withInput();
+        }
+
         $title = $request->get('title');
         $description = $request->get('description');
         $isFilterable = $request->boolean('filterable');
@@ -157,7 +186,7 @@ class ChartWizardController extends Controller
     {
         if ($visualization) {
             $query = new QueryBuilder($visualization->data_params);
-            $rawData = Sorter::sort($query->get())->all();
+            $rawData = $query->get()->all();//Sorter::sort($query->get())->all();
             $resource = new ChartDesignerResource(
                 dataSources: toDataFrame(collect($rawData))->toArray(),
                 data: $visualization->data,

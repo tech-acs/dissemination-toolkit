@@ -27,6 +27,11 @@ class DynamicDimensionModel
         return $this->builder->whereIn('id', $ids)->get();
     }
 
+    public function orderBy(string $column): object
+    {
+        return $this->builder->orderBy($column);
+    }
+
     public function all(): Collection
     {
         return $this->builder->get();
