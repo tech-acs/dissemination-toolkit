@@ -29,9 +29,9 @@
                 </div>
 
                 <div class="flex gap-x-5">
-                    <a href="#" type="button" class="uppercase tracking-widest rounded-md bg-indigo-50 px-3 py-2 ring-1 ring-indigo-200 text-xs font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100 cursor-pointer">
+                    {{--<a href="#" type="button" class="uppercase tracking-widest rounded-md bg-indigo-50 px-3 py-2 ring-1 ring-indigo-200 text-xs font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100 cursor-pointer">
                         {{ __('Data')}}
-                    </a>
+                    </a>--}}
 
                     <form action="{{ route('manage.viz-builder.chart.step3') }}" method="post">
                         @csrf
