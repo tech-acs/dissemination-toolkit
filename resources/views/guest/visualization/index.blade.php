@@ -1,4 +1,5 @@
 <x-guest-layout>
+    <livewire:i-need-alpine />
     <div class="container mx-auto">
         @include('dissemination::partials.nav')
         <main class="py-12">
@@ -12,7 +13,6 @@
                                placeholder="{{ __('Type keyword and press enter')}}" />
                     </div>
                     <div class="basis-1/5">
-                        <label for="topic" class="sr-only">{{ __('Topic')}}</label>
                         <select id="topic" name="topic" autocomplete="topic-name" x-data x-on:change="$event.target.form.submit()" class="relative block w-full rounded-none rounded-r-md border-0 bg-transparent py-1.5 pt-2 text-gray-700 ring-1 ring-inset ring-indigo-300 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-8">
                             <option value>{{ __('All topics')}}</option>
                             @foreach($topics ?? [] as $topic)
@@ -30,7 +30,9 @@
                             <a href="{{ route('visualization.show', $record->id) }}" class="group-hover:bg-indigo-50 rounded-md grid grid-cols-5 overflow-hidden">
 
 
+
                                         <img class="col-span-2" src="{{ $record->thumbnail }}" alt="">
+
 
                                 <div class="p-3 cursor-pointer flex-col flex overflow-hidden col-span-3">
                                     <h5 class="line-clamp-2 text-lg text-indigo-900 font-semibold">{{ $record->title }}</h5>
