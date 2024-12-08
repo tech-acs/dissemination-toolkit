@@ -1,9 +1,11 @@
 import L from 'leaflet';
-import { DoublyLinkedList } from './DataStructures';
+import leafletImage from 'leaflet-image';
+import {DoublyLinkedList} from './DataStructures';
 import {colorbrewer} from "./ColorBrewer.js";
 import {format as d3format} from "d3-format";
 import {max, min} from "lodash/math.js";
 import _ from 'lodash';
+
 const baseMapOptions =      [
     {
         name: "Blank Background",
@@ -98,7 +100,7 @@ export default class LeafletMap {
                     this.addControls();
                     this.initializeGeojsonLayer();
                     this.updateMapDataAndLayout(this.data,this.layout);
-                    this.registerLivewireEventListeners();
+                    this.registerLivewireEventListeners(this.filterable);
                 })
         } else {
             this.data = JSON.parse(this.rootElement.dataset['data'])
@@ -109,8 +111,28 @@ export default class LeafletMap {
             this.initializeGeojsonLayer();
             this.addControls();
             this.updateMapDataAndLayout(this.data,this.layout);
-            this.registerLivewireEventListeners();
+            this.registerLivewireEventListeners(this.filterable);
         }
+        const shouldCaptureThumbnail = document.getElementById('should-capture-thumbnail')?.value
+        if (shouldCaptureThumbnail) {
+            console.log('Capturing and sending thumbnail...', this.vizId);
+            this.captureThumbnail().then((imageData) => {
+                Livewire.dispatch('thumbnailCaptured', {imageData})
+            });
+        }
+
+    }
+
+    captureThumbnail(){
+        return new Promise((resolve, reject) => {
+            leafletImage(this.map, (err, canvas) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(canvas.toDataURL());
+                }
+            });
+        } );
     }
 
     async fetchData(vizId, filterPath = '') {
@@ -344,7 +366,9 @@ export default class LeafletMap {
                     },
                     click: (e) => {
                         const feature = e.target.feature;
-                        Livewire.dispatch('area-selected',{path: feature.properties.path});
+                        // console.log('Clicked on feature:', feature.properties);
+                        // Livewire.dispatch('filterChanged',{filter: feature.properties.path});
+
                     },
                     highlightFeature: (e) => {
                         const layer = e.target;
@@ -429,26 +453,16 @@ export default class LeafletMap {
         });
         if(filterable){
             Livewire.on(`filterChanged`, ({filter}) => {
-                console.log({filter})
+                console.log('*** map filter: ',{filter})
                 const [areaName, filterPath] = Object.entries(filter)[0] ?? '';
                 this.fetchData(this.vizId, filterPath)
                     .then(() => {
+                        this.clearMap();
                         this.updateMapDataAndLayout(this.data, this.layout);
                     })
             });
         }
 
-        if (filterable) {
-            Livewire.on(`filterChanged`, ({filter}) => {
-                console.log({filter})
-                const [areaName, filterPath] = Object.entries(filter)[0] ?? '';
-                this.fetchData(this.vizId, filterPath)
-                    .then(() => {
-                        console.log({Path: filterPath, Filtered: this.data})
-                        this.updateMapDataAndLayout(this.data, this.layout);
-                    })
-            });
-        }
     }
     clearMap(){
         this.geoJsons.forEach((geoJson)=>{
