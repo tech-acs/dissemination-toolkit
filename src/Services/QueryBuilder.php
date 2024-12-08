@@ -65,11 +65,12 @@ class QueryBuilder
             if ($this->indicators->count() > 1) {
                 //$valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS "values' . self::VALUE_COLUMN_INVISIBLE_MARKER . '"';
                 $valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS values';
-                $orderBy = "indicator, geography";
+                //$orderBy = "indicator, geography";
             } else {
                 $valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS "' . $this->indicators->first()->name . self::VALUE_COLUMN_INVISIBLE_MARKER . '"';
-                $orderBy = $this->makeOrderBy($this->dimensions);//"areas.path";
+                //$orderBy = $this->makeOrderBy($this->dimensions);
             }
+            $orderBy = $this->makeOrderBy($this->dimensions);
             $this->sql = vsprintf(
                 "SELECT %s, %s FROM %s WHERE %s ORDER BY %s",
                 [$select, $valueColumnInSelectClause, $from, $where, $orderBy]

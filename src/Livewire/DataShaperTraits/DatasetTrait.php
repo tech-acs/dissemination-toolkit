@@ -22,6 +22,7 @@ trait DatasetTrait
             'dimensions',
             'selectedDimensions',
             'selectedDimensionValues',
+            'sortingColumn',
             'pivotableDimensions',
             'pivotColumn',
             'pivotRow',

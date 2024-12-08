@@ -55,7 +55,7 @@
                                 </ul>
 
                                 @forelse($geographies ?? [] as $level => $levelAreas)
-                                <div x-show="selected == {{ $level }}" class="p-2 bg-blue-50 text-sm text-gray-500 rounded-md border border-blue-300 w-full">
+                                <div x-show="selected == {{ $level }}" class="p-2 bg-blue-50 text-sm text-gray-500 rounded-md border border-blue-300 w-full max-h-96 overflow-y-auto scrollbar">
 
                                     @foreach($levelAreas as $group => $lAreas)
                                         <div class="border p-1 mb-1 rounded-md text-xs" x-data="{ clickAllChildren() { $el.querySelectorAll('input').forEach(el => el.dispatchEvent(new MouseEvent('click')) ) } }">
@@ -72,7 +72,6 @@
                                                     <label for="geography-{{ $level }}-{{ $area->id }}" class="text-gray-900 ml-2 leading-6">{{ $area->name }}</label>
                                                 </div>
                                             @endforeach
-
                                         </div>
                                     @endforeach
 

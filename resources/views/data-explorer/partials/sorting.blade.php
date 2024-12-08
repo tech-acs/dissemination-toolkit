@@ -26,7 +26,7 @@
             @if(! empty($sortableColumns))
                 <div class="flex flex-col space-y-4">
                     <div class="flex flex-col">
-                        <label class="text-xs mb-1">{{ __('Column') }}</label>
+                        <label class="text-xs mb-1">{{ __('Sort by column') }}</label>
                         <select wire:model.live="sortingColumn" class="w-fit text-xs rounded-md border border-gray-300 bg-white px-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
                             <option value>Select column</option>
                             @foreach($sortableColumns as $column)

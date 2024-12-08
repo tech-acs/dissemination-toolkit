@@ -38,10 +38,24 @@ class DataShaper extends Component
         $this->prefillDataset($this->prefillDatasetId);
     }
 
+    public function populateTopics()
+    {
+        $this->topics = Topic::has('datasets')
+            ->orderBy('rank')
+            ->get()
+            ->filter(function ($topic) {
+                return $topic->datasets->reduce(function ($carry, $dataset) {
+                    return $carry || $dataset->observationsCount();
+                }, false);
+            })
+            ->pluck('name', 'id')
+            ->all();
+    }
+
     public function resetFilter(): void
     {
         $this->reset();
-        $this->topics = Topic::has('datasets')->pluck('name', 'id')->all();
+        $this->populateTopics();
         $this->dispatch('dataShaperSelectionMade', $this->makeReadableDataParams('reset', ''));
     }
 

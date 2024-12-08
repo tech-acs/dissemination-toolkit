@@ -43,6 +43,9 @@ if (! function_exists('toResultSet')) {
     function toResultSet(Collection $df): Collection
     {
         $resultSet = collect();
+        if ($df->isEmpty()) {
+            return $resultSet;
+        }
         $columns = $df->keys();
         for($i = 0; $i < count($df->first()); $i++) {
             $row = [];
