@@ -13,17 +13,12 @@
 
         <div class="flex justify-end gap-4">
             @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_VIZ)
-                <x-dropdown align="right" class="48" contentClasses="py-0 bg-white overflow-hidden">
-                    <x-slot name="trigger">
-                        <x-button>{{ __('Create New Visualization') }}</x-button>
-                    </x-slot>
-                    <x-slot name="content" class="overflow-hidden py-0">
-                        <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.chart.step1') }}">{{ __('Chart') }}</x-dropdown-link>
-                        <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.table.step1') }}">{{ __('Table') }}</x-dropdown-link>
-                        <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.map.step1') }}">{{ __('Map') }}</x-dropdown-link>
-                        <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.scorecard.step1') }}">{{ __('Scorecard') }}</x-dropdown-link>
-                    </x-slot>
-                </x-dropdown>
+                <x-button  onclick="document.getElementById('vizualization-selector').showPopover()">{{ __('Create New Visualization') }}</x-button>
+{{--                <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.chart.step1') }}">{{ __('Chart') }}</x-dropdown-link>--}}
+{{--                <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.table.step1') }}">{{ __('Table') }}</x-dropdown-link>--}}
+{{--                <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.map.step1') }}">{{ __('Map') }}</x-dropdown-link>--}}
+{{--                <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.scorecard.step1') }}">{{ __('Scorecard') }}</x-dropdown-link>--}}
+
             @endcan
         </div>
 
@@ -33,5 +28,51 @@
 
         <x-dissemination-smart-table :$smartTableData custom-action-sub-view="dissemination::manage.visualization.custom-action" />
 
+    </div>
+    <div popover id="vizualization-selector" class="bg-white w-3/4 p-10">
+        <div class="grid grid-cols-4 gap-x-4 gap-y-10">
+            <div class="group relative">
+                <img src="{{ asset('images/chart.png') }}" alt="Chart" class="aspect-square w-full rounded-md bg-gray-100 object-cover group-hover:opacity-75">
+                <div class="flex justify-center items-center">
+                    <a href="{{route('manage.viz-builder.chart.step1')}}" class="mt-6 block text-md font-medium text-gray-900">
+                        <span class="absolute inset-0 z-10" aria-hidden="true"></span>
+                        {{ __('Chart') }}
+                    </a>
+                </div>
+                <p aria-hidden="true" class="mt-1 text-sm text-gray-500"></p>
+            </div>
+            <div class="group relative">
+                <img src="{{ asset('images/table.png') }}" alt="Table" class="aspect-square w-full rounded-md bg-gray-100 object-cover group-hover:opacity-75">
+                <div class="flex justify-center items-center">
+                <a href="{{route('manage.viz-builder.table.step1')}}" class="mt-6 block text-md font-medium text-gray-900">
+                    <span class="absolute inset-0 z-10" aria-hidden="true"></span>
+                    {{ __('Table') }}
+                </a>
+                </div>
+                <p aria-hidden="true" class="mt-1 text-sm text-gray-500"></p>
+            </div>
+            <div class="group relative">
+                <img src="{{ asset('images/map.png') }}" alt="Map" class="aspect-square w-full rounded-md bg-gray-100 object-cover group-hover:opacity-75">
+                <div class="flex justify-center items-center">
+
+                <a href="{{route('manage.viz-builder.map.step1')}}" class="mt-6 block text-md font-medium text-gray-900">
+                    <span class="absolute inset-0 z-10" aria-hidden="true"></span>
+                    {{ __('Map') }}
+                </a>
+                </div>
+                <p aria-hidden="true" class="mt-1 text-sm text-gray-500"></p>
+            </div>
+            <div class="group relative">
+                <img src="{{ asset('images/scorecard.png') }}" alt="Scorecard" class="aspect-square w-full rounded-md bg-gray-100 object-cover group-hover:opacity-75">
+                <div class="flex justify-center items-center">
+
+                <a href="{{route('manage.viz-builder.scorecard.step1')}}" class="mt-6 block text-md font-medium text-gray-900">
+                    <span class="absolute inset-0 z-10" aria-hidden="true"></span>
+                    {{ __('Scorecard') }}
+                </a>
+                </div>
+                <p aria-hidden="true" class="mt-1 text-sm text-gray-500"></p>
+            </div>
+        </div>
     </div>
 </x-app-layout>
