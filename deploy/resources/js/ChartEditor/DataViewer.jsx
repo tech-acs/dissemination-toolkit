@@ -3,17 +3,17 @@ import Modal from 'react-modal';
 import {AgGridReact} from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import _ from "lodash";
+import {keys, values, zip, map, each, get} from "lodash-es";
 import Button from "./Button.jsx";
 import {TableIcon} from "./Icons.jsx";
 
 const transformColumnSchemaToRowSchema = (data) => {
-    const keys = _.keys(data);
-    const arrays = _.values(data);
-    const arrayOfPropertyLists = _.zip.apply(_, arrays);
-    return _.map(arrayOfPropertyLists, (list) => {
+    const keys = keys(data);
+    const arrays = values(data);
+    const arrayOfPropertyLists = zip.apply(_, arrays);
+    return map(arrayOfPropertyLists, (list) => {
         const obj = {};
-        _.each(keys, function (key, i) {
+        each(keys, function (key, i) {
             obj[key] = list[i];
         });
         return obj;
@@ -34,7 +34,7 @@ function DataViewer({data}) {
     Modal.setAppElement('#chart-editor');
 
     const rowData = transformColumnSchemaToRowSchema(data);
-    const colDefs = _.map(_.keys(data), (col) => {
+    const colDefs = map(keys(data), (col) => {
         return { field: col, cellDataType: 'text' }
     })
 

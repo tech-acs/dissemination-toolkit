@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Modal from 'react-modal';
 import Button from "./Button.jsx";
 import {ErrorIcon, SuccessIcon, TemplateIcon} from "./Icons.jsx";
-import {cloneDeep, isEmpty} from "lodash";
+import {cloneDeep, isEmpty} from "lodash-es";
 
 function TemplateSaver({layout, data}) {
     const [showModal, setShowModal] = useState(false);

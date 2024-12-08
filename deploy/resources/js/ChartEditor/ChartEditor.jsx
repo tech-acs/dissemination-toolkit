@@ -8,7 +8,7 @@ import Button from "./Button.jsx";
 import {CancelIcon, ErrorIcon, ResetIcon, SaveIcon, SuccessIcon, TemplateIcon} from "./Icons.jsx";
 import fr from 'plotly.js-locales/fr';
 import ptPT from 'plotly.js-locales/pt-pt';
-import {cloneDeep} from "lodash";
+import {cloneDeep} from "lodash-es";
 
 function ChartEditor({dataSources, initialData, initialLayout, config, vizId, indicatorTitle, defaultLayout}) {
     const [data, setData] = useState(initialData);
@@ -98,10 +98,6 @@ function ChartEditor({dataSources, initialData, initialLayout, config, vizId, in
 
     return (
         <>
-            {/*<div className="flex justify-between w-full bg-gray-50">
-                <div className="text-gray-600 text-xl font-medium items-center p-3 w-1/4 xl:w-1/3 2xl:w-1/2 truncate">ahem</div>
-            </div>*/}
-
             <PlotlyEditor
                 data={data}
                 layout={layout}

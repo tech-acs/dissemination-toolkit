@@ -3,8 +3,7 @@ import leafletImage from 'leaflet-image';
 import {DoublyLinkedList} from './DataStructures';
 import {colorbrewer} from "./ColorBrewer.js";
 import {format as d3format} from "d3-format";
-import {max, min} from "lodash/math.js";
-import _ from 'lodash';
+import {max, min, get} from "lodash-es";
 
 const baseMapOptions =      [
     {
@@ -135,8 +134,6 @@ export default class LeafletMap {
                 return;
             }
 
-
-
             this.map.whenReady(() => {
                 leafletImage(this.map, (err, canvas) => {
 
@@ -212,10 +209,10 @@ export default class LeafletMap {
                 },  getContent: (feature,values) => {
                     let info = options.info;
                     if(info.infos) {
-                        return options.infos[options.locations.indexOf(_.get(feature, options.layout.featureidkey??'name'))];
+                        return options.infos[options.locations.indexOf(get(feature, options.layout.featureidkey??'name'))];
                     }else {
                         return '<h4><b>' + feature.properties.name + '</b></h4>' + (feature?.properties ?
-                            values[info.locations.indexOf(_.get(feature, options.layout.featureidkey??'name'))]??''
+                            values[info.locations.indexOf(get(feature, options.layout.featureidkey??'name'))]??''
                             : 'Hover over an area');
                     }
                 }
@@ -298,11 +295,11 @@ export default class LeafletMap {
         this.info.update = function (feature,values) {
             let info = options.info;
             if(info.infos) {
-                this._div.innerHTML = info.infos[info.locations.indexOf(_.get(feature, options.layout.featureidkey??'name'))];
+                this._div.innerHTML = info.infos[info.locations.indexOf(get(feature, options.layout.featureidkey??'name'))];
             }
             else {
                 this._div.innerHTML = '<h4>Area</h4>' + (feature?.properties ?
-                    '<b>' + feature.properties.name + '</b><br />' + values[info.locations.indexOf(_.get(feature,options.layout.featureidkey??'name'))]??''
+                    '<b>' + feature.properties.name + '</b><br />' + values[info.locations.indexOf(get(feature,options.layout.featureidkey??'name'))]??''
                     : 'Hover over an area');
             }
         };
@@ -338,7 +335,7 @@ export default class LeafletMap {
         const colorPallette = colorbrewer[trace.colorpallette][layout.steps];
         return {
             style: (feature) => {
-                const index = trace.locations.indexOf(_.get(feature, trace.featureidkey??'name'));
+                const index = trace.locations.indexOf(get(feature, trace.featureidkey??'name'));
                 if (index < 0) {
                     return {
                         fillOpacity: 0,

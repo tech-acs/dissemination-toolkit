@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import ChartEditor from "./ChartEditor.jsx";
 import './index.css';
-import { has } from "lodash";
+import { has } from "lodash-es";
 
 const rootElement = document.getElementById('chart-editor')
 

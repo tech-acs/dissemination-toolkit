@@ -53,7 +53,7 @@ trait PackageTasksTrait
         "alpinejs" => "^3.14.1",
         "autoprefixer" => "^10.4.16",
         "laravel-vite-plugin" => "^1.0",
-        "lodash" => "^4.17.21",
+        "lodash-es" => "^4.17.21",
         "plotly.js-dist" => "^2.33.0",
         "plotly.js-locales" => "^2.33.0",
         "react" => "^16.14.0",
