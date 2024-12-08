@@ -14,10 +14,6 @@
         <div class="flex justify-end gap-4">
             @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_VIZ)
                 <x-button  onclick="document.getElementById('vizualization-selector').showPopover()">{{ __('Create New Visualization') }}</x-button>
-{{--                <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.chart.step1') }}">{{ __('Chart') }}</x-dropdown-link>--}}
-{{--                <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.table.step1') }}">{{ __('Table') }}</x-dropdown-link>--}}
-{{--                <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.map.step1') }}">{{ __('Map') }}</x-dropdown-link>--}}
-{{--                <x-dropdown-link class="px-6 tracking-wide" href="{{ route('manage.viz-builder.scorecard.step1') }}">{{ __('Scorecard') }}</x-dropdown-link>--}}
 
             @endcan
         </div>
