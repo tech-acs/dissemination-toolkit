@@ -1,7 +1,7 @@
 <div>
     <x-button wire:click="$toggle('showBulkInviteForm')" wire:loading.attr="disabled" class="ml-3">{{ __('Bulk Invite') }}</x-button>
 
-    <x-dialog-modal wire:model.live="showBulkInviteForm">
+    <x-dialog-modal wire:model="showBulkInviteForm">
         <x-slot name="title">
             {{ __('Invite multiple users') }}
         </x-slot>
@@ -9,12 +9,21 @@
         <x-slot name="content">
             <div class="mb-4">
                 <p class="mb-2">
-                    {{ __('You can invite multiple users at once by importing a list of email addresses from an Excel file.')}}
+                    You can invite multiple users at once by importing a list of email addresses from an Excel file.
                 </p>
                 <span class="mb-2 text-sm text-gray-600 italic">
                     <p class="mb-2">The file needs to have at least one column named <span class="font-semibold">email</span> that contains the email addresses.</p>
                     <p>It can also optionally have another column called <span class="font-semibold">role</span> that contains the role to assign.</p>
                 </span>
+                <div class="pt-2">
+                    <a
+                        title="Download excel template you can use to invite user in bulk"
+                        wire:click="downloadTemplate"
+                        class="text-sm font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+                    >
+                        Download Import Template
+                    </a>
+                </div>
             </div>
 
             <div class="mt-5">
@@ -27,7 +36,7 @@
                                 <span>Browse</span>
                             </div>
                         </label>
-                        <input type="file" id="file" name="file" wire:model.live="file" onchange="document.getElementById('file_label').innerText=this.files[0].name;" class="hidden">
+                        <input type="file" id="file" name="file" wire:model="file" onchange="document.getElementById('file_label').innerText=this.files[0].name;" class="hidden">
                         @if ($fileAccepted)
                             <x-dissemination::icon.accepted />
                         @endif
@@ -40,14 +49,14 @@
                     <x-input-error for="file" />
                 @else
                     <div class="text-xs text-gray-500 mt-1">
-                        {{ __('You must upload a spreadsheet')}} (.xlsx or .csv)
+                        You must upload a spreadsheet (.xlsx or .csv)
                     </div>
                 @endif
             </div>
             <div class="mt-5">
                 @if(config('dissemination.emailing_enabled'))
                     <x-label>
-                        <x-checkbox name="send_email" class="mr-1" wire:model.live="sendEmails" /> {{ __('send invitation emails') }}
+                        <x-checkbox name="send_email" class="mr-1" wire:model="sendEmails" /> {{ __('send invitation emails') }}
                     </x-label>
                 @endif
             </div>
@@ -61,7 +70,7 @@
                 {{ __('Close') }}
             </x-secondary-button>
 
-            <x-button class="ml-2" wire:click="invite" wire:loading.attr="disabled" onclick="setTimeout(() => Livewire.emit('pleaseHideForm'), 3000);">
+            <x-button class="ml-2" wire:click="invite" wire:loading.attr="disabled" onclick="setTimeout(() => Livewire.dispatch('pleaseHideForm'), 3000);">
                 {{ __('Invite') }}
             </x-button>
         </x-slot>

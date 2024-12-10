@@ -2,13 +2,15 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
-use App\Jobs\BulkInvitationJob;
+use Livewire\Features\SupportStreaming\HandlesStreaming;
+use Uneca\DisseminationToolkit\Jobs\BulkInvitationJob;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\SimpleExcel\SimpleExcelReader;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class BulkInviter extends Component
 {
@@ -19,7 +21,6 @@ class BulkInviter extends Component
     public $fileAccepted = false;
     public string $filePath = '';
     public bool $sendEmails = false;
-    public bool $hasRoleColumn = false;
 
     protected $rules = [
         'file' => 'required|file|mimes:csv,xlsx'
@@ -41,7 +42,6 @@ class BulkInviter extends Component
             ]);
         }
         $this->fileAccepted = true;
-        $this->hasRoleColumn = in_array('role', $columnHeaders);
     }
 
     public function resetForm()
@@ -61,8 +61,15 @@ class BulkInviter extends Component
     public function invite()
     {
         $this->validate();
-        BulkInvitationJob::dispatch($this->filePath, $this->hasRoleColumn, $this->sendEmails, auth()->user());
-        $this->emit('processing');
+        BulkInvitationJob::dispatch($this->filePath, $this->sendEmails, auth()->user());
+        $this->dispatch('processing');
+    }
+
+    public function downloadTemplate()
+    {
+        $pathToCsv = Storage::disk('local')->path('bulk_invitations_template.xlsx');
+        SimpleExcelWriter::create($pathToCsv)->addHeader(['email', 'role']);
+        return response()->download($pathToCsv);
     }
 
     public function render()
