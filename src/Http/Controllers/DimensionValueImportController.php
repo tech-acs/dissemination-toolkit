@@ -48,7 +48,7 @@ class DimensionValueImportController extends Controller
                         ->create([
                             'name' => $row['label'],
                             'code' => $row['code'],
-                            'rank' => $row['rank'] ?? $totalRows;
+                            'rank' => $row['rank'] ?? $totalRows,
                         ]) ;
                     $inserted++;
                 } catch (\Exception $e) {
