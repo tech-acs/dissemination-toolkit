@@ -29,6 +29,8 @@ trait GeographyTrait
         }
         $this->selectedGeographyLevels = array_filter($this->selectedGeographyLevels, fn ($nestedArr) => ! empty($nestedArr));
 
+        $this->setSortableColumns();
+
         $this->dispatchDisplayUpdate();
     }
 

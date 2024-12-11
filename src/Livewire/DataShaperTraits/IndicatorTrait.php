@@ -13,10 +13,13 @@ trait IndicatorTrait {
 
     public function updatedSelectedIndicators($indicatorIds): void
     {
+        if ($indicatorIds === '__rm__') {
+            return;
+        }
         $this->reset('selectedGeographyLevels', 'geographyLevels', 'geographies', 'selectedGeographies',
             'years', 'selectedYears', 'dimensions', 'selectedDimensions', 'selectedDimensionValues', 'sortingColumn', 'pivotableDimensions', 'pivotColumn', 'pivotRow', 'nestingPivotColumn');
 
-        $indicators = Indicator::findMany($indicatorIds);
+        $indicators = Indicator::findMany($this->selectedIndicators);
         $dataset = Dataset::find($this->selectedDataset);
         $allLevels = (new AreaTree())->hierarchies;
         $this->geographyLevels = $dataset ? array_slice($allLevels, 0,$dataset->max_area_level + 1) : $allLevels;
