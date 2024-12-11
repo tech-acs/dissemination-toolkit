@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends \App\Models\User
 {
     use HasFactory, Notifiable, HasRoles, HasProfilePhoto;
 
