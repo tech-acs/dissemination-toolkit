@@ -48,8 +48,8 @@
                             </button>
                         </div>
                     </div>
-                    <div x-show="showValues" class="text-xs mt-2 border rounded-md p-4 max-h-72 overflow-y-auto scrollbar">
-                        {{--Select all--}}
+                    <div x-show="showValues" class="text-xs mt-2 border rounded-md p-4 max-h-72 overflow-y-auto scrollbar" x-data="{ clickAllChildren() { $el.querySelectorAll('input').forEach(el => el.dispatchEvent(new MouseEvent('click')) ) } }">
+                        <span class="cursor-pointer font-semibold text-blue-600" x-on:click="clickAllChildren()">Select all</span>
                         @forelse($dimension['values'] as $value)
                             <div class="flex items-start">
                                 <input
