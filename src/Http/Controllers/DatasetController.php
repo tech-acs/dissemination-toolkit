@@ -59,7 +59,7 @@ class DatasetController extends Controller
     public function destroy(Dataset $dataset)
     {
         $warning = "The dataset contains data and therefore should not be deleted.
-                    If you want to remove the dataset along with the data and other references, visit this url: " . url()->route('manage.dataset.remove', $dataset);
+                    If you want to remove the dataset along with the data and other references, visit this url: " . url()->route('manage.dataset.destroy', $dataset);
         if ($dataset->observationsCount() > 0) {
             return redirect()->route('manage.dataset.index')->withErrors($warning);
         }
