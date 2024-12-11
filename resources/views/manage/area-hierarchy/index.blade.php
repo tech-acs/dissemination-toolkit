@@ -67,11 +67,9 @@
                                     {{ json_encode($record->map_zoom_levels) }}
                                 </td>--}}
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    @if (app()->isLocal())
-                                        <a href="{{route('manage.area-hierarchy.edit', $record->id)}}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
-                                        <span class="text-gray-400 px-1">|</span>
-                                        <a href="{{ route('manage.area-hierarchy.destroy', $record->id) }}" x-on:click.prevent="confirmThenDelete($el)" class="text-red-600">{{ __('Delete') }}</a>
-                                    @endif
+                                    <a href="{{route('manage.area-hierarchy.edit', $record->id)}}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
+                                    <span class="text-gray-400 px-1">|</span>
+                                    <a href="{{ route('manage.area-hierarchy.destroy', $record->id) }}" x-on:click.prevent="confirmThenDelete($el)" class="text-red-600">{{ __('Delete') }}</a>
                                 </td>
                             </tr>
                         @empty

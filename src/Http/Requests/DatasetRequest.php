@@ -32,7 +32,7 @@ class DatasetRequest extends FormRequest
                 'required', 'array',
                 function (string $attribute, mixed $value, Closure $fail) {
                     $yearDimension = Dimension::firstWhere('table_name', 'year');
-                    if (! in_array($yearDimension->id, $value)) {
+                    if (! in_array($yearDimension?->id, $value)) {
                         $fail("The year dimension is mandatory");
                     }
                 },
