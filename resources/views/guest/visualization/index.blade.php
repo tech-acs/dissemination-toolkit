@@ -1,6 +1,6 @@
 <x-guest-layout>
     <livewire:i-need-alpine />
-    <div class="container mx-auto">
+    <div class="container mx-auto bg-stale-100">
         @include('dissemination::partials.nav')
         <main class="py-12">
 
@@ -24,22 +24,43 @@
                     </div>
                 </form>
 
-                <div class="mt-6 grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                <div class="mt-6  bg-stale-100">
+                    <ul role="list" class="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0">
+
                     @forelse($records as $record)
-                        <div class="group w-full rounded-md bg-white shadow-md ring-1 ring-indigo-300 hover:bg-indigo-50 hover:ring-indigo-500 hover:ring-2">
-                            <a href="{{ route('visualization.show', $record->id) }}" class="group-hover:bg-indigo-50 rounded-md grid grid-cols-5 overflow-hidden">
-
-
-
-                                        <img class="col-span-2" src="{{ $record->thumbnail }}" alt="">
-
-
-                                <div class="p-3 cursor-pointer flex-col flex overflow-hidden col-span-3">
-                                    <h5 class="line-clamp-2 text-lg text-indigo-900 font-semibold">{{ $record->title }}</h5>
-                                    <p class="line-clamp-4 text-sm text-gray-500 font-normal leading-5">{{ $record->description }}</p>
+                            <li class="inline-flex w-64 flex-col text-center lg:w-auto p-6 shadow-lg mt-6 border rounded-md hover:border-indigo-500/100 hover:border-2">
+                                <div class="group relative">
+                                    @if($record->type==='Table')
+                                        <img src="{{ $record->thumbnail }}" alt="" class="aspect-square w-full rounded-md bg-gray-200 object-cover object-left-top group-hover:opacity-75">
+                                    @else
+                                        <img src="{{ $record->thumbnail }}" alt="" class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75">
+                                    @endif
+                                    <div class="mt-6 h-24">
+                                        <h3 class="mt-1 font-semibold text-gray-900">
+                                            <a href="{{ route('visualization.show', $record->id) }}">
+                                                <span class="absolute inset-0"></span>
+                                                {{ $record->title }}                                            </a>
+                                        </h3>
+                                        <p class="mt-1 text-sm text-gray-900">{{ $record->type }}</p>
+                                    </div>
                                 </div>
-                            </a>
-                        </div>
+                            </li>
+
+                            <!-- More products... -->
+{{--                        <div class="group w-full rounded-md bg-white shadow-md ring-1 ring-indigo-300 hover:bg-indigo-50 hover:ring-indigo-500 hover:ring-2">--}}
+{{--                            <a href="{{ route('visualization.show', $record->id) }}" class="group-hover:bg-indigo-50 rounded-md grid grid-cols-5 overflow-hidden">--}}
+
+
+
+{{--                                        <img class="col-span-2" src="{{ $record->thumbnail }}" alt="">--}}
+
+
+{{--                                <div class="p-3 cursor-pointer flex-col flex overflow-hidden col-span-3">--}}
+{{--                                    <h5 class="line-clamp-2 text-lg text-indigo-900 font-semibold">{{ $record->title }}</h5>--}}
+{{--                                    <p class="line-clamp-4 text-sm text-gray-500 font-normal leading-5">{{ $record->description }}</p>--}}
+{{--                                </div>--}}
+{{--                            </a>--}}
+{{--                        </div>--}}
                     @empty
                         <div class="col-span-3 flex justify-center items-center py-6 mb-8">
                             <div class="text-center text-3xl p-4 text-gray-500">
@@ -47,6 +68,8 @@
                             </div>
                         </div>
                     @endforelse
+                    </ul>
+
                 </div>
 
             </div>
