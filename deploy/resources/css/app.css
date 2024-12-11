@@ -28,8 +28,21 @@
     }
 }
 
-::backdrop {
+/*::backdrop {*/
+/*}*/
+[popover]::backdrop {
+    background-color: rgb(0 0 0 / 0%);
     backdrop-filter: blur(3px);
+    transition:
+            display 0.7s allow-discrete,
+            overlay 0.7s allow-discrete,
+            background-color 0.7s;
+    /* Equivalent to
+    transition: all 0.7s allow-discrete; */
+}
+
+[popover]:popover-open::backdrop {
+    background-color: rgb(0 0 0 / 50%);
 }
 .image-container {
     position: relative;
