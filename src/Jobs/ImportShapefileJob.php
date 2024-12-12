@@ -102,7 +102,7 @@ class ImportShapefileJob implements ShouldQueue
 
         })->progress(function (Batch $batch) use ($user) { // A single job has completed successfully...
             $lastTimestamp = Cache::get("batch_progress");
-            if (time() - $lastTimestamp > config('chimera.progress_update_interval_seconds')) {
+            if (time() - $lastTimestamp > config('dissemination.progress_update_interval_seconds')) {
                 Notification::sendNow($user, new TaskProgressNotification(
                     'Task ongoing',
                     "The shapefile is being processed. The work is {$batch->progress()}% complete."
@@ -124,7 +124,7 @@ class ImportShapefileJob implements ShouldQueue
         }); //->allowFailures()
 
         $processBatch = true;
-        foreach ($features->chunk(config('chimera.shapefile.import_chunk_size')) as $index => $featuresChunk) {
+        foreach ($features->chunk(config('dissemination.shapefile.import_chunk_size')) as $index => $featuresChunk) {
             $features = $featuresChunk->values()->toArray();
 
             if ($this->areNamesAndCodesValid($features)) {
@@ -137,7 +137,7 @@ class ImportShapefileJob implements ShouldQueue
                     logger(count($orphanFeatures) . " orphan area(s) found in chunk " . ($index + 1), ['Names' => $orphans]);
                 }
 
-                if (empty($orphanFeatures) || ! config('chimera.shapefile.stop_import_if_orphans_found')) {
+                if (empty($orphanFeatures) || ! config('dissemination.shapefile.stop_import_if_orphans_found')) {
                     if (! empty($orphanFeatures)) {
                         $augmentedFeaturesChunk = array_filter($augmentedFeaturesChunk, fn ($feature) => ! empty($feature['path']));
                     }

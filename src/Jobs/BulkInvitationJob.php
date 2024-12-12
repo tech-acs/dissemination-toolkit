@@ -31,7 +31,7 @@ class BulkInvitationJob implements ShouldQueue
 
     public function handle()
     {
-        $expiresAt = now()->addHours(config('chimera.invitation.ttl_hours'));
+        $expiresAt = now()->addHours(config('dissemination.invitation.ttl_hours'));
         $totalCount = 0;
         $successCount = 0;
         SimpleExcelReader::create($this->filePath)->getRows()
