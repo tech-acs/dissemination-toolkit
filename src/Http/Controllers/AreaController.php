@@ -4,7 +4,7 @@ namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Uneca\DisseminationToolkit\Http\Requests\MapRequest;
-use Uneca\DisseminationToolkit\Jobs\ImportDatasetJob;
+use Uneca\DisseminationToolkit\Jobs\ImportShapefileJob;
 use Uneca\DisseminationToolkit\Models\Area;
 use Uneca\DisseminationToolkit\Services\AreaTree;
 use Uneca\DisseminationToolkit\Services\ShapefileImporter;
@@ -79,7 +79,7 @@ class AreaController extends Controller
             ]);
         }
 
-        ImportDatasetJob::dispatch($filePath, $level, auth()->user(), app()->getLocale());
+        ImportShapefileJob::dispatch($filePath, $level, auth()->user(), app()->getLocale());
 
         return redirect()->route('manage.area.index')
             ->withMessage("Importing is in progress. You will be notified when it is complete.");

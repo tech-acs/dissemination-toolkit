@@ -141,7 +141,7 @@ class ImportShapefileJob implements ShouldQueue
                     if (! empty($orphanFeatures)) {
                         $augmentedFeaturesChunk = array_filter($augmentedFeaturesChunk, fn ($feature) => ! empty($feature['path']));
                     }
-                    $batch->add(new ImportDatasetChunkJob($augmentedFeaturesChunk, $this->level, $this->user, $this->locale));
+                    $batch->add(new ImportShapefileChunkJob($augmentedFeaturesChunk, $this->level, $this->user, $this->locale));
                 } else {
                     $processBatch = false;
                     break;
