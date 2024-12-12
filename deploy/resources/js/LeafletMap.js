@@ -80,10 +80,15 @@ export default class LeafletMap {
     geoJsons = [];
     basemapLayers = {};
 
-    constructor(mapContainerId) {
-        this.id = mapContainerId;
-        this.rootElement = document.getElementById(mapContainerId);
-
+    constructor(htmlId,canvas = null) {
+        this.id = htmlId
+        if(canvas)
+        {
+            this.rootElement = canvas.getElementById(htmlId)
+        }
+        else{
+            this.rootElement = document.getElementById(htmlId)
+        }
         // Set locale
         // this.locale = this.mapOptions?.locale || 'en';
 

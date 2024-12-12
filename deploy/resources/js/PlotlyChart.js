@@ -33,9 +33,15 @@ export default class PlotlyChart {
         this.filterable = response.data.filterable;
     }
 
-    constructor(htmlId) {
+    constructor(htmlId,canvas = null) {
         this.id = htmlId
-        this.rootElement = document.getElementById(htmlId)
+        if(canvas)
+        {
+            this.rootElement = canvas.getElementById(htmlId)
+        }
+        else{
+            this.rootElement = document.getElementById(htmlId)
+        }
 
         if (this.config.locale === 'fr') {
             Plotly.register(fr);

@@ -40,7 +40,7 @@ class StoryBuilderController extends Controller
                     'type' => $visualization->type,
                 ];
             })->all();
-        return view('manage.story.page-builder', compact('story', 'visualizations', 'baseUrl'));
+        return view('dissemination::manage.story.page-builder', compact('story', 'visualizations', 'baseUrl'));
     }
 
     public function update(Request $request, $id)
@@ -58,7 +58,7 @@ class StoryBuilderController extends Controller
         $story->update(['gjs_project_data' => html_entity_decode($request->get('data')[1]['story_project_data']),
         'css' => $request->get('data')[2]['story_css']]);
        // StoryHtmlDumper::write($story);
-        return view('manage.story.page-builder', compact('story'));
+        return view('dissemination::manage.story.page-builder', compact('story'));
     }
     public function uploadImage(Request $request)
     {
@@ -96,22 +96,25 @@ class StoryBuilderController extends Controller
         $vizs= Topic::find($topic_id)->visualizations()->get()->map(function ($viz) {
             $vizId = 'viz-'.$viz->id;
             $vizInit = "new AgGridTable('".$vizId."')";
+            $xInit = "AgGridTable";
 
             if ($viz->type === 'Chart'){
                 $vizInit = "new PlotlyChart('".$vizId."')";
+                $xInit = "PlotlyChart";
             }
             else if ($viz->type === 'Map') {
                 $vizInit = "new LeafletMap('".$vizId."')";
+                $xInit = "LeafletMap";
             }
             return [
                 'id' => $viz->id,
                 'title' => $viz->title,
                 'description' => $viz->description,
                 'type' => $viz->type,
-                'xinit' =>'PlotlyChart',
+                'xinit' => $xInit,
                 'vizid' => $vizId,
                 'icon' => VisualizationTypeEnum::getIcon($viz->type), 
-                'code' => '<div class="Chart" id="' . $vizId . '" viz-id="' . $viz->id . '" type="' . $viz->type . '" x-init="'. $vizInit .'"></div>'              
+                'code' => '<div class="Chart" id="' . $vizId . '" viz-id="' . $viz->id . '" type="' . $viz->type . '" x-init="'. $vizInit .'" data-gjs-type="visualization-component" gjs-init="'.$xInit.'"></div>'
                // 'code' => '<livewire:visualizer vizId="' . $viz->id . '" designated-component="' . $viz->livewire_component. '"/>',
             ];
         });
