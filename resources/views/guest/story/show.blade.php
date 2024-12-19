@@ -18,7 +18,7 @@
             <div class="pt-10 ck-content">
                 {!! Blade::render($story->html) !!}
             </div>
-            <x-dissemination::reviews :subject="$story" />
+            <x-dissemination-reviews :subject="$story" />
         </article>
     </div>
     <div class="container mx-auto">

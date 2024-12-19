@@ -35,7 +35,7 @@
                         <select id="max_area_level" name="max_area_level" class="mt-1 pr-10 space-y-1 text-sm p-1 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">
                             <option value="">{{ __('Select geographic granularity') }}</option>
                             @foreach($areaLevels ?? [] as $level => $name)
-                                <option class="p-1 rounded" value="{{ $level }}" @selected($level == old('max_area_level', $dataset->max_area_level ?? -1))>
+                                <option class="p-1 rounded" value="{{ $level }}" @selected($level === old('max_area_level', $dataset->max_area_level))>
                                     {{ $name }}
                                 </option>
                             @endforeach

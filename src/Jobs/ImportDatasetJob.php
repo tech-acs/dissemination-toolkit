@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Validation\ValidationException;
 use Uneca\DisseminationToolkit\Models\Dataset;
+use Uneca\DisseminationToolkit\Notifications\TaskCompletedNotification;
 use Uneca\DisseminationToolkit\Notifications\TaskFailedNotification;
 use Uneca\DisseminationToolkit\Traits\Geospatial;
 use Illuminate\Bus\Queueable;
@@ -80,8 +81,12 @@ class ImportDatasetJob implements ShouldQueue
             });
             $result = DB::table($this->dataset->fact_table)->insertOrIgnore($entries);
             $inserted += $result;
-            dump("Inserted so far: $inserted");
+            //dump("Inserted so far: $inserted");
         });
+        Notification::sendNow($this->user, new TaskCompletedNotification(
+            'Task completed',
+            'The dataset import process has been completed.',
+        ));
     }
 
     public function failed(\Throwable $exception)
