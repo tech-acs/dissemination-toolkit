@@ -6,8 +6,9 @@
     <div class="container mx-auto flex-grow">
         @include('dissemination::partials.nav')
         <style>
-                    {!! $story->css !!}
-            </style>
+            {!! $story->css !!}
+        </style>
+        @vite('resources/css/map.css');
         <article class="p-4 rounded-md ring-1 mb-8">
             <x-dissemination::guest-header :content="$story" />
             @if($story->is_filterable)

@@ -100,7 +100,7 @@ export default class LeafletMap {
         if(this.vizId){
             this.fetchData(this.vizId)
                 .then(() => {
-                    this.initializeMap(this.rootElement,this.layout.map.style);
+                    this.initializeMap(this.rootElement,this.layout.basemaps);
                     this.addControls();
                     this.initializeGeojsonLayer();
                     this.updateMapDataAndLayout(this.data,this.layout);
@@ -161,6 +161,10 @@ export default class LeafletMap {
     }
 
     initializeMap(mapContainer, baseMap) {
+        if (this.map) {
+            this.map.off();     // remove all event listeners
+            this.map.remove();  // remove the map from the DOM
+        }
         this.map = L.map(mapContainer, this.mapOptions);
 
         this.map.setView(

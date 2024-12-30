@@ -3,6 +3,7 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Uneca\DisseminationToolkit\Enums\VisualizationTypeEnum;
 use Uneca\DisseminationToolkit\Models\Story;
 use Uneca\DisseminationToolkit\Models\Topic;
@@ -92,9 +93,9 @@ class StoryBuilderController extends Controller
     }
 
     public function getArtifacts(int $topic_id)
-    {        
+    {
         $vizs= Topic::find($topic_id)->visualizations()->get()->map(function ($viz) {
-            $vizId = 'viz-'.$viz->id;
+            $vizId = 'viz-'.$viz->id . uniqid('', true);
             $vizInit = "new AgGridTable('".$vizId."')";
             $xInit = "AgGridTable";
 
@@ -107,15 +108,16 @@ class StoryBuilderController extends Controller
                 $xInit = "LeafletMap";
             }
             return [
-                'id' => $viz->id,
+                'id' => $vizId,
                 'title' => $viz->title,
                 'description' => $viz->description,
                 'type' => $viz->type,
                 'xinit' => $xInit,
                 'vizid' => $vizId,
-                'icon' => VisualizationTypeEnum::getIcon($viz->type), 
-                'code' => '<div class="Chart" id="' . $vizId . '" viz-id="' . $viz->id . '" type="' . $viz->type . '" x-init="'. $vizInit .'" data-gjs-type="visualization-component" gjs-init="'.$xInit.'"></div>'
-               // 'code' => '<livewire:visualizer vizId="' . $viz->id . '" designated-component="' . $viz->livewire_component. '"/>',
+//                'icon' => VisualizationTypeEnum::getIcon($viz->type),
+                'icon' => '<img alt="feature image" loading="lazy" class="object-cover" src="'. $viz->thumbnail.'">',
+
+                'code' => '<div class="'.$viz->type.'" id="' . $vizId . '" viz-id="' . $viz->id . '" type="' . $viz->type . '" x-init="'. $vizInit .'"></div>'
             ];
         });
 
