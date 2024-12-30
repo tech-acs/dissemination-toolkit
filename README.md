@@ -52,9 +52,16 @@ Once you have edited your .env file, you are now ready to run the database migra
 php artisan migrate
 ```
 
+Create the permissions to be used in the application
+```
+php artisan dissemination:update  --permissions
+```
+
 At this point, you are ready to start your server, whatever that may be (artisan serve command, nginx, WAMP, IIS, etc.) and navigate to the web address where you will see the landing page
 
 The quickest way would be to run the built-in artisan web server like so,
+
+
 
 ```
 php artisan serve
