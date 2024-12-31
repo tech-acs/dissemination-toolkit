@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <div class="py-5 w-3/4 text-4xl text-indigo-800 font-bold tracking-tight">{{ $content->title }}</div>
+    <div class="py-5 w-3/4 text-2xl font-bold tracking-tight">{{ $content->title }}</div>
     <div class="text-base text-gray-500 pb-2">{{ $content->description }}</div>
     <div class="pb-2"><x-dissemination::tag-cloud :tags="$content->tags"/></div>
     <div class="border-y w-full flex justify-between items-center py-2 my-2">

@@ -30,7 +30,7 @@
         'WhatsApp' => [
             'svg' => 'dissemination::icon.social.whatsapp',
             'color' => '#25D366',
-            'url' => 'https://web.whatsapp.com/send?text={content} {url}'
+            'url' => 'https://api.whatsapp.com/send?text={content} {url}'
         ],
         /*'MicrosoftTeams' => [
             'path' => '',
@@ -46,8 +46,8 @@
 ])
 <div class="flex gap-x-4">
     @foreach($platforms as $platformName => $details)
-        <a title="Share via {{ $platformName }}" target="_blank" href="{{ str($details['url'])->swap(['{url}' => $url, '{content}' => urlencode($content)])->toString() }}" class="duration-300 hover:scale-150">
-            <x-dynamic-component :component="$details['svg']" class="size-6 text-gray-600" />
+        <a title="Share via {{ $platformName }}" target="_blank" href="{{ str($details['url'])->swap(['{url}' => $url, '{content}' => urlencode($content)])->toString() }}" class="duration-300 hover:scale-150" >
+            <x-dynamic-component :component="$details['svg']" class="size-6 text-gray-600" style="color: {{ $details['color'] }}"/>
         </a>
     @endforeach
 </div>
