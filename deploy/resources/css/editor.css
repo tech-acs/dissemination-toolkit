@@ -1,0 +1,19 @@
+
+/* Theming */
+.gjs-one-bg {
+    background-color: #e5e8f4;
+}
+
+.gjs-two-color {
+    color: #3e5193;
+}
+
+.gjs-three-bg {
+    background-color: #4f66b5;
+    color: white;
+}
+
+.gjs-four-color,
+.gjs-four-color-h:hover {
+    color: #4f66b5;
+}

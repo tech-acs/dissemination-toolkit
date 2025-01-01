@@ -43,7 +43,6 @@ trait PackageTasksTrait
         "@ckeditor/ckeditor5-utils" => "^43.2.0",
         "@ckeditor/ckeditor5-widget" => "^43.2.0",
         "@ckeditor/vite-plugin-ckeditor5" => "^0.1.3",
-
         "leaflet" => "^1.9",
         "easymde" => "^2.18.0",
         "@tailwindcss/aspect-ratio" => "^0.4.2",
@@ -63,7 +62,14 @@ trait PackageTasksTrait
         "tailwindcss" => "^3.4.0",
         "d3-format" => "^3.1.0",
         "leaflet-image"=> "^0.4.0",
-        "html2canvas-pro"=> "^1.5.8"
+        "html2canvas-pro"=> "^1.5.8",
+        "grapesjs" => "^0.22.4",
+        "grapesjs-blocks-basic" => "^1.0.1",
+        "grapesjs-ga"=> "^1.0.2",
+        "grapesjs-plugin-forms"=> "^2.0.6",
+        "grapesjs-preset-newsletter"=> "^1.0.1",
+        "grapesjs-preset-webpage"=> "^1.0.3",
+        "grapesjs-tailwind"=> "^1.0.11",
 
     ];
 

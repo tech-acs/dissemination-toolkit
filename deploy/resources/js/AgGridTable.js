@@ -13,10 +13,15 @@ export default class AgGridTable {
         this.options = response.data.options;
     }
 
-    constructor(htmlId) {
+    constructor(htmlId,canvas = null) {
         this.id = htmlId
-        this.rootElement = document.getElementById(htmlId)
-
+        if(canvas)
+        {
+            this.rootElement = canvas.getElementById(htmlId)
+        }
+        else{
+            this.rootElement = document.getElementById(htmlId)
+        }
         this.rootElement.classList.add(...['ag-theme-quartz', 'w-full', 'h-[calc(60vh)]']);
         const vizId = this.rootElement.getAttribute('viz-id')
 

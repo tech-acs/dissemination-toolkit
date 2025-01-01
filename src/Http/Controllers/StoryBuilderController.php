@@ -3,6 +3,7 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Uneca\DisseminationToolkit\Enums\VisualizationTypeEnum;
 use Uneca\DisseminationToolkit\Models\Story;
 use Uneca\DisseminationToolkit\Models\Topic;
@@ -27,6 +28,21 @@ class StoryBuilderController extends Controller
             })->all();
         return view('dissemination::manage.story.builder', compact('story', 'visualizations', 'baseUrl'));
     }
+    public function designPage(Story $story)
+    {
+        $baseUrl = config('app.url');
+        $visualizations = Visualization::orderBy('livewire_component')
+            ->published()
+            ->get()
+            ->map(function (Visualization $visualization) {
+                return [
+                    'id' => $visualization->id,
+                    'name' => $visualization->title,
+                    'type' => $visualization->type,
+                ];
+            })->all();
+        return view('dissemination::manage.story.page-builder', compact('story', 'visualizations', 'baseUrl'));
+    }
 
     public function update(Request $request, $id)
     {
@@ -36,6 +52,15 @@ class StoryBuilderController extends Controller
         return response('Success', 200);
     }
 
+    public function updatePage(Request $request, $id)
+    {
+        $story = Story::find($id);
+        $story->update(['html' => html_entity_decode($request->get('data')[0]['story_html'])]);
+        $story->update(['gjs_project_data' => html_entity_decode($request->get('data')[1]['story_project_data']),
+        'css' => $request->get('data')[2]['story_css']]);
+       // StoryHtmlDumper::write($story);
+        return view('dissemination::manage.story.page-builder', compact('story'));
+    }
     public function uploadImage(Request $request)
     {
         if ($request->hasFile('image')) {
@@ -69,19 +94,35 @@ class StoryBuilderController extends Controller
 
     public function getArtifacts(int $topic_id)
     {
-        return Visualization::published()->whereHas('topic',function ($query) use ($topic_id) {
-            $query->where('topic_id',$topic_id);
-        }
-        )->get() ->map(function ($viz) {
+        $vizs= Topic::find($topic_id)->visualizations()->get()->map(function ($viz) {
+            $vizId = 'viz-'.$viz->id . uniqid('', true);
+            $vizInit = "new AgGridTable('".$vizId."')";
+            $xInit = "AgGridTable";
+
+            if ($viz->type === 'Chart'){
+                $vizInit = "new PlotlyChart('".$vizId."')";
+                $xInit = "PlotlyChart";
+            }
+            else if ($viz->type === 'Map') {
+                $vizInit = "new LeafletMap('".$vizId."')";
+                $xInit = "LeafletMap";
+            }
             return [
-                'id' => $viz->id,
+                'id' => $vizId,
                 'title' => $viz->title,
                 'description' => $viz->description,
                 'type' => $viz->type,
-                'icon' => VisualizationTypeEnum::getIcon($viz->type),
-                'code' => '<livewire:visualizer vizId="' . $viz->id . '"/>',
+                'xinit' => $xInit,
+                'vizid' => $vizId,
+//                'icon' => VisualizationTypeEnum::getIcon($viz->type),
+                'icon' => '<img alt="feature image" loading="lazy" class="object-cover" src="'. $viz->thumbnail.'">',
+
+                'code' => '<div class="'.$viz->type.'" id="' . $vizId . '" viz-id="' . $viz->id . '" type="' . $viz->type . '" x-init="'. $vizInit .'"></div>'
             ];
         });
+
+        return $vizs;
+
     }
 
     public function getTopics() {
