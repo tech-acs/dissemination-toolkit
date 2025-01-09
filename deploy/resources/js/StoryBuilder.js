@@ -2,10 +2,10 @@ import 'grapesjs/dist/css/grapes.min.css';
 import grapesjs from 'grapesjs';
 
 import 'grapesjs-ga';
-import * as pluginTailwind from 'grapesjs-tailwind';
+import pluginTailwind from 'grapesjs-tailwind';
 import 'grapesjs-plugin-forms';
-import * as pluginBasicBlocks from 'grapesjs-blocks-basic';
-import * as pluginWebpage from 'grapesjs-preset-webpage';
+import pluginBasicBlocks from 'grapesjs-blocks-basic';
+import pluginWebpage from 'grapesjs-preset-webpage';
 import 'grapesjs-preset-newsletter';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         plugins: [pluginWebpage, pluginBasicBlocks, pluginTailwind],
         pluginsOpts: {
-            'gjs-blocks-basic': { flexGrid: true },
+            // 'gjs-blocks-basic': { flexGrid: true },
         },        panels: {
             defaults: [
                 {

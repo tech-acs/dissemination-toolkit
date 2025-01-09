@@ -25,7 +25,7 @@
     @push('scripts')
         <!-- External scripts for GrapesJS and plugins -->
         <script>
-            window.VISUALIZATION_JS = "{{ mix('js/visualization.js') }}";
+            window.VISUALIZATION_JS = "{{ Vite::asset('resources/js/visualization.js') }}";
 
             window.APP_CSS_URLS = [
                 "{{ Vite::asset('resources/css/app.css') }}",
