@@ -18,7 +18,7 @@ export default defineConfig({
                 'resources/css/markdown-editor.css',
                 'resources/css/map.css',
                 'resources/css/editor.css',
-
+                'resources/css/page-builder.css',
                 'resources/js/ChartEditor/index.jsx',
             ],
             refresh: true,

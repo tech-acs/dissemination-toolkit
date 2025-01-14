@@ -17,7 +17,7 @@
 
     @push('styles')
         <!-- GrapesJS core CSS -->
-        <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet" />
+        @vite('resources/css/page-builder.css')
 
         <!-- Any other CSS, e.g. custom or plugin CSS -->
     @endpush
