@@ -4,7 +4,7 @@
         @include('dissemination::partials.nav')
 
         <main class="py-12">
-            <div class="flex flex-col space-y-5">
+            <div class="flex flex-col space-y-5 px-2 lg:px-0">
                 <form class="flex flex-row space-x-1">
                     <div class="relative flex-1 ">
                         <label for="keyword" class="absolute -top-3 left-2 inline-block bg-white px-1 text-base font-normal text-gray-700">{{ __('Search')}}</label>
@@ -25,9 +25,9 @@
                         </select>
                     </div>
                 </form>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     @forelse($records as $record)
-                        <div class="col-span-1 py-3">
+                        <div class="py-4 px-4 lg:px-0">
                             <a href="{{ route('story.show', $record->id) }}">
                                 <div
                                     class="flex ring-1 ring-indigo-200 shadow-md rounded-md hover:ring-2 hover:ring-indigo-500 overflow-hidden">

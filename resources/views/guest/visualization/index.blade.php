@@ -4,7 +4,7 @@
         @include('dissemination::partials.nav')
         <main class="py-12">
 
-            <div class="flex flex-col py-2">
+            <div class="flex flex-col py-2 px-2 lg:px-0">
 
                 <form class="flex flex-row space-x-1">
                     <div class="relative flex-1 ">
@@ -25,10 +25,10 @@
                 </form>
 
                 <div class="mt-6  bg-stale-100">
-                    <ul role="list" class="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0">
+                    <ul role="list" class="mx-4 inline-flex flex-col sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0">
 
                     @forelse($records as $record)
-                            <li class="inline-flex w-64 flex-col text-center lg:w-auto p-6 shadow-lg mt-6 border rounded-md hover:border-indigo-500/100 hover:border-2">
+                            <li class="inline-flex flex-col text-center w-auto lg:w-auto p-6 shadow-lg mt-6 border rounded-md hover:border-indigo-500/100 hover:border-2">
                                 <div class="group relative">
                                     @if($record->type==='Table')
                                         <img src="{{ $record->thumbnail }}" alt="" class="aspect-square w-full rounded-md bg-gray-200 object-cover object-left-top group-hover:opacity-75">
