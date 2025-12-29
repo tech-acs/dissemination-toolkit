@@ -34,17 +34,17 @@ class DocumentController extends Controller
                 });
             });
 
-        $fromYear = $request->get('fromYear');
-        $toYear = $request->get('toYear');
+        $fromYear = $request->integer('fromYear');
+        $toYear = $request->integer('toYear');
         if ($fromYear && $toYear) {
             if ($fromYear > $toYear) {
                 return redirect()->back()->withErrors(['fromYear' => "From year ($fromYear) must be less than to year ($toYear) for filtering"]);
             }
-            $query->whereRaw("date_part('year', published_date) between $fromYear and $toYear");
+            $query->whereRaw("date_part('year', published_date) between ? and ?", [$fromYear, $toYear]);
         } elseif ($fromYear) {
-            $query->whereRaw("date_part('year', published_date) >= $fromYear");
+            $query->whereRaw("date_part('year', published_date) >= ?", [$fromYear]);
         } elseif ($toYear) {
-            $query->whereRaw("date_part('year', published_date) <= $toYear");
+            $query->whereRaw("date_part('year', published_date) <= ?", [$toYear]);
         }
 
         if ($request->has('dataset_type') && $request->get('type') != 'all') {
