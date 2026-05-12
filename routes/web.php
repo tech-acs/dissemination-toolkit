@@ -75,6 +75,8 @@ Route::middleware(['web'])->group(function () {
     Route::middleware(['auth:sanctum', 'verified', 'enforce_2fa'])->prefix('manage')->name('manage.')->group(function () {
         Route::get('/home', AuthHomeController::class)->name('home');
 
+        Route::view('tidy', 'dissemination::manage.tidy')->name('tidy');
+
         //Route::resource('topic', TopicController::class);
         Route::get('topic', [TopicController::class, 'index'])->name('topic.index');
         Route::get('topic/create', [TopicController::class, 'create'])->name('topic.create')->can(PermissionsEnum::CREATE_TOPIC);

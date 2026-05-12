@@ -119,6 +119,6 @@ class TidyDataMaker extends Component
 
     public function render()
     {
-        return view('livewire.tidy-data-maker');
+        return view('dissemination::livewire.tidy-data-maker');
     }
 }
