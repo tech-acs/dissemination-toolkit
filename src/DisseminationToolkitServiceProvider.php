@@ -111,6 +111,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         Livewire::component('review-form', \Uneca\DisseminationToolkit\Livewire\ReviewForm::class);
         Livewire::component('dataset.create', \Uneca\DisseminationToolkit\Livewire\Dataset\Create::class);
         Livewire::component('dataset.update', \Uneca\DisseminationToolkit\Livewire\Dataset\Update::class);
+        Livewire::component('tidy-data-maker', \Uneca\DisseminationToolkit\Livewire\TidyDataMaker::class);
     }
 
     public function packageBooted()

@@ -5,6 +5,7 @@ namespace Uneca\DisseminationToolkit\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Translatable\HasTranslations;
@@ -33,7 +34,18 @@ class Dimension extends Model
 
     public function getTableExistsAttribute(): bool
     {
-        return Schema::hasTable($this->table_name);
+        //return Schema::hasTable($this->table_name);
+        try {
+            DB::table($this->table_name)->get();
+            return true;
+        } catch (QueryException $e) {
+            // Postgres Error Code 42P01 is "undefined_table"
+            if ($e->getCode() === '42P01') {
+                return false;
+            } else {
+                throw $e;
+            }
+        }
     }
 
     public function getIsCompleteAttribute(): bool
