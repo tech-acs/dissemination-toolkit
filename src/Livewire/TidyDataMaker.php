@@ -2,7 +2,12 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
+use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Uneca\DisseminationToolkit\Models\Area;
+use Uneca\DisseminationToolkit\Models\Dimension;
+use Uneca\DisseminationToolkit\Models\Indicator;
 
 class TidyDataMaker extends Component
 {
@@ -115,6 +120,87 @@ class TidyDataMaker extends Component
         $this->checkedColumns = [];
         $this->tidiedData = [];
         $this->csvOutput = '';
+    }
+
+    public function downloadCsv(): StreamedResponse
+    {
+        return response()->streamDownload(function () {
+            echo str_replace("\t", ",", $this->csvOutput);
+        }, 'tidy-data.csv');
+    }
+
+    public function downloadCodifiedCsv(): StreamedResponse
+    {
+        return response()->streamDownload(function () {
+            $columnLookups = [];
+            $identifierColumns = array_diff($this->columns, $this->checkedColumns);
+
+            foreach ([...$identifierColumns, $this->nameColumn] as $colName) {
+                $lookup = $this->buildLookup($colName);
+                if ($lookup !== null) {
+                    $columnLookups[$colName] = $lookup;
+                }
+            }
+
+            $codified = array_map(function ($row) use ($columnLookups) {
+                foreach ($columnLookups as $col => $lookup) {
+                    $label = $row[$col] ?? null;
+                    $row[$col] = $lookup[mb_strtoupper($label)] ?? $label;
+                }
+                return $row;
+            }, $this->tidiedData);
+
+            $output = fopen('php://temp', 'r+');
+            $headers = array_keys($codified[0] ?? []);
+            $headers = array_map(fn ($h) => isset($columnLookups[$h]) ? $h . ' code' : $h, $headers);
+            fputcsv($output, $headers, ',');
+
+            foreach ($codified as $row) {
+                fputcsv($output, $row, ',');
+            }
+
+            rewind($output);
+            echo stream_get_contents($output);
+            fclose($output);
+        }, 'tidy-data-codified.csv');
+    }
+
+    private function buildLookup(string $nameColumn): ?array
+    {
+        $geographyKeywords = ['Area', 'Geography'];
+
+        if (in_array(mb_strtolower($nameColumn), array_map('mb_strtolower', $geographyKeywords))) {
+            $areaLookup = Area::get()->pluck('code', 'name')
+                ->mapWithKeys(fn ($code, $name) => [mb_strtoupper($name) => $code])
+                ->toArray();
+            return ! empty($areaLookup) ? $areaLookup : null;
+        }
+
+        $dimension = Dimension::where('name->' . app()->getLocale(), $nameColumn)->first();
+        if (! $dimension) {
+            return null;
+        }
+
+        $values = $dimension->values();
+        if ($values === false) {
+            return null;
+        }
+
+        return collect($values)->pluck('code', 'name')
+            ->mapWithKeys(fn ($code, $name) => [mb_strtoupper($name) => $code])
+            ->toArray();
+    }
+
+    #[Computed]
+    public function dimensions()
+    {
+        return Dimension::orderBy('name')->get()->pluck('name');
+    }
+
+    #[Computed]
+    public function indicators()
+    {
+        return Indicator::orderBy('name')->get()->pluck('name');
     }
 
     public function render()

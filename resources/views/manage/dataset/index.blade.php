@@ -10,11 +10,15 @@
     </x-slot>
 
     <div class="flex flex-col max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-
-        <div class="text-right">
-            @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_DATASET)
-                <a href="{{route('manage.dataset.create')}}"><x-button>{{ __('Create new') }}</x-button></a>
-            @endcan
+        <div class="flex justify-between">
+            <div>
+                <x-secondary-button><a href="{{ route('manage.tidy') }}" target="_blank">{{ __('Tidy Data Maker') }}</a></x-secondary-button>
+            </div>
+            <div class="text-right">
+                @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::CREATE_DATASET)
+                    <a href="{{route('manage.dataset.create')}}"><x-button>{{ __('Create new') }}</x-button></a>
+                @endcan
+            </div>
         </div>
 
         <x-dissemination::message-display />
