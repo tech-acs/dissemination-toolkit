@@ -40,8 +40,8 @@ class AreaHierarchyController extends Controller
 
     public function store(AreaHierarchyRequest $request)
     {
-        $this->validateZoomRange($request);
-        $zoomLevels = range($request->integer('zoom_start'), $request->integer('zoom_end'));
+        //$this->validateZoomRange($request);
+        //$zoomLevels = range($request->integer('zoom_start'), $request->integer('zoom_end'));
         try {
             AreaHierarchy::create([
                 'index' => AreaHierarchy::count(),
