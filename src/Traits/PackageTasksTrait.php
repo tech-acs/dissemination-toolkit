@@ -46,12 +46,12 @@ trait PackageTasksTrait
         "leaflet" => "^1.9",
         "easymde" => "^2.18.0",
         "@tailwindcss/aspect-ratio" => "^0.4.2",
-        "@vitejs/plugin-react" => "^4.3.1",
+        "@vitejs/plugin-react" => "^6.0",
         "ag-grid-community" => "^32.0.1",
         "ag-grid-react" => "^32.0.2",
         "alpinejs" => "^3.14.1",
         "autoprefixer" => "^10.4.16",
-        "laravel-vite-plugin" => "^1.0",
+        "laravel-vite-plugin" => "^3.0",
         "lodash-es" => "^4.17.21",
         "plotly.js-dist" => "^2.33.0",
         "plotly.js-locales" => "^2.33.0",
@@ -77,10 +77,10 @@ trait PackageTasksTrait
         'ext-zip:*',
         'ext-pgsql:*',
         'gasparesganga/php-shapefile:^3.4',
-        'spatie/laravel-permission:^6.4',
-        'spatie/simple-excel:^3.5',
+        'spatie/laravel-permission:^7.4',
+        'spatie/simple-excel:^3.9',
         'spatie/laravel-translatable:^6.1',
-        'spatie/db-dumper:^3.7',
+        'spatie/db-dumper:^4.1',
     ];
 
     public array $vendorPublish = [
