@@ -23,7 +23,7 @@ class DimensionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|regex:/^[A-Za-z ]+$/',
+            'name' => 'required|regex:/^[A-Za-z0-9 ]+$/',
             'code' => ['required', 'min:1', Rule::unique('dimensions')->ignore($this->dimension),],
             'for' => 'required|min:1'
         ];
