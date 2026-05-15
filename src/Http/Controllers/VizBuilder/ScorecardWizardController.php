@@ -5,11 +5,13 @@ namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
 use Uneca\DisseminationToolkit\Http\Resources\ChartDesignerResource;
+use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Tag;
 use Uneca\DisseminationToolkit\Models\Visualization;
 use Uneca\DisseminationToolkit\Services\QueryBuilder;
 use Uneca\DisseminationToolkit\Services\Sorter;
+use Uneca\DisseminationToolkit\Services\VizWizardSession;
 use Uneca\DisseminationToolkit\Traits\PlotlyDefaults;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +43,7 @@ class ScorecardWizardController extends Controller
             return redirect()->route('manage.viz-builder.map.step1')
                 ->withErrors('You must prepare appropriate data for your visualization before proceeding to the next step');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         $options = $this->makeOptions($resource);
         $resource = $this->addCurrentValuesToResource($resource, $options);
 
@@ -55,7 +57,7 @@ class ScorecardWizardController extends Controller
         if (! $this->isStepValid($step)) {
             return redirect()->route('manage.viz-builder.scorecard.step1');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         //dump($resource);
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Scorecard::class, 'title' => $resource->indicatorTitle]);
         return view('dissemination::manage.viz-builder.step3')
@@ -79,7 +81,7 @@ class ScorecardWizardController extends Controller
         //$isFilterable = $request->boolean('filterable');
         $isReviewable = $request->boolean('is_reviewable');
         //$isPublished = $request->boolean('published');
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
 
         $vizInfo = [
             'title' => $title,
@@ -110,7 +112,7 @@ class ScorecardWizardController extends Controller
             $inheritedTopics = Indicator::findMany($indicators)->pluck('topics')->flatten()->pluck('id')->unique();
             $visualization->topics()->sync($inheritedTopics);
 
-            session()->forget('viz-wizard-resource');
+            VizWizardSession::forget();
             return redirect()->route('manage.visualization.index')->withMessage('Visualization successfully saved');
         }
     }
@@ -125,7 +127,7 @@ class ScorecardWizardController extends Controller
             return redirect()->route('manage.visualization.index')
                 ->withMessage('The visualization is either broken or could not be located');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         //dump('from db', $resource);
         $options = $this->makeOptions($resource, $visualization);
         $resource = $this->addCurrentValuesToResource($resource, $options);
@@ -135,13 +137,13 @@ class ScorecardWizardController extends Controller
 
     public function ajaxGetChart()
     {
-        return session('viz-wizard-resource');
+        return VizWizardSession::get();
     }
 
     private function isStepValid($step): bool
     {
-        $resource = session()->get('viz-wizard-resource');
-        return (! is_null($resource)) && (! empty($resource->dataSources));
+        $resource = VizWizardSession::get();
+        return ($resource instanceof DesignerResource) && (! empty($resource->dataSources));
     }
 
     private function getConfig(): array
@@ -155,10 +157,13 @@ class ScorecardWizardController extends Controller
 
     private function recordChartDesign(array $data, array $layout): void
     {
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
+        if (! $resource instanceof DesignerResource) {
+            return;
+        }
         $resource->data = $data;
         $resource->layout = $layout;
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 
     private function makeOptions($resource, $visualization = null)
@@ -269,6 +274,6 @@ class ScorecardWizardController extends Controller
         } else {
             $resource = new ChartDesignerResource(config: $this->getConfig());
         }
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 }

@@ -5,11 +5,13 @@ namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Uneca\DisseminationToolkit\Http\Resources\ChartDesignerResource;
+use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Tag;
 use Uneca\DisseminationToolkit\Models\Visualization;
 use Uneca\DisseminationToolkit\Services\QueryBuilder;
 use Uneca\DisseminationToolkit\Services\Sorter;
+use Uneca\DisseminationToolkit\Services\VizWizardSession;
 use Uneca\DisseminationToolkit\Traits\PlotlyDefaults;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +43,7 @@ class ChartWizardController extends Controller
             return redirect()->route('manage.viz-builder.chart.step1')
                 ->withErrors('You must prepare appropriate data for your visualization before proceeding to the next step');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         return view('dissemination::manage.viz-builder.chart.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource]);
     }
 
@@ -52,7 +54,7 @@ class ChartWizardController extends Controller
         if (! $this->isStepValid($step)) {
             return redirect()->route('manage.viz-builder.chart.design');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Chart::class]);
         return view('dissemination::manage.viz-builder.step3')
             ->with([
@@ -71,7 +73,7 @@ class ChartWizardController extends Controller
         if (! $this->isStepValid($step)) {
             return redirect()->route('manage.viz-builder.chart.design');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Chart::class]);
         return view('dissemination::manage.viz-builder.step3')
             ->with([
@@ -104,7 +106,7 @@ class ChartWizardController extends Controller
         $isFilterable = $request->boolean('filterable');
         $isReviewable = $request->boolean('is_reviewable');
         //$isPublished = $request->boolean('published');
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
 
         $vizInfo = [
             'title' => $title,
@@ -135,7 +137,7 @@ class ChartWizardController extends Controller
             $inheritedTopics = Indicator::findMany($indicators)->pluck('topics')->flatten()->pluck('id')->unique();
             $visualization->topics()->sync($inheritedTopics);
 
-            session()->forget('viz-wizard-resource');
+            VizWizardSession::forget();
             return redirect()->route('manage.visualization.index')->withMessage('Visualization successfully saved');
         }
     }
@@ -150,19 +152,19 @@ class ChartWizardController extends Controller
             return redirect()->route('manage.visualization.index')
                 ->withMessage('The visualization is either broken or could not be located');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         return view('dissemination::manage.viz-builder.chart.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource]);
     }
 
     public function ajaxGetChart()
     {
-        return session('viz-wizard-resource');
+        return VizWizardSession::get();
     }
 
     private function isStepValid($step): bool
     {
-        $resource = session()->get('viz-wizard-resource');
-        return (! is_null($resource)) && (! empty($resource->dataSources));
+        $resource = VizWizardSession::get();
+        return ($resource instanceof DesignerResource) && (! empty($resource->dataSources));
     }
 
     private function getConfig(): array
@@ -176,10 +178,13 @@ class ChartWizardController extends Controller
 
     private function recordChartDesign(array $data, array $layout): void
     {
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
+        if (! $resource instanceof DesignerResource) {
+            return;
+        }
         $resource->data = $data;
         $resource->layout = $layout;
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 
     private function setupResource(Visualization $visualization = null): void
@@ -202,6 +207,6 @@ class ChartWizardController extends Controller
                 defaultLayout: self::DEFAULT_LAYOUT
             );
         }
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 }

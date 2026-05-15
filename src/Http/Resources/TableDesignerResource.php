@@ -4,7 +4,7 @@ namespace Uneca\DisseminationToolkit\Http\Resources;
 
 use JsonSerializable;
 
-class TableDesignerResource implements JsonSerializable
+class TableDesignerResource implements JsonSerializable, DesignerResource
 {
     public function __construct(
         public array $dataSources = [],

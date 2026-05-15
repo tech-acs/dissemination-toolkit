@@ -4,55 +4,69 @@ namespace Uneca\DisseminationToolkit\Livewire;
 
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Uneca\DisseminationToolkit\Services\QueryBuilder;
+use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;
+use Uneca\DisseminationToolkit\Services\VizWizardSession;
 
 class StateRecorder extends Component
 {
     #[On('dataShaperEvent')]
     public function recordDataShape(array $rawData, string $indicatorName, array $dataParams)
     {
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
+        if (! $resource instanceof DesignerResource) {
+            return;
+        }
         $resource->dataSources = toDataFrame(collect($rawData))->toArray();
         $resource->indicatorTitle = $indicatorName;
         $resource->dataParams = $dataParams;
         $resource->rawData = $rawData;
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 
     #[On('thumbnailCaptured')]
     public function recordThumbnail(string $imageData)
     {
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
+        if (! $resource instanceof DesignerResource) {
+            return;
+        }
         $resource->thumbnail = $imageData;
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 
     #[On('tableOptionsShaperEvent')]
     public function recordOptions(array $options): void
     {
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
+        if (! $resource instanceof DesignerResource) {
+            return;
+        }
         $resource->options = array_replace_recursive($resource->options, $options);
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 
     #[On('mapOptionsShaperEvent')]
     public function recordMapTweaks(array $options): void
     {
-        //dump($options);
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
+        if (! $resource instanceof DesignerResource) {
+            return;
+        }
         $resource->data[0] = array_replace_recursive($resource->data[0], $options['data']);
         $resource->layout = array_replace_recursive($resource->layout, $options['layout']);
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 
     #[On('scorecardOptionsShaperEvent')]
     public function recordScorecardTweaks(array $options): void
     {
-        //dump($options);
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
+        if (! $resource instanceof DesignerResource) {
+            return;
+        }
         $resource->data[0] = array_replace_recursive($resource->data[0], $options['data']);
         $resource->layout = array_replace_recursive($resource->layout, $options['layout']);
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 
     public function render()

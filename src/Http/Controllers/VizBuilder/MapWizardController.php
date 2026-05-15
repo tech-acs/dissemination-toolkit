@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;
 use Uneca\DisseminationToolkit\Http\Resources\ChartDesignerResource;
+use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;
+use Uneca\DisseminationToolkit\Services\VizWizardSession;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
 
 class MapWizardController extends Controller
@@ -53,7 +55,7 @@ class MapWizardController extends Controller
         } else {
             $resource = new ChartDesignerResource(config: $this->getConfig());
         }
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 
     private function getConfig(): array
@@ -72,7 +74,7 @@ class MapWizardController extends Controller
             return redirect()->route('manage.viz-builder.map.step1')
                 ->withErrors('You must prepare appropriate data for your visualization before proceeding to the next step');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         $options = $this->makeOptions($resource);
         $resource = $this->addCurrentValuesToResource($resource, $options);
 
@@ -82,8 +84,8 @@ class MapWizardController extends Controller
 
     private function isStepValid($step): bool
     {
-        $resource = session()->get('viz-wizard-resource');
-        return (!is_null($resource)) && (!empty($resource->dataSources));
+        $resource = VizWizardSession::get();
+        return ($resource instanceof DesignerResource) && (! empty($resource->dataSources));
     }
 
     private function makeOptions($resource, $visualization = null)
@@ -203,7 +205,7 @@ class MapWizardController extends Controller
         if (!$this->isStepValid($step)) {
             return redirect()->route('manage.viz-builder.map.step1');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         //dump($resource);
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Map::class, 'title' => $resource->indicatorTitle]);
         return view('dissemination::manage.viz-builder.step3')
@@ -227,7 +229,7 @@ class MapWizardController extends Controller
         $isFilterable = $request->boolean('filterable');
         $isReviewable = $request->boolean('is_reviewable');
         //$isPublished = $request->boolean('published');
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
 
         $vizInfo = [
             'title' => $title,
@@ -258,7 +260,7 @@ class MapWizardController extends Controller
             $inheritedTopics = Indicator::findMany($indicators)->pluck('topics')->flatten()->pluck('id')->unique();
             $visualization->topics()->sync($inheritedTopics);
 
-            session()->forget('viz-wizard-resource');
+            VizWizardSession::forget();
             return redirect()->route('manage.visualization.index')->withMessage('Visualization successfully saved');
         }
     }
@@ -273,7 +275,7 @@ class MapWizardController extends Controller
             return redirect()->route('manage.visualization.index')
                 ->withMessage('The visualization is either broken or could not be located');
         }
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
         //dump('from db', $resource);
         $options = $this->makeOptions($resource, $visualization);
         $resource = $this->addCurrentValuesToResource($resource, $options);
@@ -283,14 +285,17 @@ class MapWizardController extends Controller
 
     public function ajaxGetChart()
     {
-        return session('viz-wizard-resource');
+        return VizWizardSession::get();
     }
 
     private function recordChartDesign(array $data, array $layout): void
     {
-        $resource = session()->get('viz-wizard-resource');
+        $resource = VizWizardSession::get();
+        if (! $resource instanceof DesignerResource) {
+            return;
+        }
         $resource->data = $data;
         $resource->layout = $layout;
-        session()->put('viz-wizard-resource', $resource);
+        VizWizardSession::put($resource);
     }
 }
