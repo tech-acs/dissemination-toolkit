@@ -43,6 +43,7 @@ trait PackageTasksTrait
         "@ckeditor/ckeditor5-utils" => "^43.2.0",
         "@ckeditor/ckeditor5-widget" => "^43.2.0",
         "@ckeditor/vite-plugin-ckeditor5" => "^0.1.3",
+        "axios" => "^1.16.0",
         "leaflet" => "^1.9",
         "easymde" => "^2.18.0",
         "@tailwindcss/aspect-ratio" => "^0.4.2",

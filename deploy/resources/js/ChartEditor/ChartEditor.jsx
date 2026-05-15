@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import plotly from 'plotly.js-dist';
-import PlotlyEditor from 'react-chart-editor';
+import * as ReactChartEditor from 'react-chart-editor';
+const PlotlyEditor = ReactChartEditor.default.default;
 import 'react-chart-editor/lib/react-chart-editor.css';
 import DataViewer from "./DataViewer.jsx";
 import TemplateSaver from "./TemplateSaver.jsx";
