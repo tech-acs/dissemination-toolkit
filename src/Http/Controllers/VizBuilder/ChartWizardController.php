@@ -50,7 +50,6 @@ class ChartWizardController extends Controller
     public function step3(Request $request)
     {
         $step = 3;
-        $this->recordChartDesign(json_decode($request->get('data'), true), json_decode($request->get('layout'), true));
         if (! $this->isStepValid($step)) {
             return redirect()->route('manage.viz-builder.chart.design');
         }
@@ -174,17 +173,6 @@ class ChartWizardController extends Controller
             //'toImageButtonOptions' => ['filename' => $this->graphDiv . ' (' . now()->toDayDateTimeString() . ')'],
             'locale' => app()->getLocale(),
         ];
-    }
-
-    private function recordChartDesign(array $data, array $layout): void
-    {
-        $resource = VizWizardSession::get();
-        if (! $resource instanceof DesignerResource) {
-            return;
-        }
-        $resource->data = $data;
-        $resource->layout = $layout;
-        VizWizardSession::put($resource);
     }
 
     private function setupResource(Visualization $visualization = null): void

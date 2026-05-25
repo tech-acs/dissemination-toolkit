@@ -69,6 +69,18 @@ class StateRecorder extends Component
         VizWizardSession::put($resource);
     }
 
+    #[On('chart-synced')]
+    public function recordChartDesign(array $data, array $layout): void
+    {
+        $resource = VizWizardSession::get();
+        if (! $resource instanceof DesignerResource) {
+            return;
+        }
+        $resource->data = $data;
+        $resource->layout = $layout;
+        VizWizardSession::put($resource);
+    }
+
     public function render()
     {
         return <<<'blade'
