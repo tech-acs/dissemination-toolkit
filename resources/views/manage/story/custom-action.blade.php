@@ -8,7 +8,7 @@
         <span class="text-gray-400 px-1">|</span>
         <a href="{{ route('manage.story.edit', $row->id) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Edit') }}</a>
         <span class="text-gray-400 px-1">|</span>
-        <a href="{{route('manage.story-builder.edit', $row->id)}}" class="text-green-600 hover:text-green-900">{{ __('Design') }}</a>
+        <a href="{{route('manage.story.design', $row->id)}}" class="text-green-600 hover:text-green-900">{{ __('Design') }}</a>
     @endcan
     @can(\Uneca\DisseminationToolkit\Enums\PermissionsEnum::DELETE_STORY)
         <span class="text-gray-400 px-1">|</span>

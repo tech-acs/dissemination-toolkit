@@ -12,40 +12,9 @@ use Uneca\DisseminationToolkit\Enums\PermissionsEnum;
 trait PackageTasksTrait
 {
     public array $requiredNodePackages = [
-        "@ckeditor/ckeditor5-alignment" => "^43.2.0",
-        "@ckeditor/ckeditor5-autoformat" => "^43.2.0",
-        "@ckeditor/ckeditor5-basic-styles" => "^43.2.0",
-        "@ckeditor/ckeditor5-block-quote" => "^43.2.0",
-        "@ckeditor/ckeditor5-core" => "^43.2.0",
-        "@ckeditor/ckeditor5-editor-classic" => "^43.2.0",
-        "@ckeditor/ckeditor5-essentials" => "^43.2.0",
-        "@ckeditor/ckeditor5-font" => "^43.2.0",
-        "@ckeditor/ckeditor5-heading" => "^43.2.0",
-        "@ckeditor/ckeditor5-horizontal-line" => "^43.2.0",
-        "@ckeditor/ckeditor5-html-embed" => "^43.2.0",
-        "@ckeditor/ckeditor5-html-support" => "^43.2.0",
-        "@ckeditor/ckeditor5-image" => "^43.2.0",
-        "@ckeditor/ckeditor5-indent" => "^43.2.0",
-        "@ckeditor/ckeditor5-inspector" => "^4.1.0",
-        "@ckeditor/ckeditor5-link" => "^43.2.0",
-        "@ckeditor/ckeditor5-list" => "^43.2.0",
-        "@ckeditor/ckeditor5-media-embed" => "^43.2.0",
-        "@ckeditor/ckeditor5-paragraph" => "^43.2.0",
-        "@ckeditor/ckeditor5-remove-format" => "^43.2.0",
-        "@ckeditor/ckeditor5-show-blocks" => "^43.2.0",
-        "@ckeditor/ckeditor5-source-editing" => "^43.2.0",
-        "@ckeditor/ckeditor5-style" => "^43.2.0",
-        "@ckeditor/ckeditor5-table" => "^43.2.0",
-        "@ckeditor/ckeditor5-theme-lark" => "^43.2.0",
-        "@ckeditor/ckeditor5-typing" => "^43.2.0",
-        "@ckeditor/ckeditor5-ui" => "^43.2.0",
-        "@ckeditor/ckeditor5-upload" => "^43.2.0",
-        "@ckeditor/ckeditor5-utils" => "^43.2.0",
-        "@ckeditor/ckeditor5-widget" => "^43.2.0",
-        "@ckeditor/vite-plugin-ckeditor5" => "^0.1.3",
         "axios" => "^1.16.0",
         "leaflet" => "^1.9",
-        "easymde" => "^2.18.0",
+        "quill" => "^1.3.6",
         "@tailwindcss/aspect-ratio" => "^0.4.2",
         "@vitejs/plugin-react" => "^6.0",
         "ag-grid-community" => "^32.0.1",
@@ -64,14 +33,6 @@ trait PackageTasksTrait
         "d3-format" => "^3.1.0",
         "leaflet-image"=> "^0.4.0",
         "html2canvas-pro"=> "^1.5.8",
-        "grapesjs" => "^0.22.4",
-        "grapesjs-blocks-basic" => "^1.0.1",
-        "grapesjs-ga"=> "^1.0.2",
-        "grapesjs-plugin-forms"=> "^2.0.6",
-        "grapesjs-preset-newsletter"=> "^1.0.1",
-        "grapesjs-preset-webpage"=> "^1.0.3",
-        "grapesjs-tailwind"=> "^1.0.11",
-
     ];
 
     public array $phpDependencies = [
@@ -177,8 +138,6 @@ trait PackageTasksTrait
             $this->copyFilesInDir(__DIR__ . '/../../deploy/resources/css', resource_path('css'), '*.css');
             $this->copyFilesInDir(__DIR__ . '/../../deploy/resources/js', resource_path('js'), '*.js');
             File::copyDirectory(__DIR__ . '/../../deploy/resources/js/ChartEditor', resource_path('js/ChartEditor'));
-            File::copyDirectory(__DIR__ . '/../../deploy/resources/js/ChartEmbed', resource_path('js/ChartEmbed'));
-            File::copyDirectory(__DIR__ . '/../../deploy/resources/js/Placeholder', resource_path('js/Placeholder'));
             return true;
         });
         $this->components->task("Images", function () {

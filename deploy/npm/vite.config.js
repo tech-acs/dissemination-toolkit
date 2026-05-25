@@ -7,13 +7,8 @@ export default defineConfig(() => {
         'resources/css/app.css',
         'resources/js/app.js',
         'resources/js/visualization.js',
-        'resources/js/StoryBuilder.js',
-        'resources/css/content-styles.css',
         'resources/css/grid.css',
-        'resources/css/markdown-editor.css',
         'resources/css/map.css',
-        'resources/css/editor.css',
-        'resources/css/page-builder.css',
         'resources/js/ChartEditor/index.jsx'
     ];
 

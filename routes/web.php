@@ -33,7 +33,7 @@ use Uneca\DisseminationToolkit\Http\Controllers\IndicatorController;
 use Uneca\DisseminationToolkit\Http\Controllers\NotificationController;
 use Uneca\DisseminationToolkit\Http\Controllers\OrganizationController;
 use Uneca\DisseminationToolkit\Http\Controllers\RoleController;
-use Uneca\DisseminationToolkit\Http\Controllers\StoryBuilderController;
+use Uneca\DisseminationToolkit\Http\Controllers\StoryDesignController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryController as StoryManagementController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryDuplicationController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryPublishedStatusController;
@@ -129,18 +129,14 @@ Route::middleware(['web'])->group(function () {
         Route::patch('story/{story}', [StoryManagementController::class, 'update'])->name('story.update')->can(PermissionsEnum::EDIT_STORY);
         Route::delete('story', [StoryManagementController::class, 'destroy'])->name('story.destroy')->can(PermissionsEnum::DELETE_STORY);
         Route::get('story/{story}/duplicate', StoryDuplicationController::class)->name('story.duplicate')->can(PermissionsEnum::CREATE_STORY);
-        Route::get('page-builder/{story}', [StoryBuilderController::class, 'designPage'])->name('page-builder.designPage')->can(PermissionsEnum::EDIT_STORY);
-        Route::get('story-builder/{story}', [StoryBuilderController::class, 'edit'])->name('story-builder.edit')->can(PermissionsEnum::EDIT_STORY);
-        Route::patch('story-builder/{story}', [StoryBuilderController::class, 'update'])->name('story-builder.update')->can(PermissionsEnum::EDIT_STORY);
-        
-        Route::patch('page-builder/{story}', [StoryBuilderController::class, 'updatePage'])->name('story.updatePage')->can(PermissionsEnum::EDIT_STORY);
+        Route::get('story/{story}/design', [StoryDesignController::class, 'edit'])->name('story.design')->can(PermissionsEnum::EDIT_STORY);
+        Route::patch('story/{story}/design', [StoryDesignController::class, 'update'])->name('story.design.update')->can(PermissionsEnum::EDIT_STORY);
+        Route::post('story/upload-image', [StoryDesignController::class, 'uploadImage'])->name('story.upload-image');
 
         Route::patch('story/{story}/change-published-status', StoryPublishedStatusController::class)->name('story.change-published-status')
             ->can(PermissionsEnum::PUBLISH_AND_UNPUBLISH_STORY);
         Route::patch('story/{story}/change-restricted-status', StoryRestrictedStatusController::class)->name('story.change-restricted-status')
             ->can(PermissionsEnum::EDIT_STORY);
-        Route::get('story/topics', [StoryBuilderController::class, 'getTopics'])->name('story.builder.topics');
-        Route::get('story/artifacts/{topic_id}', [StoryBuilderController::class, 'getArtifacts'])->name('story.builder.artifacts');
 
         Route::get('visualization', [VisualizationManagementControllerAlias::class, 'index'])->name('visualization.index');
         Route::patch('visualization/{visualization}/change-published-status', VisualizationPublishedStatusController::class)->name('visualization.change-published-status')
