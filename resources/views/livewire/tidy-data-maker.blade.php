@@ -3,19 +3,20 @@
 
         <div class="space-y-6">
             <div>
-                <h2 class="text-xl font-bold mb-2">1. Paste data (CSV/TSV)</h2>
+                <h2 class="text-xl font-bold mb-2">1. Paste wide format data (CSV/TSV) </h2>
+                <span class="text-sm text-gray-400">Allowed delimiters: Comma ( , )  Tab ( \t )  Semi-colon ( ; )</span>
                 <textarea
                     wire:model.live.debounce.300ms="rawData"
                     class="w-full h-64 p-3 border border-gray-300 rounded shadow-sm focus:ring focus:ring-blue-200"
                     placeholder="Paste tabular data here (e.g. from Excel)..."></textarea>
             </div>
 
-
             <div>
                 <h2 class="text-xl font-bold mb-2">2. Select columns to melt/pivot</h2>
-                <div class="h-80 bg-gray-50 p-5 rounded border border-gray-200 space-y-4">
+                <div class="bg-gray-50 p-5 rounded border border-gray-200 space-y-4">
                     <div>
-                        <p class="text-sm text-gray-500 mb-3">Checked columns will be melted into variable/value rows. Unchecked columns remain as columns.</p>
+                        <p class="text-sm text-gray-500 mb-3">Checked columns will be melted into variable/value rows. Unchecked columns remain as columns.
+                            If any are named as one of your dimensions, "Area" or "Geography" then they will be <b>codified</b> (name/label replaced by code).</p>
 
                         <div class="flex flex-wrap gap-4 bg-white p-3 border rounded shadow-inner">
                             @forelse($columns as $column)
@@ -57,11 +58,31 @@
                 </div>
             </div>
 
+            @if(count($codificationWarnings) > 0)
+                <div class="rounded-md bg-yellow-50 border border-yellow-200 p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3 text-sm text-yellow-700">
+                            <p class="font-medium">{{ __('Codification incomplete') }}</p>
+                            <p>{{ __('The following values could not be mapped to codes and will keep their original labels in the Codified CSV:') }}</p>
+                            <ul class="list-disc list-inside mt-1">
+                                @foreach($codificationWarnings as $warning)
+                                    <li>{{ $warning }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
         </div>
 
         <div>
-            <h2 class="text-xl font-bold mb-2">3. Tidy data result</h2>
+            <h2 class="text-xl font-bold mb-2">3. Tidy data (long format)</h2>
             <div class="space-y-6">
 
                 @if(count($tidiedData) > 0)

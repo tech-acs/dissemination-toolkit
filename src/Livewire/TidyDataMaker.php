@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Uneca\DisseminationToolkit\Models\Area;
 use Uneca\DisseminationToolkit\Models\Dimension;
 use Uneca\DisseminationToolkit\Models\Indicator;
+use Illuminate\Support\Facades\DB;
 
 class TidyDataMaker extends Component
 {
@@ -22,6 +23,8 @@ class TidyDataMaker extends Component
 
     public $tidiedData = [];
     public $csvOutput = '';
+    public $codifiedCsvOutput = '';
+    public $codificationWarnings = [];
 
     // Reactively parse data when the user pastes into the textarea
     public function updatedRawData($value)
@@ -55,6 +58,7 @@ class TidyDataMaker extends Component
                 }
             }
         }
+        $this->reset('checkedColumns', 'nameColumn', 'valueColumn');
         $this->tidyData();
     }
 
@@ -87,14 +91,16 @@ class TidyDataMaker extends Component
 
                 // 2. Add the pivoted Name and Value
                 $obj[$this->nameColumn] = $checkedCol;
-                $obj[$this->valueColumn] = $row[$checkedCol] ?? null;
+                $obj[$this->valueColumn] = str($row[$checkedCol] ?? null)->squish()->replace(',', '')->toString();
 
                 $tidied[] = $obj;
             }
         }
 
         $this->tidiedData = $tidied;
+        $this->codificationWarnings = [];
         $this->generateCsvOutput();
+        $this->generateCodifiedCsvOutput();
     }
 
     public function generateCsvOutput()
@@ -104,13 +110,12 @@ class TidyDataMaker extends Component
             return;
         }
 
-        // Write to memory to generate a formatted TSV/CSV string
         $output = fopen('php://temp', 'r+');
         $headers = array_keys($this->tidiedData[0]);
-        fputcsv($output, $headers, "\t");
+        fputcsv($output, $headers, ',');
 
         foreach ($this->tidiedData as $row) {
-            fputcsv($output, $row, "\t");
+            fputcsv($output, $row, ',');
         }
 
         rewind($output);
@@ -125,49 +130,96 @@ class TidyDataMaker extends Component
         $this->checkedColumns = [];
         $this->tidiedData = [];
         $this->csvOutput = '';
+        $this->codifiedCsvOutput = '';
+        $this->codificationWarnings = [];
     }
 
     public function downloadCsv(): StreamedResponse
     {
         return response()->streamDownload(function () {
-            echo str_replace("\t", ",", $this->csvOutput);
+            echo $this->csvOutput;
         }, 'tidy-data.csv');
     }
 
     public function downloadCodifiedCsv(): StreamedResponse
     {
         return response()->streamDownload(function () {
-            $columnLookups = [];
-            $identifierColumns = array_diff($this->columns, $this->checkedColumns);
-
-            foreach ([...$identifierColumns, $this->nameColumn] as $colName) {
-                $lookup = $this->buildLookup($colName);
-                if ($lookup !== null) {
-                    $columnLookups[$colName] = $lookup;
-                }
-            }
-
-            $codified = array_map(function ($row) use ($columnLookups) {
-                foreach ($columnLookups as $col => $lookup) {
-                    $label = $row[$col] ?? null;
-                    $row[$col] = $lookup[mb_strtoupper($label)] ?? $label;
-                }
-                return $row;
-            }, $this->tidiedData);
-
-            $output = fopen('php://temp', 'r+');
-            $headers = array_keys($codified[0] ?? []);
-            $headers = array_map(fn ($h) => isset($columnLookups[$h]) ? $h . ' code' : $h, $headers);
-            fputcsv($output, $headers, ',');
-
-            foreach ($codified as $row) {
-                fputcsv($output, $row, ',');
-            }
-
-            rewind($output);
-            echo stream_get_contents($output);
-            fclose($output);
+            echo $this->codifiedCsvOutput;
         }, 'tidy-data-codified.csv');
+    }
+
+    public function generateCodifiedCsvOutput()
+    {
+        if (empty($this->tidiedData)) {
+            $this->codifiedCsvOutput = '';
+            $this->codificationWarnings = [];
+            return;
+        }
+
+        $columnLookups = [];
+        $identifierColumns = array_diff($this->columns, $this->checkedColumns);
+
+        $geographyKeywords = ['Area', 'Geography'];
+
+        foreach ([...$identifierColumns, $this->nameColumn] as $colName) {
+            $lookup = $this->buildLookup($colName);
+            if ($lookup !== null) {
+                $columnLookups[$colName] = $lookup;
+            }
+        }
+
+        $unmapped = [];
+        $codified = array_map(function ($row) use ($columnLookups, &$unmapped) {
+            foreach ($columnLookups as $col => $lookup) {
+                $label = $row[$col] ?? null;
+                if ($label !== null && ! isset($lookup[mb_strtoupper($label)])) {
+                    $unmapped[$col][$label] = true;
+                }
+                $row[$col] = $lookup[mb_strtoupper($label)] ?? $label;
+            }
+            return $row;
+        }, $this->tidiedData);
+
+        $this->codificationWarnings = [];
+        foreach ($unmapped as $col => $labels) {
+            $this->codificationWarnings[] = $col . ': ' . implode(', ', array_keys($labels)) . ' (' . count($labels) . ' unmapped value(s))';
+        }
+
+        foreach ($columnLookups as $colName => $lookup) {
+            if (! in_array(mb_strtolower($colName), array_map('mb_strtolower', $geographyKeywords))) {
+                continue;
+            }
+
+            $ambiguous = Area::select('name')
+                ->groupBy('name')
+                ->having(DB::raw('count(*)'), '>', 1)
+                ->pluck('name')
+                ->map(fn ($n) => mb_strtoupper($n));
+
+            $valuesInData = array_unique(array_map(
+                fn ($r) => mb_strtoupper($r[$colName] ?? ''),
+                $this->tidiedData
+            ));
+
+            $hits = $ambiguous->intersect($valuesInData);
+
+            foreach ($hits as $name) {
+                $this->codificationWarnings[] = "$colName: '$name' is ambiguous (matches multiple codes)";
+            }
+        }
+
+        $output = fopen('php://temp', 'r+');
+        $headers = array_keys($codified[0] ?? []);
+        $headers = array_map(fn ($h) => isset($columnLookups[$h]) ? $h . ' code' : $h, $headers);
+        fputcsv($output, $headers, ',');
+
+        foreach ($codified as $row) {
+            fputcsv($output, $row, ',');
+        }
+
+        rewind($output);
+        $this->codifiedCsvOutput = stream_get_contents($output);
+        fclose($output);
     }
 
     private function buildLookup(string $nameColumn): ?array
