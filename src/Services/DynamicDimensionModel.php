@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\DB;
 class DynamicDimensionModel
 {
     private Builder $builder;
+
     private ?int $id;
 
-    public function __construct(string $tableName, int $id = null)
+    public function __construct(string $tableName, ?int $id = null)
     {
         $this->builder = DB::table($tableName);
         $this->id = $id;
@@ -49,6 +50,7 @@ class DynamicDimensionModel
                 ->where('id', $this->id)
                 ->update($columns);
         }
+
         return false;
     }
 
@@ -57,6 +59,7 @@ class DynamicDimensionModel
         if ($this->id) {
             return $this->builder->delete($this->id);
         }
+
         return false;
     }
 

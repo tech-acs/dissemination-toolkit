@@ -7,19 +7,22 @@ use Livewire\Component;
 class TableOptionsShaper extends Component
 {
     public array $options = [];
+
     public array $optionLabels = [
         'pagination' => 'Enable pagination',
         'suppressMovableColumns' => 'Disable movable columns',
         'unSortIcon' => 'Show unsort icon',
-        'columnHoverHighlight' => 'Highlight columns on hover'
+        'columnHoverHighlight' => 'Highlight columns on hover',
     ];
+
     public ?int $sortColumn = null;
+
     public string $sortDirection = 'asc';
 
     public function mount()
     {
         $this->sortColumn = collect($this->options['columnDefs'])->reduce(function ($carry, $columnDef, $index) {
-            return key_exists('sort', $columnDef) && ! is_null($columnDef['sort']) ? $index : $carry;
+            return array_key_exists('sort', $columnDef) && ! is_null($columnDef['sort']) ? $index : $carry;
         });
         if (! is_null($this->sortColumn)) {
             $this->sortDirection = $this->options['columnDefs'][$this->sortColumn]['sort'] ?? 'asc';
@@ -43,7 +46,7 @@ class TableOptionsShaper extends Component
 
     public function render()
     {
-        //dump($this->options, $this->sortColumn);
+        // dump($this->options, $this->sortColumn);
         return view('dissemination::livewire.table-options-shaper');
     }
 }

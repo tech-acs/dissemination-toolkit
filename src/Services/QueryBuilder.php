@@ -2,23 +2,32 @@
 
 namespace Uneca\DisseminationToolkit\Services;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Uneca\DisseminationToolkit\Models\Dataset;
 use Uneca\DisseminationToolkit\Models\Dimension;
 use Uneca\DisseminationToolkit\Models\Indicator;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class QueryBuilder
 {
     public const VALUE_COLUMN_INVISIBLE_MARKER = '­';
+
     private Dataset $dataset;
+
     private Collection $indicators;
+
     private Collection $geographies;
+
     private Collection $dimensions;
+
     private string $valueColumnInFactTable = 'value';
+
     private string $valueColumnInResult = 'result';
+
     private string $sql = '';
+
     private string $schema;
+
     private string $sortingColumn;
 
     private ?Pivoting $pivoting = null;
@@ -49,9 +58,9 @@ class QueryBuilder
             $select = $this->pivoting->select();
             $from = $this->makeFrom($this->dataset->dimensions);
             $where = $this->makeWhere($this->dimensions);
-            $orderBy = '1, 2'; //$this->makeOrderBy($this->dimensions);
+            $orderBy = '1, 2'; // $this->makeOrderBy($this->dimensions);
             $this->sql = vsprintf(
-                "SELECT %s, %s.%s::text AS %s FROM %s WHERE %s ORDER BY %s",
+                'SELECT %s, %s.%s::text AS %s FROM %s WHERE %s ORDER BY %s',
                 [$select, $this->dataset->fact_table, $this->valueColumnInFactTable, $this->valueColumnInResult, $from, $where, $orderBy]
             );
             $this->sql = vsprintf(
@@ -63,16 +72,16 @@ class QueryBuilder
             $from = $this->makeFrom($this->dataset->dimensions);
             $where = $this->makeWhere($this->dimensions);
             if ($this->indicators->count() > 1) {
-                //$valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS "values' . self::VALUE_COLUMN_INVISIBLE_MARKER . '"';
-                $valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS values';
-                //$orderBy = "indicator, geography";
+                // $valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS "values' . self::VALUE_COLUMN_INVISIBLE_MARKER . '"';
+                $valueColumnInSelectClause = $this->dataset->fact_table.'.'.$this->valueColumnInFactTable.'::text AS values';
+                // $orderBy = "indicator, geography";
             } else {
-                $valueColumnInSelectClause = $this->dataset->fact_table . '.' . $this->valueColumnInFactTable . '::text AS "' . $this->indicators->first()->name . self::VALUE_COLUMN_INVISIBLE_MARKER . '"';
-                //$orderBy = $this->makeOrderBy($this->dimensions);
+                $valueColumnInSelectClause = $this->dataset->fact_table.'.'.$this->valueColumnInFactTable.'::text AS "'.$this->indicators->first()->name.self::VALUE_COLUMN_INVISIBLE_MARKER.'"';
+                // $orderBy = $this->makeOrderBy($this->dimensions);
             }
             $orderBy = $this->makeOrderBy($this->dimensions);
             $this->sql = vsprintf(
-                "SELECT %s, %s FROM %s WHERE %s ORDER BY %s",
+                'SELECT %s, %s FROM %s WHERE %s ORDER BY %s',
                 [$select, $valueColumnInSelectClause, $from, $where, $orderBy]
             );
         }
@@ -83,9 +92,9 @@ class QueryBuilder
         return $dimensions
             ->pluck('model')
             ->map(fn ($dimension) => "{$dimension->table_name}.name::text AS {$dimension->table_name}")
-            ->prepend("areas.name->>'" . app()->getLocale() . "'::text AS geography")
+            ->prepend("areas.name->>'".app()->getLocale()."'::text AS geography")
             ->when($this->indicators->count() > 1, function (Collection $selectList) {
-                return $selectList->prepend("indicators.name->>'" . app()->getLocale() . "' AS indicator");
+                return $selectList->prepend("indicators.name->>'".app()->getLocale()."' AS indicator");
             })
             ->join(', ');
     }
@@ -93,16 +102,18 @@ class QueryBuilder
     private function makeFrom(Collection $dimensions): string
     {
         $factTable = $this->dataset->fact_table;
+
         return $dimensions
             ->map(function ($dimension) use ($factTable) {
                 $table = $dimension->table_name;
+
                 return "INNER JOIN {$this->schema}$table ON {$this->schema}{$factTable}.{$table}_id = $table.id";
             })
             ->when($this->indicators->count() > 1, function (Collection $fromList) use ($factTable) {
                 return $fromList->prepend("INNER JOIN indicators ON {$this->schema}{$factTable}.indicator_id = indicators.id");
             })
             ->prepend("INNER JOIN areas ON {$this->schema}{$factTable}.area_id = areas.id")
-            ->prepend($this->schema . $factTable)
+            ->prepend($this->schema.$factTable)
             ->join(' ');
     }
 
@@ -119,6 +130,7 @@ class QueryBuilder
                     $filter = collect($dimensions[$dimension->id]['valueIds'])
                         ->map(fn ($v) => "$dimension->table_name.id = '{$v}'")
                         ->join(' OR ');
+
                     return empty($filter) ? null : str($filter)->wrap('(', ')')->toString();
                 }
             });
@@ -129,7 +141,8 @@ class QueryBuilder
                     /*return "( areas.level = '$level' )";
                 } else {*/
                     $inClause = collect($areaIds)->map(fn ($id) => str($id)->wrap("'"))->join(', ');
-                    //logger('ah', ['inClause' => $inClause]);
+
+                    // logger('ah', ['inClause' => $inClause]);
                     return "( areas.level = '$level' AND areas.id IN ($inClause) )";
                 }
             })->filter()->join(' OR ');
@@ -153,19 +166,21 @@ class QueryBuilder
             ->map(function ($indicatorValues, $indicatorName) {
                 $df = toDataFrame($indicatorValues);
                 $df->pull('indicator');
-                $df->put($indicatorName . self::VALUE_COLUMN_INVISIBLE_MARKER, $df->pull('values'));
+                $df->put($indicatorName.self::VALUE_COLUMN_INVISIBLE_MARKER, $df->pull('values'));
+
                 return $df;
             });
         $unionized = $columnized->reduce(function ($carry, $subTable) {
             return $carry->union($subTable);
         }, collect());
         $result = toResultSet($unionized);
+
         return $result;
     }
 
-    public function get(?string $sql = null) : Collection
+    public function get(?string $sql = null): Collection
     {
-        //logger('SQL', ['sql' => $this->sql]);
+        // logger('SQL', ['sql' => $this->sql]);
         try {
             $result = collect(json_decode(json_encode(DB::select($sql ?? $this->sql)), true));
             if ($this->indicators->count() > 1) {
@@ -175,11 +190,12 @@ class QueryBuilder
             }
         } catch (\Exception $exception) {
             logger('In QueryBuilder', ['Exception' => $exception->getMessage()]);
+
             return collect();
         }
     }
 
-    public function toSql() : string
+    public function toSql(): string
     {
         return $this->sql;
     }

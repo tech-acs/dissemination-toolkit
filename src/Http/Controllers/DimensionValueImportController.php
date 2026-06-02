@@ -3,12 +3,12 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Http\Requests\DimensionValuesImportRequest;
-use Uneca\DisseminationToolkit\Models\Dimension;
-use Uneca\DisseminationToolkit\Services\DynamicDimensionModel;
 use Closure;
 use Illuminate\Support\Facades\Validator;
 use Spatie\SimpleExcel\SimpleExcelReader;
+use Uneca\DisseminationToolkit\Http\Requests\DimensionValuesImportRequest;
+use Uneca\DisseminationToolkit\Models\Dimension;
+use Uneca\DisseminationToolkit\Services\DynamicDimensionModel;
 
 class DimensionValueImportController extends Controller
 {
@@ -21,7 +21,7 @@ class DimensionValueImportController extends Controller
     {
         $file = $request->file('datafile')->store('data');
         $filepath = storage_path("app/$file");
-        $dataFile = SimpleExcelReader::create($filepath)->formatHeadersUsing(fn($header) => strtolower(trim($header)));
+        $dataFile = SimpleExcelReader::create($filepath)->formatHeadersUsing(fn ($header) => strtolower(trim($header)));
         $headers = $dataFile->getHeaders();
 
         $validator = Validator::make(
@@ -39,9 +39,11 @@ class DimensionValueImportController extends Controller
             return back()->withErrors($validator);
         }
 
-        $inserted = 0; $errors = 0; $totalRows = 0;
+        $inserted = 0;
+        $errors = 0;
+        $totalRows = 0;
         $dataFile->getRows()
-            ->each(function(array $row) use (&$errors, &$inserted, &$totalRows, $dimension) {
+            ->each(function (array $row) use (&$errors, &$inserted, &$totalRows, $dimension) {
                 $totalRows++;
                 try {
                     (new DynamicDimensionModel($dimension->table_name))
@@ -49,12 +51,12 @@ class DimensionValueImportController extends Controller
                             'name' => $row['label'],
                             'code' => $row['code'],
                             'rank' => $row['rank'] ?? $totalRows,
-                        ]) ;
+                        ]);
                     $inserted++;
                 } catch (\Exception $e) {
                     $errors++;
                 }
-        });
+            });
 
         return redirect()->route('manage.dimension.values.index', $dimension)
             ->withMessage("Total rows in file: $totalRows, inserted rows: $inserted, error rows: $errors");

@@ -2,9 +2,9 @@
 
 namespace Uneca\DisseminationToolkit\Actions;
 
-use Uneca\DisseminationToolkit\Models\Dimension;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Uneca\DisseminationToolkit\Models\Dimension;
 
 class RemoveDimensionAction
 {
@@ -13,12 +13,15 @@ class RemoveDimensionAction
         if (Schema::hasTable($table)) {
             try {
                 Schema::drop($table);
+
                 return true;
             } catch (\Exception $exception) {
-                logger("Error in RemoveDimensionAction (dropTable function)", ['Exception message' => $exception->getMessage()]);
+                logger('Error in RemoveDimensionAction (dropTable function)', ['Exception message' => $exception->getMessage()]);
+
                 return false;
             }
         }
+
         return true;
     }
 
@@ -30,13 +33,14 @@ class RemoveDimensionAction
             foreach ($dimension->for as $factTable) {
                 try {
                     Schema::table($factTable, function (Blueprint $table) use ($tableName) {
-                        $table->dropColumn($tableName . '_id');
+                        $table->dropColumn($tableName.'_id');
                     });
                 } catch (\Exception $exception) {
-                    logger("Error in RemoveDimensionAction (handle function)", ['Exception message' => $exception->getMessage()]);
+                    logger('Error in RemoveDimensionAction (handle function)', ['Exception message' => $exception->getMessage()]);
                 }
             }
             $dimension->delete();
+
             return true;
         } else {
             return false;

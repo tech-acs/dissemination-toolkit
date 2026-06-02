@@ -3,12 +3,12 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 use Uneca\DisseminationToolkit\Http\Requests\TopicRequest;
 use Uneca\DisseminationToolkit\Models\Topic;
 use Uneca\DisseminationToolkit\Services\SmartTableColumn;
 use Uneca\DisseminationToolkit\Services\SmartTableData;
-use Illuminate\Http\Request;
-use Illuminate\Support\MessageBag;
 
 class TopicController extends Controller
 {
@@ -42,6 +42,7 @@ class TopicController extends Controller
     public function store(TopicRequest $request)
     {
         Topic::create($request->validated());
+
         return redirect()->route('manage.topic.index')->withMessage('Record created');
     }
 
@@ -53,6 +54,7 @@ class TopicController extends Controller
     public function update(Topic $topic, TopicRequest $request)
     {
         $topic->update($request->validated());
+
         return redirect()->route('manage.topic.index')->withMessage('Record updated');
     }
 
@@ -64,6 +66,7 @@ class TopicController extends Controller
             );
         }
         $topic->delete();
+
         return redirect()->route('manage.topic.index')->withMessage('Record deleted');
     }
 }

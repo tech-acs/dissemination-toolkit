@@ -4,8 +4,10 @@ namespace Uneca\DisseminationToolkit\Livewire\DataShaperTraits;
 
 use Uneca\DisseminationToolkit\Models\Topic;
 
-trait TopicTrait {
+trait TopicTrait
+{
     public array $topics = [];
+
     public int $selectedTopic = 0;
 
     public function mountTopicTrait()
@@ -21,8 +23,8 @@ trait TopicTrait {
         $topic = Topic::find($topicId);
         $this->datasets = $topic?->datasets()
             ->get()
-            ->filter(fn($dataset) => $dataset->observationsCount())
-            ->mapWithKeys(fn($dataset) => [$dataset->id => $dataset->info()])
+            ->filter(fn ($dataset) => $dataset->observationsCount())
+            ->mapWithKeys(fn ($dataset) => [$dataset->id => $dataset->info()])
             ->all();
         $this->nextSelection = 'dataset';
 

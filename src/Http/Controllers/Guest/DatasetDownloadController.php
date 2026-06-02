@@ -2,10 +2,10 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
-use Uneca\DisseminationToolkit\Actions\BuildDatasetAction;
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Dataset;
 use Spatie\SimpleExcel\SimpleExcelWriter;
+use Uneca\DisseminationToolkit\Actions\BuildDatasetAction;
+use Uneca\DisseminationToolkit\Models\Dataset;
 
 class DatasetDownloadController extends Controller
 {

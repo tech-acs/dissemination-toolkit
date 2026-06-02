@@ -14,6 +14,7 @@ class DatasetController extends Controller
     public function index()
     {
         $records = Dataset::with('indicators', 'dimensions', 'topics')->orderByDesc('updated_at')->get();
+
         return view('dissemination::manage.dataset.index', compact('records'));
     }
 
@@ -22,8 +23,9 @@ class DatasetController extends Controller
         $indicators = Indicator::orderBy('name')->get();
         $dimensions = Dimension::orderBy('name')->get();
         $factTables = config('dissemination.fact_tables');
-        $areaLevels = (new AreaTree())->hierarchies;
-        $dataset = new Dataset();
+        $areaLevels = (new AreaTree)->hierarchies;
+        $dataset = new Dataset;
+
         return view('dissemination::manage.dataset.create', compact('indicators', 'dimensions', 'factTables', 'areaLevels', 'dataset'));
     }
 
@@ -34,6 +36,7 @@ class DatasetController extends Controller
         $dataset->dimensions()->sync($request->dimensions);
         $inheritedTopics = $dataset->indicators->pluck('topics')->flatten()->pluck('id')->unique();
         $dataset->topics()->sync($inheritedTopics);
+
         return redirect()->route('manage.dataset.index')->withMessage('Record created');
     }
 
@@ -42,7 +45,8 @@ class DatasetController extends Controller
         $indicators = Indicator::orderBy('name')->get();
         $dimensions = Dimension::orderBy('name')->get();
         $factTables = config('dissemination.fact_tables');
-        $areaLevels = (new AreaTree())->hierarchies;
+        $areaLevels = (new AreaTree)->hierarchies;
+
         return view('dissemination::manage.dataset.edit', compact('dataset', 'indicators', 'dimensions', 'factTables', 'areaLevels'));
     }
 
@@ -53,17 +57,19 @@ class DatasetController extends Controller
         $dataset->dimensions()->sync($request->dimensions);
         $inheritedTopics = $dataset->indicators->pluck('topics')->flatten()->pluck('id')->unique();
         $dataset->topics()->sync($inheritedTopics);
+
         return redirect()->route('manage.dataset.index')->withMessage('Record updated');
     }
 
     public function destroy(Dataset $dataset)
     {
-        $warning = "The dataset contains data and therefore should not be deleted.
-                    If you want to remove the dataset along with the data and other references, visit this url: " . url()->route('manage.dataset.destroy', $dataset);
+        $warning = 'The dataset contains data and therefore should not be deleted.
+                    If you want to remove the dataset along with the data and other references, visit this url: '.url()->route('manage.dataset.destroy', $dataset);
         if ($dataset->observationsCount() > 0) {
             return redirect()->route('manage.dataset.index')->withErrors($warning);
         }
         $dataset->delete();
+
         return redirect()->route('manage.dataset.index')->withMessage('Record deleted');
     }
 }

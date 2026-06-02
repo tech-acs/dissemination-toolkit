@@ -3,17 +3,16 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Indicator;
-use Uneca\DisseminationToolkit\Models\Tag;
-use Uneca\DisseminationToolkit\Models\Visualization;
-use Uneca\DisseminationToolkit\Services\QueryBuilder;
-use Uneca\DisseminationToolkit\Services\Sorter;
 use Illuminate\Support\Facades\Auth;
 use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;
 use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;
 use Uneca\DisseminationToolkit\Http\Resources\TableDesignerResource;
-use Uneca\DisseminationToolkit\Services\VizWizardSession;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Table;
+use Uneca\DisseminationToolkit\Models\Indicator;
+use Uneca\DisseminationToolkit\Models\Tag;
+use Uneca\DisseminationToolkit\Models\Visualization;
+use Uneca\DisseminationToolkit\Services\QueryBuilder;
+use Uneca\DisseminationToolkit\Services\VizWizardSession;
 
 class TableWizardController extends Controller
 {
@@ -23,13 +22,13 @@ class TableWizardController extends Controller
         ],
         'columnTypes' => [
             'rangeColumn' => [
-                'width' => 150
-            ]
+                'width' => 150,
+            ],
         ],
         'columnDefs' => [],
         'rowData' => [],
         'autoSizeStrategy' => [
-            'type' => 'fitGridWidth'
+            'type' => 'fitGridWidth',
         ],
     ];
 
@@ -38,12 +37,14 @@ class TableWizardController extends Controller
         2 => 'Design table',
         3 => 'Add metadata & save',
     ];
+
     private string $type = 'table';
 
     public function step1()
     {
         $step = 1;
         $this->setupResource();
+
         return view('dissemination::manage.viz-builder.step1')->with(['steps' => $this->steps, 'currentStep' => $step, 'type' => $this->type]);
     }
 
@@ -56,7 +57,8 @@ class TableWizardController extends Controller
         }
         $resource = VizWizardSession::get();
         $options = $this->makeOptions($resource);
-        //dd($options);
+
+        // dd($options);
         return view('dissemination::manage.viz-builder.table.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
     }
 
@@ -68,13 +70,14 @@ class TableWizardController extends Controller
         }
         $resource = VizWizardSession::get();
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Table::class, 'title' => $resource->indicatorTitle]);
+
         return view('dissemination::manage.viz-builder.step3')
             ->with([
                 'steps' => $this->steps,
                 'currentStep' => 3,
                 'resource' => $resource,
                 'visualization' => $visualization,
-                'type' => $this->type
+                'type' => $this->type,
             ]);
     }
 
@@ -88,7 +91,7 @@ class TableWizardController extends Controller
         $description = $request->get('description');
         $isFilterable = $request->boolean('filterable');
         $isReviewable = $request->boolean('is_reviewable');
-        //$isPublished = $request->boolean('published');
+        // $isPublished = $request->boolean('published');
         $resource = VizWizardSession::get();
         $vizInfo = [
             'title' => $title,
@@ -96,7 +99,7 @@ class TableWizardController extends Controller
             'description' => $description,
             'is_filterable' => $isFilterable,
             'is_reviewable' => $isReviewable,
-            //'published' => $isPublished,
+            // 'published' => $isPublished,
             'options' => $resource->options,
             'thumbnail' => $resource->thumbnail,
         ];
@@ -110,7 +113,7 @@ class TableWizardController extends Controller
                 'data_params' => $resource->dataParams,
                 'options' => $resource->options,
                 'livewire_component' => Table::class,
-                ...$vizInfo
+                ...$vizInfo,
             ]);
         }
 
@@ -136,34 +139,37 @@ class TableWizardController extends Controller
             return redirect()->route('manage.viz-builder.table.step1');
         }
         $resource = VizWizardSession::get();
-        //$options = $this->makeOptions($resource, $visualization);
+        // $options = $this->makeOptions($resource, $visualization);
         $options = $resource->options;
-        //dump('In edit', $resource, $options);
+
+        // dump('In edit', $resource, $options);
         return view('dissemination::manage.viz-builder.table.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
     }
 
     private function isStepValid($step): bool
     {
         $resource = VizWizardSession::get();
+
         return ($resource instanceof DesignerResource) && (! empty($resource->dataSources));
     }
 
     private function makeOptions($resource, $visualization = null)
     {
-        $table = new Table();
+        $table = new Table;
         $table->vizId = $visualization?->id;
         $table->preparePayload($resource->rawData);
+
         return $table->options;
     }
 
-    private function setupResource(Visualization $visualization = null)
+    private function setupResource(?Visualization $visualization = null)
     {
         if ($visualization) {
             $query = new QueryBuilder($visualization->data_params);
             $rawData = $query->get()->all();
             $resource = new TableDesignerResource(
                 dataSources: toDataFrame(collect($rawData))->toArray(),
-                //data: $visualization->data,
+                // data: $visualization->data,
                 options: $visualization->options,
                 vizId: $visualization->id,
                 rawData: $rawData,
@@ -173,7 +179,7 @@ class TableWizardController extends Controller
                 options: self::DEFAULT_OPTIONS,
             );
         }
-        //dd($resource, $visualization);
+        // dd($resource, $visualization);
         VizWizardSession::put($resource);
     }
 }

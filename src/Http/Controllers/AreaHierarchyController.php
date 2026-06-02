@@ -3,16 +3,17 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Http\Requests\AreaHierarchyRequest;
-use Uneca\DisseminationToolkit\Models\AreaHierarchy;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Uneca\DisseminationToolkit\Http\Requests\AreaHierarchyRequest;
+use Uneca\DisseminationToolkit\Models\AreaHierarchy;
 
 class AreaHierarchyController extends Controller
 {
     public function index()
     {
         $records = AreaHierarchy::orderBy('index')->get();
+
         return view('dissemination::manage.area-hierarchy.index', compact('records'));
     }
 
@@ -26,7 +27,7 @@ class AreaHierarchyController extends Controller
         $validator = Validator::make(
             [
                 'zoom_start' => $request->integer('zoom_start'),
-                'zoom_end' => $request->integer('zoom_end')
+                'zoom_end' => $request->integer('zoom_end'),
             ],
             [
                 'zoom_start' => 'integer|lte:zoom_end|min:6',
@@ -40,8 +41,8 @@ class AreaHierarchyController extends Controller
 
     public function store(AreaHierarchyRequest $request)
     {
-        //$this->validateZoomRange($request);
-        //$zoomLevels = range($request->integer('zoom_start'), $request->integer('zoom_end'));
+        // $this->validateZoomRange($request);
+        // $zoomLevels = range($request->integer('zoom_start'), $request->integer('zoom_end'));
         try {
             AreaHierarchy::create([
                 'index' => AreaHierarchy::count(),
@@ -52,6 +53,7 @@ class AreaHierarchyController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('manage.area-hierarchy.index')->withError('There was a problem creating the area hierarchy');
         }
+
         return redirect()->route('manage.area-hierarchy.index')->withMessage('Area hierarchy created');
     }
 
@@ -59,6 +61,7 @@ class AreaHierarchyController extends Controller
     {
         $areaHierarchy->zoom_start = min($areaHierarchy->map_zoom_levels ?? [6]);
         $areaHierarchy->zoom_end = max($areaHierarchy->map_zoom_levels ?? [6]);
+
         return view('dissemination::manage.area-hierarchy.edit', compact('areaHierarchy'));
     }
 
@@ -67,12 +70,14 @@ class AreaHierarchyController extends Controller
         $this->validateZoomRange($request);
         $zoomLevels = range($request->integer('zoom_start'), $request->integer('zoom_end'));
         $areaHierarchy->update($request->merge(['map_zoom_levels' => $zoomLevels])->only(['name', 'zero_pad_length', 'simplification_tolerance', 'map_zoom_levels']));
+
         return redirect()->route('manage.area-hierarchy.index')->withMessage('Area hierarchy updated');
     }
 
     public function destroy(AreaHierarchy $areaHierarchy)
     {
         $areaHierarchy->delete();
+
         return redirect()->route('manage.area-hierarchy.index')->withMessage('Area hierarchy deleted');
     }
 }

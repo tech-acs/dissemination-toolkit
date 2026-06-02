@@ -11,9 +11,13 @@ use Uneca\DisseminationToolkit\Services\AreaTree;
 class Update extends Component
 {
     public DatasetForm $form;
+
     public array $indicatorsList = [];
+
     public array $dimensionsList = [];
+
     public array $factTablesList = [];
+
     public array $areaLevelsList = [];
 
     public function mount(Dataset $dataset)
@@ -21,7 +25,7 @@ class Update extends Component
         $this->indicatorsList = Indicator::orderBy('name')->pluck('name', 'id')->toArray();
         $this->dimensionsList = Dimension::orderBy('name')->pluck('name', 'id')->toArray();
         $this->factTablesList = config('dissemination.fact_tables');
-        $this->areaLevelsList = (new AreaTree())->hierarchies;
+        $this->areaLevelsList = (new AreaTree)->hierarchies;
         $this->form->setDataset($dataset);
     }
 
@@ -34,6 +38,7 @@ class Update extends Component
     {
         $this->form->update();
         session()->flash('message', 'Record updated.');
+
         return $this->redirect(route('manage.dataset.index'));
     }
 

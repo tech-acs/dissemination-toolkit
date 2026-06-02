@@ -4,8 +4,10 @@ namespace Uneca\DisseminationToolkit\Livewire\DataShaperTraits;
 
 use Uneca\DisseminationToolkit\Models\Year;
 
-trait YearTrait {
+trait YearTrait
+{
     public array $years = [];
+
     public array $selectedYears = [];
 
     public function updatedSelectedYears($yearId): void

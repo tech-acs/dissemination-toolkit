@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -18,21 +19,21 @@ class DimensionRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
             'name' => 'required|regex:/^[A-Za-z0-9 ]+$/',
-            'code' => ['required', 'min:1', Rule::unique('dimensions')->ignore($this->dimension),],
-            'for' => 'required|min:1'
+            'code' => ['required', 'min:1', Rule::unique('dimensions')->ignore($this->dimension)],
+            'for' => 'required|min:1',
         ];
     }
 
     public function attributes()
     {
         return [
-            'for' => 'applies to'
+            'for' => 'applies to',
         ];
     }
 }

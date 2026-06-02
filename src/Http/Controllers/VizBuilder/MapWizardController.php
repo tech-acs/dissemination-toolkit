@@ -3,7 +3,12 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;
+use Uneca\DisseminationToolkit\Http\Resources\ChartDesignerResource;
+use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Map;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Tag;
@@ -11,14 +16,8 @@ use Uneca\DisseminationToolkit\Models\Visualization;
 use Uneca\DisseminationToolkit\Services\Geospatial;
 use Uneca\DisseminationToolkit\Services\QueryBuilder;
 use Uneca\DisseminationToolkit\Services\Sorter;
-use Uneca\DisseminationToolkit\Traits\PlotlyDefaults;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;
-use Uneca\DisseminationToolkit\Http\Resources\ChartDesignerResource;
-use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;
 use Uneca\DisseminationToolkit\Services\VizWizardSession;
-use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
+use Uneca\DisseminationToolkit\Traits\PlotlyDefaults;
 
 class MapWizardController extends Controller
 {
@@ -29,20 +28,22 @@ class MapWizardController extends Controller
         2 => 'Design map',
         3 => 'Add metadata & save',
     ];
+
     private string $type = 'map';
 
     public function step1()
     {
         $step = 1;
         $this->setupResource();
+
         return view('dissemination::manage.viz-builder.step1')->with(['steps' => $this->steps, 'currentStep' => $step, 'type' => $this->type]);
     }
 
-    private function setupResource(Visualization $visualization = null): void
+    private function setupResource(?Visualization $visualization = null): void
     {
         if ($visualization) {
             $query = new QueryBuilder($visualization->data_params);
-            $rawData = $query->get()->all();//Sorter::sort($query->get())->all();
+            $rawData = $query->get()->all(); // Sorter::sort($query->get())->all();
             $resource = new ChartDesignerResource(
                 dataSources: toDataFrame(collect($rawData))->toArray(),
                 data: $visualization->data,
@@ -62,7 +63,7 @@ class MapWizardController extends Controller
     {
         return [
             ...self::DEFAULT_CONFIG,
-            //'toImageButtonOptions' => ['filename' => $this->graphDiv . ' (' . now()->toDayDateTimeString() . ')'],
+            // 'toImageButtonOptions' => ['filename' => $this->graphDiv . ' (' . now()->toDayDateTimeString() . ')'],
             'locale' => app()->getLocale(),
         ];
     }
@@ -70,7 +71,7 @@ class MapWizardController extends Controller
     public function step2()
     {
         $step = 2;
-        if (!$this->isStepValid($step)) {
+        if (! $this->isStepValid($step)) {
             return redirect()->route('manage.viz-builder.map.step1')
                 ->withErrors('You must prepare appropriate data for your visualization before proceeding to the next step');
         }
@@ -78,13 +79,14 @@ class MapWizardController extends Controller
         $options = $this->makeOptions($resource);
         $resource = $this->addCurrentValuesToResource($resource, $options);
 
-        //dump($resource, $options);
+        // dump($resource, $options);
         return view('dissemination::manage.viz-builder.map.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
     }
 
     private function isStepValid($step): bool
     {
         $resource = VizWizardSession::get();
+
         return ($resource instanceof DesignerResource) && (! empty($resource->dataSources));
     }
 
@@ -94,12 +96,13 @@ class MapWizardController extends Controller
             return str($column)->endsWith(QueryBuilder::VALUE_COLUMN_INVISIBLE_MARKER);
         });
         $firstIndicator = reset($indicators);
+
         return [
             'data.meta.columnNames.z' => [
                 'type' => 'hidden',
                 'label' => 'Displayed indicator',
                 'options' => array_values($indicators),
-                'value' => $firstIndicator
+                'value' => $firstIndicator,
             ],
             'data.zsrc' => [
                 'type' => 'hidden',
@@ -109,44 +112,43 @@ class MapWizardController extends Controller
                 'type' => 'select',
                 'label' => 'Zoom level',
                 'options' => [4, 5, 6, 7, 8],
-                'value' => $visualization->layout['map']['zoom'] ?? config('dissemination.map.starting_zoom')
+                'value' => $visualization->layout['map']['zoom'] ?? config('dissemination.map.starting_zoom'),
             ],
             'layout.map.style' => [
                 'type' => 'select',
                 'label' => 'Base map',
-                'options' => ["Blank Background", "Open Street Map", "Google Hybrid", "Open Topo Map", "CartoDB"]
-                ,
-                'value' => $visualization->layout['map']['style'] ?? 'Open Street Map'
+                'options' => ['Blank Background', 'Open Street Map', 'Google Hybrid', 'Open Topo Map', 'CartoDB'],
+                'value' => $visualization->layout['map']['style'] ?? 'Open Street Map',
             ],
             'layout.legend.orientation' => [
                 'type' => 'select',
                 'label' => 'Legend orientation',
                 'options' => ['Vertical', 'Horizontal'],
-                'value' => $visualization->layout['legend']['orientation'] ?? 'Vertical'
+                'value' => $visualization->layout['legend']['orientation'] ?? 'Vertical',
             ],
-            'layout.legend.type'=>[
+            'layout.legend.type' => [
                 'type' => 'select',
                 'label' => 'Legend type',
                 'options' => ['continuous', 'categorical'],
-                'value' => $visualization->layout['legend']['type'] ?? 'categorical'
+                'value' => $visualization->layout['legend']['type'] ?? 'categorical',
             ],
             'layout.legend.position' => [
                 'type' => 'select',
                 'label' => 'Legend position',
                 'options' => ['bottomright', 'topleft', 'topright', 'bottomleft'],
-                'value' => $visualization->layout['legend']['position'] ?? 'bottomright'
+                'value' => $visualization->layout['legend']['position'] ?? 'bottomright',
             ],
             'layout.showlegend' => [
                 'type' => 'select',
                 'label' => 'Show legend',
                 'options' => ['No', 'Yes'],
-                'value' => $visualization->layout['showlegend'] ?? 'Yes'
+                'value' => $visualization->layout['showlegend'] ?? 'Yes',
             ],
             'layout.steps' => [
                 'type' => 'select',
                 'label' => 'Steps',
                 'options' => [3, 5, 7, 9],
-                'value' => $visualization->layout['steps'] ?? 5
+                'value' => $visualization->layout['steps'] ?? 5,
             ],
             'layout.colorpallette' => [
                 'type' => 'select',
@@ -154,7 +156,7 @@ class MapWizardController extends Controller
                 'options' => [
                     'BuGn', 'BuPu', 'GnBu', 'OrRd', 'PuBu', 'PuBuGn', 'PuRd', 'RdPu', 'YlGn', 'YlGnBu', 'YlOrBr', 'YlOrRd', 'Blues', 'Greens', 'Greys', 'Oranges', 'Purples', 'Reds', 'BrBG', 'PiYG', 'PRGn', 'PuOr', 'RdBu', 'RdGy', 'RdYlBu', 'RdYlGn', 'Spectral', 'Accent', 'Dark2', 'Paired', 'Pastel1', 'Pastel2', 'Set1', 'Set2', 'Set3', 'Rag',
                 ],
-                'value' => $visualization->layout['colorpallette'] ?? 'BuGn'
+                'value' => $visualization->layout['colorpallette'] ?? 'BuGn',
             ],
 
         ];
@@ -174,7 +176,7 @@ class MapWizardController extends Controller
             'showscale' => false,
         ];
 
-        $setValues = Arr::undot(array_map(fn($option) => $option['value'], $options));
+        $setValues = Arr::undot(array_map(fn ($option) => $option['value'], $options));
         $setDataValues = $setValues['data'];
         $setLayoutValues = $setValues['layout'];
         foreach ($setDataValues as $key => $value) {
@@ -192,43 +194,45 @@ class MapWizardController extends Controller
                 'zoom' => config('dissemination.map.starting_zoom'),
                 'center' => config('dissemination.map.center'),
                 'style' => '',
-            ]
+            ],
         ];
         $resource->layout = array_replace_recursive($layout, $setLayoutValues);
-        //dump('mixed', $resource);
+
+        // dump('mixed', $resource);
         return $resource;
     }
 
     public function step3(Request $request)
     {
         $step = 3;
-        if (!$this->isStepValid($step)) {
+        if (! $this->isStepValid($step)) {
             return redirect()->route('manage.viz-builder.map.step1');
         }
         $resource = VizWizardSession::get();
-        //dump($resource);
+        // dump($resource);
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Map::class, 'title' => $resource->indicatorTitle]);
+
         return view('dissemination::manage.viz-builder.step3')
             ->with([
                 'steps' => $this->steps,
                 'currentStep' => 3,
                 'resource' => $resource,
                 'visualization' => $visualization,
-                'type' => $this->type
+                'type' => $this->type,
             ]);
     }
 
     public function store(VisualizationRequest $request)
     {
         $step = 3;
-        if (!$this->isStepValid($step)) {
+        if (! $this->isStepValid($step)) {
             return redirect()->route('manage.viz-builder.map.prepare-data');
         }
         $title = $request->get('title');
         $description = $request->get('description');
         $isFilterable = $request->boolean('filterable');
         $isReviewable = $request->boolean('is_reviewable');
-        //$isPublished = $request->boolean('published');
+        // $isPublished = $request->boolean('published');
         $resource = VizWizardSession::get();
 
         $vizInfo = [
@@ -239,7 +243,7 @@ class MapWizardController extends Controller
             'layout' => $resource->layout,
             'is_filterable' => $isFilterable,
             'is_reviewable' => $isReviewable,
-            //'published' => $isPublished,
+            // 'published' => $isPublished,
             'thumbnail' => $resource->thumbnail,
         ];
         if ($resource?->vizId) {
@@ -250,7 +254,7 @@ class MapWizardController extends Controller
                 'name' => str($title)->slug()->toString(),
                 'data_params' => $resource->dataParams,
                 'livewire_component' => Map::class,
-                ...$vizInfo
+                ...$vizInfo,
             ]);
         }
 
@@ -261,6 +265,7 @@ class MapWizardController extends Controller
             $visualization->topics()->sync($inheritedTopics);
 
             VizWizardSession::forget();
+
             return redirect()->route('manage.visualization.index')->withMessage('Visualization successfully saved');
         }
     }
@@ -271,15 +276,16 @@ class MapWizardController extends Controller
         $visualization = Visualization::find($visualizationId);
         // ToDo: if not found...redirect back to index with error message
         $this->setupResource($visualization);
-        if (!$this->isStepValid($step)) {
+        if (! $this->isStepValid($step)) {
             return redirect()->route('manage.visualization.index')
                 ->withMessage('The visualization is either broken or could not be located');
         }
         $resource = VizWizardSession::get();
-        //dump('from db', $resource);
+        // dump('from db', $resource);
         $options = $this->makeOptions($resource, $visualization);
         $resource = $this->addCurrentValuesToResource($resource, $options);
-        //dump('synt', $resource, $options);
+
+        // dump('synt', $resource, $options);
         return view('dissemination::manage.viz-builder.map.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
     }
 

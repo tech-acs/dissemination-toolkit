@@ -2,9 +2,9 @@
 
 namespace Uneca\DisseminationToolkit\Services;
 
+use Illuminate\Support\Collection;
 use Uneca\DisseminationToolkit\Enums\SortingTypeEnum;
 use Uneca\DisseminationToolkit\Models\Dimension;
-use Illuminate\Support\Collection;
 
 class Sorter
 {
@@ -16,6 +16,7 @@ class Sorter
             $dimension = Dimension::where("name->$local", rtrim($column, QueryBuilder::VALUE_COLUMN_INVISIBLE_MARKER))->first();
             $sortingTypeFlag = $dimension ? $dimension->sorting_type : SortingTypeEnum::REGULAR->value;
         }
+
         return $sortingTypeFlag;
     }
 
@@ -23,6 +24,7 @@ class Sorter
     {
         $firstColumn = array_key_first($data->first() ?? []);
         $sortingType = self::decideSortingType($firstColumn);
+
         return $data->sortBy($firstColumn, $sortingType)->values();
     }
 }

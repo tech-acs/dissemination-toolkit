@@ -9,6 +9,7 @@ if (! function_exists('settings')) {
         if (is_null($key)) {
             return app('settings');
         }
+
         return app('settings')->get($key, $default);
     }
 }
@@ -17,8 +18,9 @@ if (! function_exists('safeDivide')) {
     function safeDivide($numerator, $denominator, $integerDivision = false)
     {
         if (is_numeric($denominator) && $denominator > 0) {
-            return $integerDivision ? intdiv($numerator, $denominator): ($numerator/$denominator);
+            return $integerDivision ? intdiv($numerator, $denominator) : ($numerator / $denominator);
         }
+
         return 0;
     }
 }
@@ -35,6 +37,7 @@ if (! function_exists('toDataFrame')) {
         foreach ($columns as $column) {
             $df[$column] = $data->pluck($column)->all();
         }
+
         return $df;
     }
 }
@@ -47,13 +50,14 @@ if (! function_exists('toResultSet')) {
             return $resultSet;
         }
         $columns = $df->keys();
-        for($i = 0; $i < count($df->first()); $i++) {
+        for ($i = 0; $i < count($df->first()); $i++) {
             $row = [];
             foreach ($columns as $column) {
                 $row[$column] = $df[$column][$i];
             }
             $resultSet->push($row);
         }
+
         return $resultSet;
     }
 }

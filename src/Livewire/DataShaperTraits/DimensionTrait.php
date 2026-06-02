@@ -4,9 +4,12 @@ namespace Uneca\DisseminationToolkit\Livewire\DataShaperTraits;
 
 use Uneca\DisseminationToolkit\Models\Dimension;
 
-trait DimensionTrait {
+trait DimensionTrait
+{
     public array $dimensions = [];
+
     public array $selectedDimensions = [];
+
     public array $selectedDimensionValues = [];
 
     public function updatedSelectedDimensions($key)

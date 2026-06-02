@@ -2,13 +2,6 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
-use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\SortingTrait;
-use Uneca\DisseminationToolkit\Models\Dataset;
-use Uneca\DisseminationToolkit\Models\Dimension;
-use Uneca\DisseminationToolkit\Models\Indicator;
-use Uneca\DisseminationToolkit\Models\Topic;
-use Uneca\DisseminationToolkit\Services\QueryBuilder;
-use Uneca\DisseminationToolkit\Services\Sorter;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Stringable;
 use Livewire\Attributes\Url;
@@ -18,18 +11,28 @@ use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\DimensionTrait;
 use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\GeographyTrait;
 use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\IndicatorTrait;
 use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\PivotingTrait;
+use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\SortingTrait;
 use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\TopicTrait;
 use Uneca\DisseminationToolkit\Livewire\DataShaperTraits\YearTrait;
+use Uneca\DisseminationToolkit\Models\Dataset;
+use Uneca\DisseminationToolkit\Models\Dimension;
+use Uneca\DisseminationToolkit\Models\Indicator;
+use Uneca\DisseminationToolkit\Models\Topic;
+use Uneca\DisseminationToolkit\Services\QueryBuilder;
+use Uneca\DisseminationToolkit\Services\Sorter;
 
 class DataShaper extends Component
 {
-    use TopicTrait, DatasetTrait, IndicatorTrait, GeographyTrait, YearTrait, DimensionTrait, SortingTrait, PivotingTrait;
+    use DatasetTrait, DimensionTrait, GeographyTrait, IndicatorTrait, PivotingTrait, SortingTrait, TopicTrait, YearTrait;
 
     #[Url]
-    public int|null $prefillIndicatorId = 0;
+    public ?int $prefillIndicatorId = 0;
+
     #[Url]
-    public int|null $prefillDatasetId = 0;
+    public ?int $prefillDatasetId = 0;
+
     public string $nextSelection = 'topic';
+
     public array $selections = [];
 
     public function mount()
@@ -89,9 +92,11 @@ class DataShaper extends Component
     {
         $dataset = Dataset::with('indicators', 'dimensions')->find($this->selectedDataset);
         $indicators = Indicator::findMany($this->selectedIndicators);
+
         return str($indicators->pluck('name')->join(', ', ' and '))
             ->when(collect($this->selectedDimensions)->isNotEmpty(), function (Stringable $string) use ($dataset) {
                 $selectedDimensions = $dataset->dimensions->filter(fn ($dim) => in_array($dim->id, $this->selectedDimensions));
+
                 return $string->append(' by ', $selectedDimensions->pluck('name')->join(', ', ' and '));
             })
             ->lower()->ucfirst()
@@ -117,15 +122,16 @@ class DataShaper extends Component
     private function makeReadableDataParams(string $field, string $value): array
     {
         $positionLookup = [
-            "reset" => 0,
-            "topic" => 1,
-            "dataset" => 2,
-            "indicators" => 3,
-            "geography" => 4,
-            "dimensions" => 5,
+            'reset' => 0,
+            'topic' => 1,
+            'dataset' => 2,
+            'indicators' => 3,
+            'geography' => 4,
+            'dimensions' => 5,
         ];
         $this->selections[$field] = $value;
         $this->selections = array_slice($this->selections, 0, $positionLookup[$field]);
+
         return array_filter($this->selections, fn ($v) => ! empty($v));
     }
 
@@ -138,6 +144,7 @@ class DataShaper extends Component
                 ->mapWithKeys(fn ($dimensionId) => [$dimensionId => $this->selectedDimensionValues[$dimensionId]])
                 ->map(function ($dimensionValueIds, $dimensionId) {
                     $dimension = Dimension::find($dimensionId);
+
                     return [
                         'id' => $dimensionId,
                         'label' => $dimension->name,
@@ -163,32 +170,33 @@ class DataShaper extends Component
     private function setSortableColumns(): void
     {
         $this->sortableColumns = [];
-        //if (count($this->selectedIndicators) === 1) {
-            $dimensions = collect($this->selectedDimensions)
-                ->mapWithKeys(fn ($dimensionId) => [$dimensionId => $this->selectedDimensionValues[$dimensionId]])
-                ->map(function ($dimensionValueIds, $dimensionId) {
-                    $dimension = Dimension::find($dimensionId);
-                    return [
-                        'column' => $dimension->table_name . '.rank',
-                        'label' => $dimension->name,
-                    ];
-                });
-            if ($dimensions->isNotEmpty()) {
-                $this->sortableColumns = [
-                    ...$dimensions,
-                    [
-                        'column' => 'geography',
-                        'label' => 'Geography',
-                    ],
+        // if (count($this->selectedIndicators) === 1) {
+        $dimensions = collect($this->selectedDimensions)
+            ->mapWithKeys(fn ($dimensionId) => [$dimensionId => $this->selectedDimensionValues[$dimensionId]])
+            ->map(function ($dimensionValueIds, $dimensionId) {
+                $dimension = Dimension::find($dimensionId);
+
+                return [
+                    'column' => $dimension->table_name.'.rank',
+                    'label' => $dimension->name,
                 ];
-            }
-        //}
+            });
+        if ($dimensions->isNotEmpty()) {
+            $this->sortableColumns = [
+                ...$dimensions,
+                [
+                    'column' => 'geography',
+                    'label' => 'Geography',
+                ],
+            ];
+        }
+        // }
     }
 
     public function apply(): void
     {
         $queryParameters = $this->makeDataParam();
-        //dump($queryParameters);
+        // dump($queryParameters);
         $yearDimensionId = Dimension::firstWhere('table_name', 'year')->id;
         $validator = Validator::make(
             array_filter([
@@ -202,7 +210,7 @@ class DataShaper extends Component
                 'selectedGeography' => 'array|min:1',
                 'selectedDimensions' => "required_array_keys:$yearDimensionId|min:1",
                 'pivotColumn' => 'sometimes|bail|required|different:pivotRow|different:nestingPivotColumn',
-                'pivotRow' => 'bail|required_unless:pivotColumn,null|different:nestingPivotColumn'
+                'pivotRow' => 'bail|required_unless:pivotColumn,null|different:nestingPivotColumn',
             ],
             [
                 'selectedDimensions' => 'Year is a required dimension and must be selected',
@@ -217,16 +225,16 @@ class DataShaper extends Component
             }
         } else {
             $query = new QueryBuilder($queryParameters);
-            //dump($queryParameters, $query->toSql());
-            $rawData = $query->get();//Sorter::sort($query->get());
+            // dump($queryParameters, $query->toSql());
+            $rawData = $query->get(); // Sorter::sort($query->get());
             $this->dispatch(
-                "dataShaperEvent",
+                'dataShaperEvent',
                 rawData: $rawData,
                 indicatorName: $this->makeIndicatorName(),
                 dataParams: $queryParameters
             );
-            $this->dispatch('notify', content: $rawData->count() . " rows fetched", type: 'success');
-            //dump($rawData);
+            $this->dispatch('notify', content: $rawData->count().' rows fetched', type: 'success');
+            // dump($rawData);
         }
         $this->nextSelection = '';
     }

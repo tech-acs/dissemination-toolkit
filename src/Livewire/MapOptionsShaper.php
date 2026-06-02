@@ -8,11 +8,12 @@ use Livewire\Component;
 class MapOptionsShaper extends Component
 {
     public array $options = [];
+
     public array $optionValues = [];
 
     public function mount()
     {
-        $this->optionValues = Arr::undot(array_map(fn($option) => $option['value'], $this->options));
+        $this->optionValues = Arr::undot(array_map(fn ($option) => $option['value'], $this->options));
     }
 
     /*public function updated($property)
@@ -24,7 +25,7 @@ class MapOptionsShaper extends Component
 
     public function apply()
     {
-        //dump($this->optionValues);
+        // dump($this->optionValues);
         $this->dispatch('mapOptionsShaperEvent', options: $this->optionValues);
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Uneca\DisseminationToolkit\Models\User;
+
 use function Laravel\Prompts\alert;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\note;
@@ -33,7 +34,7 @@ class Adminify extends Command
 
     public function handle()
     {
-        note("This command will create a super admin account for you to use. If the account's email address already exists then the account will be updated with the name and password you provide. It will also assign the account the " . self::ROLE . ' role');
+        note("This command will create a super admin account for you to use. If the account's email address already exists then the account will be updated with the name and password you provide. It will also assign the account the ".self::ROLE.' role');
 
         $email = text(
             label: 'Email address',
@@ -43,7 +44,7 @@ class Adminify extends Command
                 (filter_var($value, FILTER_VALIDATE_EMAIL) === false) => 'The value you entered is not a valid email address',
                 default => null
             },
-            //hint: 'This can not be changed later',
+            // hint: 'This can not be changed later',
         );
         $name = text(
             label: 'Name',
@@ -74,22 +75,22 @@ class Adminify extends Command
         if ($this->permissionsEnabled()) {
             Role::firstOrCreate([
                 'name' => self::ROLE,
-                'guard_name' => 'web'
+                'guard_name' => 'web',
             ]);
             if ($user->hasRole(self::ROLE)) {
-                info("The user account, with email address $email, is already assigned the '" . self::ROLE . "' role\n");
+                info("The user account, with email address $email, is already assigned the '".self::ROLE."' role\n");
                 $response = select(
-                    label: "Do you want to remove the role from the user?",
+                    label: 'Do you want to remove the role from the user?',
                     options: ['Yes', 'No'],
                     default: 'No'
                 );
                 if ($response === 'Yes') {
                     $user->removeRole(self::ROLE);
-                    info("The '" . self::ROLE . "' role has been removed from the user account");
+                    info("The '".self::ROLE."' role has been removed from the user account");
                 }
             } else {
                 $user->assignRole(self::ROLE);
-                info("The user account has been assigned the '" . self::ROLE . "' role");
+                info("The user account has been assigned the '".self::ROLE."' role");
             }
         } else {
             info("Ensured that the user account with email address $email exists");

@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
-use Uneca\DisseminationToolkit\Models\Topic;
 use Livewire\Component;
+use Uneca\DisseminationToolkit\Models\Topic;
 
 class TopicSelector extends Component
 {
@@ -13,6 +13,7 @@ class TopicSelector extends Component
     {
         $this->topics = Topic::all();
     }
+
     public function render()
     {
         return view('dissemination::livewire.topic-selector');

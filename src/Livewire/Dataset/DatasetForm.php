@@ -2,20 +2,25 @@
 
 namespace Uneca\DisseminationToolkit\Livewire\Dataset;
 
+use Closure;
 use Livewire\Form;
 use Uneca\DisseminationToolkit\Models\Dataset;
 use Uneca\DisseminationToolkit\Models\Dimension;
-use Closure;
 
 class DatasetForm extends Form
 {
     public ?Dataset $dataset;
 
     public string $name;
+
     public string $description = '';
+
     public string $fact_table;
+
     public array $indicators = [];
+
     public array $dimensions = [];
+
     public int $max_area_level;
 
     public function rules()
@@ -29,7 +34,7 @@ class DatasetForm extends Form
                 function (string $attribute, mixed $value, Closure $fail) {
                     $yearDimension = Dimension::firstWhere('table_name', 'year');
                     if (! in_array($yearDimension->id, $value)) {
-                        $fail("The year dimension is mandatory");
+                        $fail('The year dimension is mandatory');
                     }
                 },
             ],

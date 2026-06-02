@@ -3,8 +3,8 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Document;
 use Illuminate\Http\Request;
+use Uneca\DisseminationToolkit\Models\Document;
 
 class DocumentPublishedStatusController extends Controller
 {
@@ -12,6 +12,7 @@ class DocumentPublishedStatusController extends Controller
     {
         $publishedStatus = $request->boolean('published');
         $document->update(['published' => $publishedStatus]);
-        return redirect()->route('manage.document.index')->withMessage('Document ' . ($publishedStatus ? 'published' : 'unpublished'));
+
+        return redirect()->route('manage.document.index')->withMessage('Document '.($publishedStatus ? 'published' : 'unpublished'));
     }
 }

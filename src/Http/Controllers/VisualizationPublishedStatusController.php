@@ -12,6 +12,7 @@ class VisualizationPublishedStatusController extends Controller
     {
         $publishStatus = $request->boolean('published');
         $visualization->update(['published' => $publishStatus]);
-        return redirect()->route('manage.visualization.index')->withMessage('Visualization ' . ($publishStatus ? 'published' : 'unpublished'));
+
+        return redirect()->route('manage.visualization.index')->withMessage('Visualization '.($publishStatus ? 'published' : 'unpublished'));
     }
 }

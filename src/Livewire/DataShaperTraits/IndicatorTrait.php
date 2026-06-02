@@ -7,8 +7,10 @@ use Uneca\DisseminationToolkit\Models\Dataset;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Services\AreaTree;
 
-trait IndicatorTrait {
+trait IndicatorTrait
+{
     public array $indicators = [];
+
     public array $selectedIndicators = [];
 
     public function updatedSelectedIndicators($indicatorIds): void
@@ -21,10 +23,10 @@ trait IndicatorTrait {
 
         $indicators = Indicator::findMany($this->selectedIndicators);
         $dataset = Dataset::find($this->selectedDataset);
-        $allLevels = (new AreaTree())->hierarchies;
-        $this->geographyLevels = $dataset ? array_slice($allLevels, 0,$dataset->max_area_level + 1) : $allLevels;
+        $allLevels = (new AreaTree)->hierarchies;
+        $this->geographyLevels = $dataset ? array_slice($allLevels, 0, $dataset->max_area_level + 1) : $allLevels;
 
-        foreach($this->geographyLevels as $level => $levelName) {
+        foreach ($this->geographyLevels as $level => $levelName) {
             $areas = Area::ofLevel($level)
                 ->select(['id', 'name', 'path'])
                 ->orderBy('name')
@@ -33,6 +35,7 @@ trait IndicatorTrait {
                     $area->group = str($area->path)
                         ->beforeLast('.')
                         ->value();
+
                     return $area;
                 })
                 ->groupBy('group')
@@ -45,18 +48,19 @@ trait IndicatorTrait {
         }
 
         $this->dimensions = $dataset->dimensions->map(function ($dimension) use ($dataset) {
-                if ($dimension->name == 'Year') {
-                    $this->selectedDimensions[] = $dimension->id;
-                    $values = $dataset->availableValuesForDimension($dimension)->map(fn ($v) => ['id' => $v->id, 'name' => $v->name])->all();
-                } else {
-                    $values = $dimension->values()->map(fn ($v) => ['id' => $v->id, 'name' => $v->name])->all();
-                }
-                return [
-                    'id' => $dimension->id,
-                    'label' => $dimension->name,
-                    'values' => $values,
-                ];
-            })
+            if ($dimension->name == 'Year') {
+                $this->selectedDimensions[] = $dimension->id;
+                $values = $dataset->availableValuesForDimension($dimension)->map(fn ($v) => ['id' => $v->id, 'name' => $v->name])->all();
+            } else {
+                $values = $dimension->values()->map(fn ($v) => ['id' => $v->id, 'name' => $v->name])->all();
+            }
+
+            return [
+                'id' => $dimension->id,
+                'label' => $dimension->name,
+                'values' => $values,
+            ];
+        })
             ->all();
 
         $this->selectedDimensionValues = collect($this->dimensions)

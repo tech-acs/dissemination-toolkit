@@ -3,9 +3,9 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Uneca\DisseminationToolkit\Models\Dimension;
 use Uneca\DisseminationToolkit\Services\DynamicDimensionModel;
-use Illuminate\Http\Request;
 
 class DimensionValueController extends Controller
 {
@@ -15,6 +15,7 @@ class DimensionValueController extends Controller
         if ($dimension->table_exists) {
             $records = (new DynamicDimensionModel($dimension->table_name))->orderBy('rank')->get();
         }
+
         return view('dissemination::manage.dimension.values.index', compact('dimension', 'records'));
     }
 
@@ -29,14 +30,16 @@ class DimensionValueController extends Controller
             ->create([
                 'name' => $request->get('name'),
                 'code' => $request->get('code'),
-                'rank' => $request->integer('rank')
+                'rank' => $request->integer('rank'),
             ]);
+
         return redirect()->route('manage.dimension.values.index', $dimension)->withMessage('Record created');
     }
 
     public function edit(Dimension $dimension, $entryId)
     {
         $entry = (new DynamicDimensionModel($dimension->table_name))->find($entryId);
+
         return view('dissemination::manage.dimension.values.edit', compact('dimension', 'entry'));
     }
 
@@ -46,14 +49,16 @@ class DimensionValueController extends Controller
             ->update([
                 'name' => $request->get('name'),
                 'code' => $request->get('code'),
-                'rank' => $request->integer('rank')
+                'rank' => $request->integer('rank'),
             ]);
+
         return redirect()->route('manage.dimension.values.index', $dimension)->withMessage('Record updated');
     }
 
     public function destroy(Dimension $dimension, $entryId)
     {
         $result = (new DynamicDimensionModel($dimension->table_name, $entryId))->delete();
+
         return redirect()->route('manage.dimension.values.index', $dimension)->withMessage('Record deleted');
     }
 }

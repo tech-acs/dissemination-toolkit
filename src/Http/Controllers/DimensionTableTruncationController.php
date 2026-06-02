@@ -11,8 +11,9 @@ class DimensionTableTruncationController extends Controller
 {
     public function __invoke(Dimension $dimension, Request $request)
     {
-        //dd($dimension->table_name, new DynamicDimensionModel($dimension->table_name));
+        // dd($dimension->table_name, new DynamicDimensionModel($dimension->table_name));
         (new DynamicDimensionModel($dimension->table_name))->truncate();
+
         return redirect()->route('manage.dimension.index')->withMessage('Dimension values deleted');
     }
 }

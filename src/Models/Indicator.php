@@ -12,10 +12,12 @@ class Indicator extends Model
     use HasTranslations;
 
     protected $guarded = ['id'];
+
     public array $translatable = ['name', 'description'];
+
     protected $casts = [
         'data' => 'array',
-        'layout' => 'array'
+        'layout' => 'array',
     ];
 
     public function topics(): MorphToMany

@@ -2,13 +2,13 @@
 
 namespace Uneca\DisseminationToolkit\Models;
 
-use Uneca\DisseminationToolkit\Traits\Reviewable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
+use Uneca\DisseminationToolkit\Traits\Reviewable;
 
 class Story extends Model
 {
@@ -16,6 +16,7 @@ class Story extends Model
     use Reviewable;
 
     protected $guarded = ['id'];
+
     public $translatable = ['title', 'description'];
 
     public function tags(): MorphToMany
@@ -40,7 +41,8 @@ class Story extends Model
 
     public function embedCode()
     {
-        $route = route('story.show', [$this->id,'embed' => true]);
+        $route = route('story.show', [$this->id, 'embed' => true]);
+
         return "<div style='position: relative; overflow: hidden; width: 100%; padding-top: 56.25%'>
             <iframe style='position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%; border: none;'
                 src='{$route}' > </iframe> </div>";

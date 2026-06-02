@@ -4,7 +4,7 @@ namespace Uneca\DisseminationToolkit\Http\Resources;
 
 use JsonSerializable;
 
-class ChartDesignerResource implements JsonSerializable, DesignerResource
+class ChartDesignerResource implements DesignerResource, JsonSerializable
 {
     public function __construct(
         public array $dataSources = [],
@@ -18,19 +18,18 @@ class ChartDesignerResource implements JsonSerializable, DesignerResource
         public array $rawData = [],
         public ?string $thumbnail = null,
         public array $options = [],
-        //public array $layout = [],
-    )
-    {}
+        // public array $layout = [],
+    ) {}
 
     public function toArray(): array
     {
         return [
-            'dataSources' => (object)$this->dataSources,
+            'dataSources' => (object) $this->dataSources,
             'initialData' => $this->data,
-            'initialLayout' => (object)$this->layout,
+            'initialLayout' => (object) $this->layout,
             'config' => $this->config,
             'vizId' => $this->vizId,
-            //'indicatorTitle' => $this->indicatorTitle,
+            // 'indicatorTitle' => $this->indicatorTitle,
             'defaultLayout' => $this->defaultLayout,
         ];
     }

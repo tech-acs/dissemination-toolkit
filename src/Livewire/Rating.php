@@ -13,11 +13,17 @@ use Livewire\Component;
 class Rating extends Component
 {
     public string $type;
+
     public int $id;
+
     public string $selectedRate;
+
     public array $possibleRatings = [];
+
     public Visualization|Story $ratingModel;
+
     public int $hoveredRating;
+
     public function mount(): void
     {
         $this->possibleRatings = RatingEnum::getRatings();
@@ -29,10 +35,11 @@ class Rating extends Component
         }
 
         if ($this->ratingModel->rated) {
-            $ratedValue =  $this->ratingModel->ratings()->where('user_id', auth()->id())->first()->value;
+            $ratedValue = $this->ratingModel->ratings()->where('user_id', auth()->id())->first()->value;
             $this->setSelectedValue($ratedValue);
         }
     }
+
     public function saveRating($value): void
     {
         if ($this->ratingModel->rated) {
@@ -41,9 +48,10 @@ class Rating extends Component
         $this->setSelectedValue($value);
         $this->ratingModel->ratings()->create([
             'user_id' => auth()->id(),
-            'value' => $value
+            'value' => $value,
         ]);
     }
+
     private function setSelectedValue($value): void
     {
         foreach ($this->possibleRatings as $key => $rating) {

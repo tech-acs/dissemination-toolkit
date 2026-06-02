@@ -11,6 +11,7 @@ class Area extends Model
     use HasTranslations;
 
     protected $guarded = ['id'];
+
     public $translatable = ['name'];
 
     public function scopeOfLevel(Builder $query, $level)
@@ -21,6 +22,7 @@ class Area extends Model
     public function parentName(): string
     {
         $parentPath = str($this->path)->beforeLast('.')->value();
+
         return Area::select('path', 'code', 'name', 'level')
             ->whereRaw("path ~ '{$parentPath}'")
             ->first()

@@ -3,9 +3,9 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Dataset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Uneca\DisseminationToolkit\Models\Dataset;
 
 class DatasetPublishStatusController extends Controller
 {
@@ -21,6 +21,7 @@ class DatasetPublishStatusController extends Controller
         }
         $publishStatus = $request->boolean('published');
         $dataset->update(['published' => $publishStatus]);
-        return redirect()->route('manage.dataset.index')->withMessage('Dataset ' . ($publishStatus ? 'published' : 'unpublished'));
+
+        return redirect()->route('manage.dataset.index')->withMessage('Dataset '.($publishStatus ? 'published' : 'unpublished'));
     }
 }

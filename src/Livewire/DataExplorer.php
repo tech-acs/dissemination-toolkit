@@ -11,10 +11,15 @@ use Uneca\DisseminationToolkit\Livewire\Visualizations\Table;
 class DataExplorer extends Component
 {
     public ?string $livewireComponent = Table::class;
+
     public string $indicatorName = '';
+
     public array $dataParams = [];
+
     public array $data = [];
+
     public bool $hasData = false;
+
     public array $dataShaperSelections = [];
 
     #[On('dataShaperEvent')]
@@ -36,7 +41,8 @@ class DataExplorer extends Component
     {
         $filename = str($this->indicatorName)->slug('-')->append('.xlsx')->toString();
         $writer = SimpleExcelWriter::streamDownload($filename)->addRows($this->data);
-        return response()->streamDownload(fn() => $writer->close(), $filename);
+
+        return response()->streamDownload(fn () => $writer->close(), $filename);
     }
 
     public function render()

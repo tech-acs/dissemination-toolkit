@@ -3,13 +3,14 @@
 namespace Uneca\DisseminationToolkit\Livewire;
 
 use Livewire\Component;
-use Spatie\Permission\Models\Permission;
 use Uneca\DisseminationToolkit\Enums\PermissionsEnum;
 
 class RoleManager extends Component
 {
     public $permissionGroups;
+
     public $role;
+
     public array $permissions = [];
 
     public function mount()

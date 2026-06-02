@@ -9,10 +9,10 @@ use Spatie\Translatable\HasTranslations;
 
 class Tag extends Model
 {
-    //use HasTranslations;
+    // use HasTranslations;
 
     protected $guarded = ['id'];
-    //public $translatable = ['name'];
+    // public $translatable = ['name'];
 
     public function visualizations(): MorphToMany
     {
@@ -23,6 +23,7 @@ class Tag extends Model
     {
         return $this->morphedByMany(Story::class, 'taggable');
     }
+
     public function documents(): MorphToMany
     {
         return $this->morphedByMany(Document::class, 'taggable');
@@ -30,7 +31,7 @@ class Tag extends Model
 
     public static function tagsToJsArray($tags)
     {
-        return '[' . $tags->pluck('name')->map(fn ($t) => "'{$t}'")->join(',') . ']';
+        return '['.$tags->pluck('name')->map(fn ($t) => "'{$t}'")->join(',').']';
     }
 
     public static function prepareForSync(?string $commaizedTags): Collection
@@ -40,6 +41,7 @@ class Tag extends Model
         foreach ($tagsFromString as $tag) {
             $tags[] = Tag::firstOrCreate(['name' => $tag]);
         }
+
         return $tags;
     }
 }

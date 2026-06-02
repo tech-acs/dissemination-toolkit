@@ -3,6 +3,7 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Scorecard;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Table;
@@ -12,7 +13,6 @@ use Uneca\DisseminationToolkit\Services\AreaTree;
 use Uneca\DisseminationToolkit\Services\Geospatial;
 use Uneca\DisseminationToolkit\Services\QueryBuilder;
 use Uneca\DisseminationToolkit\Services\Sorter;
-use Illuminate\Http\Request;
 
 class VizAjaxController extends Controller
 {
@@ -34,27 +34,28 @@ class VizAjaxController extends Controller
         /*['id' => $id, 'level' => $level] = (new AreaTree)->getArea($path)->toArray();
         $dataParams['geographies'] = [$level => [$id]];*/
 
-        $areaTree = new AreaTree();
+        $areaTree = new AreaTree;
         $level = $areaTree->levelFromPath($path);
         $childAreas = $areaTree->areas($path)
             ->map(fn (Area $area) => $area->id)
             ->all();
         $dataParams['geographies'] = [$level + 1 => $childAreas];
+
         return $dataParams;
     }
 
     public function show(Visualization $visualization, Request $request)
     {
         if ($visualization->type === 'Chart' || $visualization->type === 'Map') {
-            $instance = new Chart();
+            $instance = new Chart;
             $instance->vizId = $visualization->id;
             $instance->mount();
             $path = $request->get('path');
             if ($path) {
                 $dataParams = $this->updateDataParam($visualization->data_params, $path);
-                //logger('Data params', ['original' => $visualization->data_params['geographies'], 'new' => $dataParams['geographies']]);
+                // logger('Data params', ['original' => $visualization->data_params['geographies'], 'new' => $dataParams['geographies']]);
                 $query = new QueryBuilder($dataParams);
-                $rawData = $query->get()->all();//Sorter::sort($query->get())->all();
+                $rawData = $query->get()->all(); // Sorter::sort($query->get())->all();
                 $instance->preparePayload($rawData);
                 $areaIds = array_merge(...array_values($dataParams['geographies']));
                 $geojson = Geospatial::getGeoJsonByAreaId($areaIds ?? []);
@@ -67,7 +68,8 @@ class VizAjaxController extends Controller
                     }
                 }
             }
-            //logger('Returning..', ['data' => $instance->data]);
+
+            // logger('Returning..', ['data' => $instance->data]);
             return [
                 'data' => $instance->data,
                 'layout' => $instance->layout,
@@ -75,26 +77,27 @@ class VizAjaxController extends Controller
                 'filterable' => $visualization->is_filterable,
             ];
 
-
         } elseif ($visualization->type === 'Table') {
-            $instance = new Table();
+            $instance = new Table;
             $instance->vizId = $visualization->id;
             $instance->mount();
+
             return [
                 'options' => $instance->options,
                 'filterable' => $visualization->is_filterable,
             ];
         } else { // Scorecard
-            $instance = new Scorecard();
+            $instance = new Scorecard;
             $instance->vizId = $visualization->id;
             $instance->mount();
             $path = $request->get('path');
             if ($path) {
                 $dataParams = $this->updateDataParam($visualization->data_params, $path);
                 $query = new QueryBuilder($dataParams);
-                $rawData = $query->get()->all();//Sorter::sort($query->get());
+                $rawData = $query->get()->all(); // Sorter::sort($query->get());
                 $instance->preparePayload($rawData);
             }
+
             return [
                 'data' => $instance->data,
                 'layout' => $instance->layout,

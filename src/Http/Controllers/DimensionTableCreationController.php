@@ -12,8 +12,9 @@ class DimensionTableCreationController extends Controller
     {
         $dimensionId = $request->get('id');
         $exitCode = Artisan::call('data:create-dimensions', [
-            'id' => $dimensionId
+            'id' => $dimensionId,
         ]);
+
         return redirect()->route('manage.dimension.index')->withMessage('Table created');
     }
 }

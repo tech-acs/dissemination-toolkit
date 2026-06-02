@@ -14,10 +14,11 @@ trait AreaResolver
     public function areaResolver(): array
     {
         $filtersToApply = [
-            ...($this->shouldIgnoreFilterInSession() ? [] : session()->get('area-filter', []))
+            ...($this->shouldIgnoreFilterInSession() ? [] : session()->get('area-filter', [])),
         ];
         $path = AreaTree::getFinestResolutionFilterPath($filtersToApply);
         $expandedPath = AreaTree::pathAsFilter($path);
+
         return [$path, $expandedPath];
     }
 }

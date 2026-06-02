@@ -15,6 +15,7 @@ class ImportDataset extends Command
     protected $description = 'Import dataset';
 
     private string $schema = 'public';
+
     private const CHUNK_SIZE = 10000;
 
     public function handle()
@@ -56,7 +57,7 @@ class ImportDataset extends Command
                 'year_id' => 1,
                 'dataset_id' => $dataInfo['dataset_id'],
             ];
-            $chunk->each(function(array $row) use (&$entries, $dataInfo, $lookups, $common) {
+            $chunk->each(function (array $row) use (&$entries, $lookups, $common) {
                 // Invert the loop so that we iterate on the $lookup->keys()
                 $entry = [...$common];
                 /*foreach ($row as $col => $value) {
@@ -72,13 +73,13 @@ class ImportDataset extends Command
                     $entry[$lookup['fk']] = $dimension->id ?? null;
                 }
                 $entry['value'] = $row['Value'];
-                //dump($row, $entry);
+                // dump($row, $entry);
                 array_push($entries, $entry);
             });
             $this->info("Data for table: {$dataInfo['fact_table']}");
             $result = DB::table($dataInfo['fact_table'])->insertOrIgnore($entries);
-            //dump($result);
-            //dump($entries);
+            // dump($result);
+            // dump($entries);
         });
     }
 }

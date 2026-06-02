@@ -2,21 +2,21 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Uneca\DisseminationToolkit\Actions\CreateDimensionAction;
 use Uneca\DisseminationToolkit\Actions\RemoveDimensionAction;
-use App\Http\Controllers\Controller;
 use Uneca\DisseminationToolkit\Http\Requests\DimensionRequest;
 use Uneca\DisseminationToolkit\Models\Dimension;
 use Uneca\DisseminationToolkit\Services\SmartTableColumn;
 use Uneca\DisseminationToolkit\Services\SmartTableData;
-use Illuminate\Http\Request;
 
 class DimensionController extends Controller
 {
     private function makeTableName(string $dimensionName): string
-{
-    return str($dimensionName)->lower()->snake()->toString();
-}
+    {
+        return str($dimensionName)->lower()->snake()->toString();
+    }
 
     public function index(Request $request)
     {
@@ -35,14 +35,15 @@ class DimensionController extends Controller
             ->editable('manage.dimension.edit')
             ->searchable(['name', 'table_name'])
             ->sortBy('name')
-            //->downloadable()
+            // ->downloadable()
             ->view('dissemination::manage.dimension.index');
     }
 
     public function create()
     {
         $factTables = config('dissemination.fact_tables', []);
-        $dimension = new Dimension();
+        $dimension = new Dimension;
+
         return view('dissemination::manage.dimension.create', compact('factTables', 'dimension'));
     }
 
@@ -54,21 +55,25 @@ class DimensionController extends Controller
             $successful = (new CreateDimensionAction)->handle($dimension);
             if (! $successful) {
                 $dimension->delete();
+
                 return redirect()->route('manage.dimension.index')->withErrors('Could not create the dimension');
             }
         }
+
         return redirect()->route('manage.dimension.index')->withMessage('Dimension created');
     }
 
     public function edit(Dimension $dimension)
     {
         $factTables = config('dissemination.fact_tables');
+
         return view('dissemination::manage.dimension.edit', compact('dimension', 'factTables'));
     }
 
     public function update(Dimension $dimension, DimensionRequest $request)
     {
         $dimension->update($request->only(['name', 'description', 'code', 'sorting_type', 'for']));
+
         return redirect()->route('manage.dimension.index')->withMessage('Dimension updated');
     }
 
@@ -84,6 +89,7 @@ class DimensionController extends Controller
                 return redirect()->route('manage.dimension.index')->withErrors('Could not remove the dimension');
             }
         }
+
         return redirect()->route('manage.dimension.index')->withMessage('Dimension removed');
     }
 }

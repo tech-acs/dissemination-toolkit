@@ -3,14 +3,15 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Organization;
 use Illuminate\Http\Request;
+use Uneca\DisseminationToolkit\Models\Organization;
 
 class OrganizationController extends Controller
 {
     public function edit()
     {
         $organization = Organization::firstOrCreate();
+
         return view('dissemination::manage.organization.edit', compact('organization'));
     }
 
@@ -27,8 +28,9 @@ class OrganizationController extends Controller
                 'facebook' => $request->get('facebook'),
                 'instagram' => $request->get('instagram'),
                 'linkedin' => $request->get('linkedin'),
-            ]]
+            ]],
         ]);
+
         return redirect()->route('manage.organization.edit')->withMessage('Record updated');
     }
 }

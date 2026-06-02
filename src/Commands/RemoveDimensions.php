@@ -17,7 +17,7 @@ class RemoveDimensions extends Command
     {
         $dimensions = Dimension::all();
         foreach ($dimensions as $dimension) {
-            $this->info('Removing dimension: ' . $dimension->name);
+            $this->info('Removing dimension: '.$dimension->name);
             $successful = (new RemoveDimensionAction)->handle($dimension);
             if ($successful) {
                 $this->info("{$dimension->name} removed.");

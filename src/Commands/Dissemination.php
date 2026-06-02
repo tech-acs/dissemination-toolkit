@@ -4,6 +4,7 @@ namespace Uneca\DisseminationToolkit\Commands;
 
 use Illuminate\Console\Command;
 use Uneca\DisseminationToolkit\Traits\PackageTasksTrait;
+
 use function Laravel\Prompts\info;
 
 class Dissemination extends Command
@@ -27,10 +28,11 @@ class Dissemination extends Command
         $this->installEnvFiles();
         $this->installEmptyWebRoutesFile();
         $this->installJsDependencies();
-//        $this->createPermissions();
+        //        $this->createPermissions();
         $this->cleanup();
 
-        info("Installation complete");
+        info('Installation complete');
+
         return self::SUCCESS;
     }
 }

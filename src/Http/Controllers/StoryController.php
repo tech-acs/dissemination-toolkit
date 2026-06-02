@@ -3,14 +3,14 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Uneca\DisseminationToolkit\Http\Requests\StoryRequest;
 use Uneca\DisseminationToolkit\Models\Story;
 use Uneca\DisseminationToolkit\Models\Tag;
 use Uneca\DisseminationToolkit\Models\Topic;
 use Uneca\DisseminationToolkit\Services\SmartTableColumn;
 use Uneca\DisseminationToolkit\Services\SmartTableData;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class StoryController extends Controller
 {
@@ -39,8 +39,9 @@ class StoryController extends Controller
     {
         $tags = Tag::all();
         $topics = Topic::pluck('name', 'id');
-        $templates = collect(); //(new StoryTemplateStore())->getAll();
-        $story = (new Story());
+        $templates = collect(); // (new StoryTemplateStore())->getAll();
+        $story = (new Story);
+
         return view('dissemination::manage.story.create', compact('tags', 'topics', 'templates', 'story'));
     }
 
@@ -51,10 +52,11 @@ class StoryController extends Controller
             $request->merge(['featured_image' => "storage/$path"]);
         }
         $story = Auth::user()->stories()->create($request->only(['title',  'description', 'featured', 'is_filterable', 'is_reviewable', 'featured_image']));
-        $story->update(['html' => '']);//(new StoryTemplateStore)->get($request->get('template_id'))->getHtml()]);
+        $story->update(['html' => '']); // (new StoryTemplateStore)->get($request->get('template_id'))->getHtml()]);
         $updatedTags = Tag::prepareForSync($request->get('tags', ''));
         $story->tags()->sync($updatedTags->pluck('id'));
         $story->topics()->sync($request->get('topics'));
+
         return redirect()->route('manage.story.index')->withMessage('Story created');
     }
 
@@ -62,6 +64,7 @@ class StoryController extends Controller
     {
         $tags = Tag::all();
         $topics = Topic::pluck('name', 'id');
+
         return view('dissemination::manage.story.edit', compact('story', 'tags', 'topics'));
     }
 
@@ -75,12 +78,14 @@ class StoryController extends Controller
         $updatedTags = Tag::prepareForSync($request->get('tags'));
         $story->tags()->sync($updatedTags->pluck('id'));
         $story->topics()->sync($request->get('topics'));
+
         return redirect()->route('manage.story.index')->withMessage('Story updated');
     }
 
     public function destroy(Story $story)
     {
         $story->delete();
+
         return redirect()->route('manage.story.index')->withMessage('Story deleted');
     }
 }

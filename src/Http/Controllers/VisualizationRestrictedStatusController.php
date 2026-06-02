@@ -12,6 +12,7 @@ class VisualizationRestrictedStatusController extends Controller
     {
         $restrictedStatus = $request->boolean('restricted');
         $visualization->update(['restricted' => $restrictedStatus]);
-        return redirect()->route('manage.visualization.index')->withMessage('Visualization ' . ($restrictedStatus ? 'restricted' : 'shared'));
+
+        return redirect()->route('manage.visualization.index')->withMessage('Visualization '.($restrictedStatus ? 'restricted' : 'shared'));
     }
 }

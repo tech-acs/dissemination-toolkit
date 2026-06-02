@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Traits;
 
-use Uneca\DisseminationToolkit\Models\Review;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Uneca\DisseminationToolkit\Models\Review;
 
 trait Reviewable
 {
@@ -15,6 +15,7 @@ trait Reviewable
     public function getRatingAttribute()
     {
         $avgRating = $this->reviews()->approved()->avg('rating');
+
         return is_null($avgRating) ? '-' : (int) $avgRating;
     }
 

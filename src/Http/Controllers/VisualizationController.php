@@ -3,14 +3,14 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;
 use Uneca\DisseminationToolkit\Models\Tag;
 use Uneca\DisseminationToolkit\Models\Topic;
 use Uneca\DisseminationToolkit\Models\Visualization;
 use Uneca\DisseminationToolkit\Services\SmartTableColumn;
 use Uneca\DisseminationToolkit\Services\SmartTableData;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class VisualizationController extends Controller
 {
@@ -56,8 +56,9 @@ class VisualizationController extends Controller
     public function destroy(Visualization $visualization)
     {
         $visualization->delete();
+
         return redirect()->route('manage.visualization.index')
-            ->withMessage("The visualization has been deleted");
+            ->withMessage('The visualization has been deleted');
     }
 
     /*public function upload(Visualization $visualization, Request $request)

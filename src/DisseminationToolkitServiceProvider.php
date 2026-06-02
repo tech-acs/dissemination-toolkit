@@ -2,16 +2,60 @@
 
 namespace Uneca\DisseminationToolkit;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Uneca\DisseminationToolkit\Commands\Adminify;
+use Uneca\DisseminationToolkit\Commands\CreateDimensions;
+use Uneca\DisseminationToolkit\Commands\CustomJetstreamInstallCommand;
+use Uneca\DisseminationToolkit\Commands\Dissemination;
+use Uneca\DisseminationToolkit\Commands\ImportData;
+use Uneca\DisseminationToolkit\Commands\ImportDataset;
+use Uneca\DisseminationToolkit\Commands\RemoveDimension;
+use Uneca\DisseminationToolkit\Commands\RemoveDimensions;
+use Uneca\DisseminationToolkit\Commands\Update;
+use Uneca\DisseminationToolkit\Components\Reviews;
+use Uneca\DisseminationToolkit\Components\SmartTable;
+use Uneca\DisseminationToolkit\Http\Middleware\CheckAccountSuspension;
+use Uneca\DisseminationToolkit\Http\Middleware\Language;
+use Uneca\DisseminationToolkit\Http\Middleware\RedirectIf2FAEnforced;
+use Uneca\DisseminationToolkit\Livewire\AreaFilter;
+use Uneca\DisseminationToolkit\Livewire\AreaSpreadsheetImporter;
+use Uneca\DisseminationToolkit\Livewire\BulkInviter;
+use Uneca\DisseminationToolkit\Livewire\DataExplorer;
+use Uneca\DisseminationToolkit\Livewire\Dataset\Create;
+use Uneca\DisseminationToolkit\Livewire\DatasetImporter;
+use Uneca\DisseminationToolkit\Livewire\DataShaper;
+use Uneca\DisseminationToolkit\Livewire\DataShaperSelectionsDisplay;
+use Uneca\DisseminationToolkit\Livewire\INeedAlpine;
+use Uneca\DisseminationToolkit\Livewire\InvitationManager;
+use Uneca\DisseminationToolkit\Livewire\LanguageSwitcher;
+use Uneca\DisseminationToolkit\Livewire\ManageStoryDesigner;
+use Uneca\DisseminationToolkit\Livewire\MapOptionsShaper;
+use Uneca\DisseminationToolkit\Livewire\NotificationBell;
+use Uneca\DisseminationToolkit\Livewire\NotificationDropdown;
+use Uneca\DisseminationToolkit\Livewire\NotificationInbox;
+use Uneca\DisseminationToolkit\Livewire\ReviewForm;
+use Uneca\DisseminationToolkit\Livewire\RoleManager;
+use Uneca\DisseminationToolkit\Livewire\ScorecardOptionsShaper;
+use Uneca\DisseminationToolkit\Livewire\StateRecorder;
+use Uneca\DisseminationToolkit\Livewire\TableOptionsShaper;
+use Uneca\DisseminationToolkit\Livewire\TidyDataMaker;
+use Uneca\DisseminationToolkit\Livewire\TopicSelector;
+use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
+use Uneca\DisseminationToolkit\Livewire\Visualizations\Map;
+use Uneca\DisseminationToolkit\Livewire\Visualizations\Scorecard;
+use Uneca\DisseminationToolkit\Livewire\Visualizations\Table;
+use Uneca\DisseminationToolkit\Livewire\Visualizer;
 use Uneca\DisseminationToolkit\Models\Organization;
 use Uneca\DisseminationToolkit\Models\Story;
 
@@ -25,8 +69,8 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasViewComponents(
                 'dissemination',
-                \Uneca\DisseminationToolkit\Components\SmartTable::class,
-                \Uneca\DisseminationToolkit\Components\Reviews::class,
+                SmartTable::class,
+                Reviews::class,
             )
             ->hasTranslations()
             ->hasRoute('web')
@@ -67,51 +111,52 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
                 'add_code_column_to_dimensions_tables',
                 'add_extra_columns_to_datasets_tables',
                 'add_code_column_to_indicators_table',
-                'add_rank_column_to_all_dimension_tables'
+                'add_rank_column_to_all_dimension_tables',
             ])
             ->hasCommands([
-                \Uneca\DisseminationToolkit\Commands\Dissemination::class,
-                \Uneca\DisseminationToolkit\Commands\CustomJetstreamInstallCommand::class,
-                \Uneca\DisseminationToolkit\Commands\Adminify::class,
-                \Uneca\DisseminationToolkit\Commands\CreateDimensions::class,
-                \Uneca\DisseminationToolkit\Commands\ImportData::class,
-                \Uneca\DisseminationToolkit\Commands\ImportDataset::class,
-                \Uneca\DisseminationToolkit\Commands\RemoveDimension::class,
-                \Uneca\DisseminationToolkit\Commands\RemoveDimensions::class,
-                \Uneca\DisseminationToolkit\Commands\Update::class,
+                Dissemination::class,
+                CustomJetstreamInstallCommand::class,
+                Adminify::class,
+                CreateDimensions::class,
+                ImportData::class,
+                ImportDataset::class,
+                RemoveDimension::class,
+                RemoveDimensions::class,
+                Update::class,
             ]);
     }
 
     public function packageRegistered()
     {
-        Livewire::component('data-explorer', \Uneca\DisseminationToolkit\Livewire\DataExplorer::class);
-        Livewire::component('data-shaper', \Uneca\DisseminationToolkit\Livewire\DataShaper::class);
-        Livewire::component('data-shaper-selections-display', \Uneca\DisseminationToolkit\Livewire\DataShaperSelectionsDisplay::class);
-        Livewire::component('area-filter', \Uneca\DisseminationToolkit\Livewire\AreaFilter::class);
-        Livewire::component('area-spreadsheet-importer', \Uneca\DisseminationToolkit\Livewire\AreaSpreadsheetImporter::class);
-        Livewire::component('bulk-inviter', \Uneca\DisseminationToolkit\Livewire\BulkInviter::class);
-        Livewire::component('visualizations.chart', \Uneca\DisseminationToolkit\Livewire\Visualizations\Chart::class);
-        Livewire::component('visualizations.table', \Uneca\DisseminationToolkit\Livewire\Visualizations\Table::class);
-        Livewire::component('visualizations.map', \Uneca\DisseminationToolkit\Livewire\Visualizations\Map::class);
-        Livewire::component('visualizations.scorecard', \Uneca\DisseminationToolkit\Livewire\Visualizations\Scorecard::class);
-        Livewire::component('visualizer', \Uneca\DisseminationToolkit\Livewire\Visualizer::class);
-        Livewire::component('table-options-shaper', \Uneca\DisseminationToolkit\Livewire\TableOptionsShaper::class);
-        Livewire::component('map-options-shaper', \Uneca\DisseminationToolkit\Livewire\MapOptionsShaper::class);
-        Livewire::component('scorecard-options-shaper', \Uneca\DisseminationToolkit\Livewire\ScorecardOptionsShaper::class);
-        Livewire::component('topic-selector', \Uneca\DisseminationToolkit\Livewire\TopicSelector::class);
-        Livewire::component('invitation-manager', \Uneca\DisseminationToolkit\Livewire\InvitationManager::class);
-        Livewire::component('language-switcher', \Uneca\DisseminationToolkit\Livewire\LanguageSwitcher::class);
-        Livewire::component('notification-bell', \Uneca\DisseminationToolkit\Livewire\NotificationBell::class);
-        Livewire::component('notification-dropdown', \Uneca\DisseminationToolkit\Livewire\NotificationDropdown::class);
-        Livewire::component('notification-inbox', \Uneca\DisseminationToolkit\Livewire\NotificationInbox::class);
-        Livewire::component('role-manager', \Uneca\DisseminationToolkit\Livewire\RoleManager::class);
-        Livewire::component('state-recorder', \Uneca\DisseminationToolkit\Livewire\StateRecorder::class);
-        Livewire::component('i-need-alpine', \Uneca\DisseminationToolkit\Livewire\INeedAlpine::class);
-        Livewire::component('dataset-importer', \Uneca\DisseminationToolkit\Livewire\DatasetImporter::class);
-        Livewire::component('review-form', \Uneca\DisseminationToolkit\Livewire\ReviewForm::class);
-        Livewire::component('dataset.create', \Uneca\DisseminationToolkit\Livewire\Dataset\Create::class);
+        Livewire::component('data-explorer', DataExplorer::class);
+        Livewire::component('data-shaper', DataShaper::class);
+        Livewire::component('data-shaper-selections-display', DataShaperSelectionsDisplay::class);
+        Livewire::component('area-filter', AreaFilter::class);
+        Livewire::component('area-spreadsheet-importer', AreaSpreadsheetImporter::class);
+        Livewire::component('bulk-inviter', BulkInviter::class);
+        Livewire::component('visualizations.chart', Chart::class);
+        Livewire::component('visualizations.table', Table::class);
+        Livewire::component('visualizations.map', Map::class);
+        Livewire::component('visualizations.scorecard', Scorecard::class);
+        Livewire::component('visualizer', Visualizer::class);
+        Livewire::component('table-options-shaper', TableOptionsShaper::class);
+        Livewire::component('map-options-shaper', MapOptionsShaper::class);
+        Livewire::component('scorecard-options-shaper', ScorecardOptionsShaper::class);
+        Livewire::component('topic-selector', TopicSelector::class);
+        Livewire::component('invitation-manager', InvitationManager::class);
+        Livewire::component('language-switcher', LanguageSwitcher::class);
+        Livewire::component('notification-bell', NotificationBell::class);
+        Livewire::component('notification-dropdown', NotificationDropdown::class);
+        Livewire::component('notification-inbox', NotificationInbox::class);
+        Livewire::component('role-manager', RoleManager::class);
+        Livewire::component('state-recorder', StateRecorder::class);
+        Livewire::component('i-need-alpine', INeedAlpine::class);
+        Livewire::component('dataset-importer', DatasetImporter::class);
+        Livewire::component('review-form', ReviewForm::class);
+        Livewire::component('dataset.create', Create::class);
         Livewire::component('dataset.update', \Uneca\DisseminationToolkit\Livewire\Dataset\Update::class);
-        Livewire::component('tidy-data-maker', \Uneca\DisseminationToolkit\Livewire\TidyDataMaker::class);
+        Livewire::component('manage-story-designer', ManageStoryDesigner::class);
+        Livewire::component('tidy-data-maker', TidyDataMaker::class);
     }
 
     public function packageBooted()
@@ -139,26 +184,27 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         View::share(['stories' => $stories, 'org' => $org]);
 
         $router = $this->app->make(Router::class);
-        $router->pushMiddlewareToGroup('web', \Uneca\DisseminationToolkit\Http\Middleware\CheckAccountSuspension::class);
-        $router->pushMiddlewareToGroup('web', \Uneca\DisseminationToolkit\Http\Middleware\Language::class);
-        $router->aliasMiddleware('enforce_2fa', \Uneca\DisseminationToolkit\Http\Middleware\RedirectIf2FAEnforced::class);
-        //$router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
+        $router->pushMiddlewareToGroup('web', CheckAccountSuspension::class);
+        $router->pushMiddlewareToGroup('web', Language::class);
+        $router->aliasMiddleware('enforce_2fa', RedirectIf2FAEnforced::class);
+        // $router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
 
         Fortify::registerView(function (Request $request) {
             if (! $request->hasValidSignature()) {
-                throw new InvalidSignatureException();
+                throw new InvalidSignatureException;
             }
+
             return view('auth.register')
                 ->with(['encryptedEmail' => Crypt::encryptString($request->email)]);
         });
 
         $router = $this->app->make(Router::class);
-        $router->pushMiddlewareToGroup('web', \Uneca\DisseminationToolkit\Http\Middleware\CheckAccountSuspension::class);
-        $router->pushMiddlewareToGroup('web', \Uneca\DisseminationToolkit\Http\Middleware\Language::class);
-        $router->aliasMiddleware('enforce_2fa', \Uneca\DisseminationToolkit\Http\Middleware\RedirectIf2FAEnforced::class);
-        //$router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
-        $router->aliasMiddleware('permission', \Spatie\Permission\Middleware\PermissionMiddleware::class);
-        $router->aliasMiddleware('role', \Spatie\Permission\Middleware\RoleMiddleware::class);
+        $router->pushMiddlewareToGroup('web', CheckAccountSuspension::class);
+        $router->pushMiddlewareToGroup('web', Language::class);
+        $router->aliasMiddleware('enforce_2fa', RedirectIf2FAEnforced::class);
+        // $router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
+        $router->aliasMiddleware('permission', PermissionMiddleware::class);
+        $router->aliasMiddleware('role', RoleMiddleware::class);
 
         /*$this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);

@@ -3,7 +3,6 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Story;
 use Uneca\DisseminationToolkit\Models\Visualization;
 
 class RendererController extends Controller

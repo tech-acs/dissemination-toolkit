@@ -3,14 +3,15 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Tag;
 use Illuminate\Http\Request;
+use Uneca\DisseminationToolkit\Models\Tag;
 
 class TagController extends Controller
 {
     public function index()
     {
-        $records = Tag::withCount(['visualizations', 'stories','documents'])->get();
+        $records = Tag::withCount(['visualizations', 'stories', 'documents'])->get();
+
         return view('dissemination::manage.tag.index', compact('records'));
     }
 
@@ -33,12 +34,13 @@ class TagController extends Controller
     public function update(Tag $tag, Request $request)
     {
         $tag->update($request->only(['name']));
+
         return redirect()->route('manage.tag.index')->withMessage('Record updated');
     }
 
     public function destroy(Tag $tag)
     {
-        //$tag->delete();
+        // $tag->delete();
         return redirect()->route('manage.tag.index')->withMessage('Record deleted');
     }
 }

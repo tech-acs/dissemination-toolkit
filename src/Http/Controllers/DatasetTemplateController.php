@@ -3,8 +3,8 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Dataset;
 use Spatie\SimpleExcel\SimpleExcelWriter;
+use Uneca\DisseminationToolkit\Models\Dataset;
 
 class DatasetTemplateController extends Controller
 {
@@ -33,12 +33,15 @@ class DatasetTemplateController extends Controller
             );
 
         }
+
         return $stream->toBrowser();
     }
+
     private function sanitizeSheetName($name)
     {
         $invalidCharacters = ['\\', '/', '?', '*', '[', ']', ':', '<', '>', '&'];
         $name = str_replace($invalidCharacters, '', $name);
+
         return mb_substr($name, 0, 31); // Limit to 31 characters
     }
 }

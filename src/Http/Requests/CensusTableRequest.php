@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CensusTableRequest extends FormRequest
@@ -17,7 +18,7 @@ class CensusTableRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules()
     {
@@ -27,7 +28,7 @@ class CensusTableRequest extends FormRequest
             'description' => 'nullable',
             'producer' => 'required|min:5',
             'publisher' => 'required|min:5',
-            'published_date' => 'required|date|before_or_equal:' . $currentDate,
+            'published_date' => 'required|date|before_or_equal:'.$currentDate,
             'data_source' => 'required|min:5',
             'comment' => 'nullable',
             'topics' => 'required|array|min:1',
@@ -42,6 +43,7 @@ class CensusTableRequest extends FormRequest
 
         return $rules;
     }
+
     public function messages()
     {
         return [

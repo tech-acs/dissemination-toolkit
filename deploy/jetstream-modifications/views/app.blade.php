@@ -16,6 +16,8 @@
         </style>
         @stack('styles')
 
+        @plotlyChartEditorStyles
+
         @stack('scripts')
     </head>
     <body class="font-sans antialiased">
@@ -104,6 +106,8 @@
                 }
             });
         </script>--}}
+
+        @plotlyChartEditorScripts
 
         @stack('late-scripts')
     </body>

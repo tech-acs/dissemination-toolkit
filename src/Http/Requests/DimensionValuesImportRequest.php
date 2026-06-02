@@ -14,7 +14,7 @@ class DimensionValuesImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'datafile' => 'required|file|mimes:xlsx,xls'
+            'datafile' => 'required|file|mimes:xlsx,xls',
         ];
     }
 }

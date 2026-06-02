@@ -2,19 +2,20 @@
 
 namespace Uneca\DisseminationToolkit\Models;
 
-use Uneca\DisseminationToolkit\Services\DynamicDimensionModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\Translatable\HasTranslations;
+use Uneca\DisseminationToolkit\Services\DynamicDimensionModel;
 
 class Dataset extends Model
 {
     use HasTranslations;
 
     protected $guarded = ['id'];
+
     public array $translatable = ['name', 'description'];
 
     public function topics(): MorphToMany
@@ -67,20 +68,22 @@ class Dataset extends Model
 
     public function availableValuesForDimension(Dimension $dimension): Collection
     {
-        //$ids = $this->observations()->pluck($dimension->foreign_key)->unique()->all();
+        // $ids = $this->observations()->pluck($dimension->foreign_key)->unique()->all();
         $ids = DB::table($this->fact_table)
             ->selectRaw("DISTINCT $dimension->foreign_key")
             ->where('dataset_id', $this->id)
             ->pluck($dimension->foreign_key)
             ->toArray();
+
         return (new DynamicDimensionModel($dimension->table_name))->findMany($ids);
     }
 
     public function info(): array
     {
         $hierarchies = AreaHierarchy::orderBy('index')->pluck('name', 'index')->all();
-        $yearDimension = $this->dimensions->filter(fn($dimension) => $dimension->table_name == 'year')->first();
+        $yearDimension = $this->dimensions->filter(fn ($dimension) => $dimension->table_name == 'year')->first();
         $availableYears = $this->availableValuesForDimension($yearDimension);
+
         return [
             'name' => $this->name,
             'description' => $this->description,
@@ -99,7 +102,7 @@ class Dataset extends Model
         return [
             'Area Code',
             ...$this->dimensions->pluck('name')->map(fn ($name) => "$name code")->toArray(),
-            ...$this->indicators->pluck('name')->toArray()
+            ...$this->indicators->pluck('name')->toArray(),
         ];
     }
 }

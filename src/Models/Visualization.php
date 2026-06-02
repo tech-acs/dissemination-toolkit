@@ -15,7 +15,9 @@ class Visualization extends Model
     use Reviewable;
 
     protected $guarded = ['id'];
+
     public array $translatable = ['title', 'description'];
+
     protected $casts = [
         'data_params' => 'array',
         'data' => 'array',
@@ -25,7 +27,8 @@ class Visualization extends Model
 
     public function embedCode()
     {
-        $route = route('visualization.show', [$this->id,'embed' => true]);
+        $route = route('visualization.show', [$this->id, 'embed' => true]);
+
         return "<div style='position: relative; overflow: hidden; width: 100%; padding-top: 56.25%'>
             <iframe style='position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%; border: none;'
                 src='{$route}' > </iframe> </div>";
@@ -93,8 +96,8 @@ class Visualization extends Model
             $visualization->update([
                 'name' => str($visualization->title)
                     ->slug('-')
-                    ->append('-' . $visualization->type)
-                    ->append('-' . $visualization->id)
+                    ->append('-'.$visualization->type)
+                    ->append('-'.$visualization->id),
             ]);
         });
     }

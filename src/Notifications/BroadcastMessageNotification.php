@@ -2,21 +2,19 @@
 
 namespace Uneca\DisseminationToolkit\Notifications;
 
-use Uneca\DisseminationToolkit\Models\Announcement;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Uneca\DisseminationToolkit\Models\Announcement;
 
 class BroadcastMessageNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+
     private Announcement $from;
 
-    public function __construct(private Announcement $announcement)
-    {
-    }
+    public function __construct(private Announcement $announcement) {}
 
     public function via($notifiable)
     {
@@ -26,10 +24,10 @@ class BroadcastMessageNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject($this->announcement->title)
+            ->subject($this->announcement->title)
                     /*->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))*/
-                    ->line($this->announcement->body);
+            ->line($this->announcement->body);
     }
 
     public function toArray($notifiable)

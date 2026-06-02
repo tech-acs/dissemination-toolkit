@@ -17,6 +17,7 @@ class ImportData extends Command
     protected $description = 'Create schema and import data';
 
     private string $schema = 'public';
+
     private const CHUNK_SIZE = 10000;
 
     private function createTable(array $tableInfo)
@@ -79,13 +80,13 @@ class ImportData extends Command
                         'name' => $columnDetails['meta']['label'],
                         'table' => "{$this->schema}.{$tableInfo['table']}",
                         'column' => $columnName,
-                        'dimensions' => $dimensions
+                        'dimensions' => $dimensions,
                     ]);
                     if ($created) {
-                        $this->info($columnDetails['meta']['label'] . " ✔");
+                        $this->info($columnDetails['meta']['label'].' ✔');
                     }
                 } catch (\Exception $exception) {
-                    $this->error("There was a problem creating the indicator: " . $columnDetails['meta']['label']);
+                    $this->error('There was a problem creating the indicator: '.$columnDetails['meta']['label']);
                 }
             });
         /*foreach ($tableInfo['columns'] as $dbColumn => $columnDetails) {
@@ -116,10 +117,10 @@ class ImportData extends Command
                 'label' => $tableInfo['label'],
             ]);
             if ($created) {
-                $this->info($tableInfo['label'] . " ✔");
+                $this->info($tableInfo['label'].' ✔');
             }
         } catch (\Exception $exception) {
-            $this->error("There was a problem creating the dimension: " . $tableInfo['label']);
+            $this->error('There was a problem creating the dimension: '.$tableInfo['label']);
         }
     }
 
@@ -147,7 +148,7 @@ class ImportData extends Command
 
                 $rows->chunk(self::CHUNK_SIZE)->each(function ($chunk) use ($tableInfo, $distinctColumn, $fullTableName) {
                     $entries = [];
-                    $chunk->each(function(array $row) use (&$entries, $tableInfo) {
+                    $chunk->each(function (array $row) use (&$entries, $tableInfo) {
                         $entry = [];
                         foreach ($tableInfo['columns'] as $dbColumn => $columnDetails) {
                             $entry[$dbColumn] = $row[$columnDetails['import']['csv_header']];
@@ -174,10 +175,10 @@ class ImportData extends Command
                 $rows = SimpleExcelReader::create($tableInfo['filepath'])->getRows();
                 $rows->chunk(self::CHUNK_SIZE)->each(function ($chunk) use ($tableInfo, $fullTableName) {
                     $entries = [];
-                    $chunk->each(function(array $row) use (&$entries, $tableInfo) {
+                    $chunk->each(function (array $row) use (&$entries, $tableInfo) {
                         $entry = [];
                         foreach ($tableInfo['columns'] as $dbColumn => $columnDetails) {
-                            if ( (($columnDetails['meta']['nature'] ?? null) === 'measure') && (! is_numeric($row[$columnDetails['import']['csv_header']])) ) {
+                            if ((($columnDetails['meta']['nature'] ?? null) === 'measure') && (! is_numeric($row[$columnDetails['import']['csv_header']]))) {
                                 $entry[$dbColumn] = null;
                             } else {
                                 $entry[$dbColumn] = $row[$columnDetails['import']['csv_header']];

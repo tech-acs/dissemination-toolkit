@@ -38,12 +38,14 @@ class Geospatial
             ) AS filtered_areas
         ";
         try {
-            //dump($sql);
+            // dump($sql);
             $result = DB::select($sql);
         } catch (\Exception $exception) {
             logger('Query error in getGeoJson()', ['exception' => $exception->getMessage()]);
+
             return '';
         }
+
         return $result[0]?->feature_collection ?? '';
     }
 
@@ -78,12 +80,14 @@ class Geospatial
         ) AS filtered_areas
     ";
         try {
-            //dump($sql);
+            // dump($sql);
             $result = DB::select($sql);
         } catch (\Exception $exception) {
             logger('Query error in getGeoJson()', ['exception' => $exception->getMessage()]);
+
             return '';
         }
+
         return $result[0]?->feature_collection ?? '';
     }
 }

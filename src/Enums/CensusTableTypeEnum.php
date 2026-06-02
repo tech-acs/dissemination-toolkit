@@ -21,6 +21,7 @@ enum CensusTableTypeEnum: string
             default => 'Unknown'
         };
     }
+
     public static function getTypeClass(CensusTableTypeEnum|string $datasetType): string
     {
         return match ($datasetType) {
@@ -58,6 +59,7 @@ enum CensusTableTypeEnum: string
 '
         };
     }
+
     public static function getTypes(): Collection
     {
         $datasetTypes = collect();
@@ -65,7 +67,7 @@ enum CensusTableTypeEnum: string
             self::CensusTable,
             self::Report,
             self::Microdata,
-            self::Document,];
+            self::Document, ];
 
         foreach ($datasetTypeValues as $datasetTypeValue) {
             $datasetTypes->push((object) [

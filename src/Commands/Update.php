@@ -4,8 +4,9 @@ namespace Uneca\DisseminationToolkit\Commands;
 
 use Illuminate\Console\Command;
 use Uneca\DisseminationToolkit\Traits\PackageTasksTrait;
-use function Laravel\Prompts\info;
+
 use function Laravel\Prompts\error;
+use function Laravel\Prompts\info;
 
 class Update extends Command
 {
@@ -29,19 +30,20 @@ class Update extends Command
     {
         if (collect($this->options())->filter()->except('composer')->isEmpty()) {
             error('You have not specified any options');
+
             return self::FAILURE;
         }
 
         $runAll = $this->option('all') ?? false;
-        $this->components->info("Updating Dissemination Toolkit");
+        $this->components->info('Updating Dissemination Toolkit');
 
         if ($runAll || $this->option('dissemination-config')) {
-            $this->components->task('Publishing dissemination config...', function () use ($runAll) {
+            $this->components->task('Publishing dissemination config...', function () {
                 $this->callSilent('vendor:publish', ['--tag' => 'dissemination-config', '--force' => true]);
             });
         }
         if ($runAll || $this->option('migrations')) {
-            $this->components->task('Publishing dissemination migrations...', function () use ($runAll) {
+            $this->components->task('Publishing dissemination migrations...', function () {
                 $this->callSilent('vendor:publish', ['--tag' => 'dissemination-migrations', '--force' => true]);
             });
         }
@@ -68,7 +70,7 @@ class Update extends Command
         }
 
         info('Update complete');
+
         return self::SUCCESS;
     }
-
 }

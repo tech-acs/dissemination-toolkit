@@ -3,19 +3,20 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\MessageBag;
+use Spatie\Permission\Models\Role;
 use Uneca\DisseminationToolkit\Http\Requests\AnnouncementRequest;
 use Uneca\DisseminationToolkit\Models\Announcement;
 use Uneca\DisseminationToolkit\Models\User;
 use Uneca\DisseminationToolkit\Notifications\BroadcastMessageNotification;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\MessageBag;
-use Spatie\Permission\Models\Role;
 
 class AnnouncementController extends Controller
 {
     public function index()
     {
         $records = Announcement::paginate(config('dissemination.records_per_page'));
+
         return view('dissemination::announcement.index', compact('records'));
     }
 
@@ -31,6 +32,7 @@ class AnnouncementController extends Controller
     public function create()
     {
         $recipients = $this->recipientsList();
+
         return view('dissemination::announcement.create', compact('recipients'));
     }
 
@@ -52,8 +54,10 @@ class AnnouncementController extends Controller
             } catch (\Exception $exception) {
                 //
             }
+
             return redirect()->route('manage.announcement.index')->withMessage('The announcement has been sent to the specified recipients group.');
         }
+
         return redirect()->route('manage.announcement.index')->withErrors(new MessageBag(['No users found for specified recipients group.']));
     }
 }

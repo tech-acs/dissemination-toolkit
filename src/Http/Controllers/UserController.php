@@ -3,12 +3,12 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Uneca\DisseminationToolkit\Models\Invitation;
 use Uneca\DisseminationToolkit\Models\User;
 use Uneca\DisseminationToolkit\Services\SmartTableColumn;
 use Uneca\DisseminationToolkit\Services\SmartTableData;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -43,12 +43,14 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
+
         return view('dissemination::manage.user.manage', compact('user', 'roles'));
     }
 
     public function update(User $user, Request $request)
     {
         $user->syncRoles([$request->get('role')]);
+
         return redirect()->route('manage.user.index');
     }
 
@@ -57,6 +59,7 @@ class UserController extends Controller
         $user->deleteProfilePhoto();
         $user->usageStats()->delete();
         $user->delete();
+
         return redirect()->route('manage.user.index');
     }
 }

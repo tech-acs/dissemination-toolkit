@@ -2,9 +2,9 @@
 
 namespace Uneca\DisseminationToolkit\Livewire\Visualizations;
 
-use Uneca\DisseminationToolkit\Services\QueryBuilder;
 use Livewire\Attributes\On;
 use Uneca\DisseminationToolkit\Livewire\Visualization;
+use Uneca\DisseminationToolkit\Services\QueryBuilder;
 
 class Table extends Visualization
 {
@@ -20,7 +20,7 @@ class Table extends Visualization
         'columnDefs' => [],
         'rowData' => [],
         'autoSizeStrategy' => [
-            'type' => 'fitGridWidth'
+            'type' => 'fitGridWidth',
         ],
         'suppressMovableColumns' => false,
         'unSortIcon' => false,
@@ -31,19 +31,20 @@ class Table extends Visualization
     private function makeColumnDefs($data): array
     {
         if ($data->isNotEmpty()) {
-            [$toNest, $flat] = collect(array_keys((array)$data->first()))
+            [$toNest, $flat] = collect(array_keys((array) $data->first()))
                 ->partition(fn ($header) => str($header)->contains('|'));
 
             $nested = $toNest
                 ->map(function ($joined, $index) {
-                    list($parent, $child) = explode('|', $joined);
+                    [$parent, $child] = explode('|', $joined);
+
                     return ['parent' => $parent, 'child' => $child, 'field' => $joined, 'order' => $index];
                 })
                 ->groupBy('parent')
                 ->map(function ($children, $parent) {
                     return [
                         'headerName' => $parent,
-                        //'headerHozAlign' => 'center',
+                        // 'headerHozAlign' => 'center',
                         'order' => min($children->pluck('order')->all()),
                         'children' => $children
                             ->map(function ($c) {
@@ -54,13 +55,14 @@ class Table extends Visualization
                                     'hide' => false,
                                     'sortable' => true,
                                 ];
-                                if (str($c['child'])->endsWith(QueryBuilder::VALUE_COLUMN_INVISIBLE_MARKER)){
+                                if (str($c['child'])->endsWith(QueryBuilder::VALUE_COLUMN_INVISIBLE_MARKER)) {
                                     /*$colDef['hozAlign'] = 'right';
                                     $colDef['headerHozAlign'] = 'right';
                                     $colDef['sorter'] = 'number';
                                     $colDef['formatter'] = 'money';*/
                                     $colDef['type'] = 'numericColumn';
                                 }
+
                                 return $colDef;
                             })
                             ->values()
@@ -76,31 +78,33 @@ class Table extends Visualization
                         'filter' => false,
                         'hide' => false,
                         'sortable' => true,
-                        //'sorter' => 'string',
-                        //'frozen' => true
+                        // 'sorter' => 'string',
+                        // 'frozen' => true
                     ];
-                    if (str($column)->endsWith(QueryBuilder::VALUE_COLUMN_INVISIBLE_MARKER)){
-                        //$colDef['hozAlign'] = 'right';
-                        //$colDef['headerHozAlign'] = 'right';
-                        //$colDef['sorter'] = 'number';
-                        //$colDef['formatter'] = 'money';
+                    if (str($column)->endsWith(QueryBuilder::VALUE_COLUMN_INVISIBLE_MARKER)) {
+                        // $colDef['hozAlign'] = 'right';
+                        // $colDef['headerHozAlign'] = 'right';
+                        // $colDef['sorter'] = 'number';
+                        // $colDef['formatter'] = 'money';
                         $colDef['type'] = 'numericColumn';
                         unset($colDef['filter']);
                     }
-                    if (str($column)->contains('age_group')){
-                        //$colDef['sorter'] = 'number';
+                    if (str($column)->contains('age_group')) {
+                        // $colDef['sorter'] = 'number';
                         $colDef['type'] = 'rangeColumn';
                     }
+
                     return $colDef;
                 });
 
             return $nested
                 ->concat($notNested)
                 ->sortBy('order')
-                //->map(fn ($header) => $header)
+                // ->map(fn ($header) => $header)
                 ->values()
                 ->all();
         }
+
         return [];
     }
 
@@ -117,7 +121,7 @@ class Table extends Visualization
     {
         $this->options = [];
         $this->preparePayload($rawData);
-        //dump($rawData, $this->options);
+        // dump($rawData, $this->options);
         $this->dispatch("updateTable.$this->htmlId", $this->options);
     }
 

@@ -15,8 +15,11 @@ class Dimension extends Model
     use HasTranslations;
 
     protected $guarded = ['id'];
+
     public array $translatable = ['name', 'description'];
+
     protected $casts = ['for' => 'array'];
+
     protected $appends = ['foreign_key'];
 
     public function datasets(): BelongsToMany
@@ -29,14 +32,16 @@ class Dimension extends Model
         if ($this->table_exists) {
             return DB::table($this->table_name)->orderBy('rank')->get();
         }
+
         return false;
     }
 
     public function getTableExistsAttribute(): bool
     {
-        //return Schema::hasTable($this->table_name);
+        // return Schema::hasTable($this->table_name);
         try {
             DB::table($this->table_name)->get();
+
             return true;
         } catch (QueryException $e) {
             // Postgres Error Code 42P01 is "undefined_table"
@@ -53,6 +58,7 @@ class Dimension extends Model
         if ($this->table_exists) {
             return DB::table($this->table_name)->where('code', '_T')->exists();
         }
+
         return false;
     }
 
@@ -61,6 +67,7 @@ class Dimension extends Model
         if ($this->table_exists) {
             return DB::table($this->table_name)->count();
         }
+
         return 0;
     }
 

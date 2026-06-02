@@ -11,6 +11,7 @@ class Topic extends Model
     use HasTranslations;
 
     protected $guarded = ['id'];
+
     public array $translatable = ['name', 'description'];
 
     public function documents(): MorphToMany

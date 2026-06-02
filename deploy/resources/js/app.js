@@ -1,5 +1,8 @@
 import './bootstrap';
 
+import Plotly from 'plotly.js-dist';
+window.Plotly = Plotly;
+
 import PlotlyChart from "./PlotlyChart.js";
 window.PlotlyChart = PlotlyChart;
 
@@ -8,3 +11,6 @@ window.AgGridTable = AgGridTable;
 
 import LeafletMap from "./LeafletMap.js";
 window.LeafletMap = LeafletMap;
+
+import Quill from 'quill';
+window.Quill = Quill;

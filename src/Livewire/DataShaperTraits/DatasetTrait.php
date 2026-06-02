@@ -7,6 +7,7 @@ use Uneca\DisseminationToolkit\Models\Dataset;
 trait DatasetTrait
 {
     public array $datasets = [];
+
     public int $selectedDataset = 0;
 
     public function updatedSelectedDataset($datasetId): void

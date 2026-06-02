@@ -4,14 +4,13 @@ namespace Uneca\DisseminationToolkit\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends \App\Models\User
 {
-    use HasFactory, Notifiable, HasRoles, HasProfilePhoto;
+    use HasFactory, HasProfilePhoto, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.

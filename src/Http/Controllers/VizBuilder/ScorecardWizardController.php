@@ -3,9 +3,13 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;
 use Uneca\DisseminationToolkit\Http\Resources\ChartDesignerResource;
 use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;
+use Uneca\DisseminationToolkit\Livewire\Visualizations\Scorecard;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Tag;
 use Uneca\DisseminationToolkit\Models\Visualization;
@@ -13,10 +17,6 @@ use Uneca\DisseminationToolkit\Services\QueryBuilder;
 use Uneca\DisseminationToolkit\Services\Sorter;
 use Uneca\DisseminationToolkit\Services\VizWizardSession;
 use Uneca\DisseminationToolkit\Traits\PlotlyDefaults;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;
-use Uneca\DisseminationToolkit\Livewire\Visualizations\Scorecard;
 
 class ScorecardWizardController extends Controller
 {
@@ -27,12 +27,14 @@ class ScorecardWizardController extends Controller
         2 => 'Design scorecard',
         3 => 'Add metadata & save',
     ];
+
     private string $type = 'scorecard';
 
     public function step1()
     {
         $step = 1;
         $this->setupResource();
+
         return view('dissemination::manage.viz-builder.step1')->with(['steps' => $this->steps, 'currentStep' => $step, 'type' => $this->type]);
     }
 
@@ -47,7 +49,7 @@ class ScorecardWizardController extends Controller
         $options = $this->makeOptions($resource);
         $resource = $this->addCurrentValuesToResource($resource, $options);
 
-        //dump($resource, $options);
+        // dump($resource, $options);
         return view('dissemination::manage.viz-builder.scorecard.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
     }
 
@@ -58,15 +60,16 @@ class ScorecardWizardController extends Controller
             return redirect()->route('manage.viz-builder.scorecard.step1');
         }
         $resource = VizWizardSession::get();
-        //dump($resource);
+        // dump($resource);
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Scorecard::class, 'title' => $resource->indicatorTitle]);
+
         return view('dissemination::manage.viz-builder.step3')
             ->with([
                 'steps' => $this->steps,
                 'currentStep' => 3,
                 'resource' => $resource,
                 'visualization' => $visualization,
-                'type' => $this->type
+                'type' => $this->type,
             ]);
     }
 
@@ -78,9 +81,9 @@ class ScorecardWizardController extends Controller
         }
         $title = $request->get('title');
         $description = $request->get('description');
-        //$isFilterable = $request->boolean('filterable');
+        // $isFilterable = $request->boolean('filterable');
         $isReviewable = $request->boolean('is_reviewable');
-        //$isPublished = $request->boolean('published');
+        // $isPublished = $request->boolean('published');
         $resource = VizWizardSession::get();
 
         $vizInfo = [
@@ -91,7 +94,7 @@ class ScorecardWizardController extends Controller
             'layout' => $resource->layout,
             'is_filterable' => false,
             'is_reviewable' => $isReviewable,
-            //'published' => $isPublished,
+            // 'published' => $isPublished,
             'thumbnail' => $resource->thumbnail,
         ];
         if ($resource?->vizId) {
@@ -102,7 +105,7 @@ class ScorecardWizardController extends Controller
                 'name' => str($title)->slug()->toString(),
                 'data_params' => $resource->dataParams,
                 'livewire_component' => Scorecard::class,
-                ...$vizInfo
+                ...$vizInfo,
             ]);
         }
 
@@ -113,6 +116,7 @@ class ScorecardWizardController extends Controller
             $visualization->topics()->sync($inheritedTopics);
 
             VizWizardSession::forget();
+
             return redirect()->route('manage.visualization.index')->withMessage('Visualization successfully saved');
         }
     }
@@ -128,10 +132,11 @@ class ScorecardWizardController extends Controller
                 ->withMessage('The visualization is either broken or could not be located');
         }
         $resource = VizWizardSession::get();
-        //dump('from db', $resource);
+        // dump('from db', $resource);
         $options = $this->makeOptions($resource, $visualization);
         $resource = $this->addCurrentValuesToResource($resource, $options);
-        //dump('synt', $resource, $options);
+
+        // dump('synt', $resource, $options);
         return view('dissemination::manage.viz-builder.scorecard.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
     }
 
@@ -143,6 +148,7 @@ class ScorecardWizardController extends Controller
     private function isStepValid($step): bool
     {
         $resource = VizWizardSession::get();
+
         return ($resource instanceof DesignerResource) && (! empty($resource->dataSources));
     }
 
@@ -150,7 +156,7 @@ class ScorecardWizardController extends Controller
     {
         return [
             ...self::DEFAULT_CONFIG,
-            //'toImageButtonOptions' => ['filename' => $this->graphDiv . ' (' . now()->toDayDateTimeString() . ')'],
+            // 'toImageButtonOptions' => ['filename' => $this->graphDiv . ' (' . now()->toDayDateTimeString() . ')'],
             'locale' => app()->getLocale(),
         ];
     }
@@ -172,10 +178,11 @@ class ScorecardWizardController extends Controller
             return str($column)->endsWith(QueryBuilder::VALUE_COLUMN_INVISIBLE_MARKER);
         });
         $firstIndicator = reset($indicators);
+
         return [
             'data.meta.columnNames.text' => [
                 'type' => 'hidden',
-                'value' => $firstIndicator
+                'value' => $firstIndicator,
             ],
             'data.value' => [
                 'type' => 'hidden',
@@ -184,39 +191,39 @@ class ScorecardWizardController extends Controller
             'data.title.text' => [
                 'type' => 'text',
                 'label' => 'Title',
-                'value' => $firstIndicator ?? 'Title'
+                'value' => $firstIndicator ?? 'Title',
             ],
             'data.title.align' => [
                 'type' => 'select',
                 'label' => 'Title alignment',
                 'options' => ['left', 'center', 'right'],
-                'value' => $visualization->data[0]['title']['align'] ?? 'center'
+                'value' => $visualization->data[0]['title']['align'] ?? 'center',
             ],
             'data.align' => [
                 'type' => 'select',
                 'label' => 'Value alignment',
                 'options' => ['left', 'center', 'right'],
-                'value' => 'center'
+                'value' => 'center',
             ],
             'layout.paper_bgcolor' => [
                 'type' => 'color',
                 'label' => 'Background color',
-                'value' => $visualization->layout['paper_bgcolor'] ?? '#d3d3d3'
+                'value' => $visualization->layout['paper_bgcolor'] ?? '#d3d3d3',
             ],
             'layout.font.color' => [
                 'type' => 'color',
                 'label' => 'Font color',
-                'value' => $visualization->layout['font']['color'] ?? '#000000'
+                'value' => $visualization->layout['font']['color'] ?? '#000000',
             ],
             'layout.width' => [
                 'type' => 'number',
                 'label' => 'Width',
-                'value' => 600
+                'value' => 600,
             ],
             'layout.height' => [
                 'type' => 'number',
                 'label' => 'Height',
-                'value' => 250
+                'value' => 250,
             ],
         ];
     }
@@ -228,17 +235,17 @@ class ScorecardWizardController extends Controller
             'mode' => 'number',
             'value' => 0,
             'align' => 'left',
-            //'meta' => ['columnNames' => ['value' => '']],
+            // 'meta' => ['columnNames' => ['value' => '']],
             'title' => [
                 'text' => 'Title',
                 'align' => 'center',
                 'font' => [
                     'size' => 40,
-                ]
-            ]
+                ],
+            ],
         ];
 
-        $setValues = Arr::undot(array_map(fn($option) => $option['value'], $options));
+        $setValues = Arr::undot(array_map(fn ($option) => $option['value'], $options));
         $setDataValues = $setValues['data'];
         $setLayoutValues = $setValues['layout'];
         $resource->data = [array_replace_recursive($indicatorTrace, $setDataValues)];
@@ -249,19 +256,20 @@ class ScorecardWizardController extends Controller
             'margin' => ['l' => 0, 'r' => 0, 't' => 0, 'b' => 0],
             'paper_bgcolor' => 'lightgray',
             'font' => [
-                'color' => 'black'
-            ]
+                'color' => 'black',
+            ],
         ];
         $resource->layout = array_replace_recursive($layout, $setLayoutValues);
-        //dump($setValues, $resource);
+
+        // dump($setValues, $resource);
         return $resource;
     }
 
-    private function setupResource(Visualization $visualization = null): void
+    private function setupResource(?Visualization $visualization = null): void
     {
         if ($visualization) {
             $query = new QueryBuilder($visualization->data_params);
-            $rawData = $query->get()->all();//Sorter::sort($query->get())->all();
+            $rawData = $query->get()->all(); // Sorter::sort($query->get())->all();
             $resource = new ChartDesignerResource(
                 dataSources: toDataFrame(collect($rawData))->toArray(),
                 data: $visualization->data,

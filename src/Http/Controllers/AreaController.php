@@ -3,6 +3,11 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Uneca\DisseminationToolkit\Http\Requests\MapRequest;
 use Uneca\DisseminationToolkit\Jobs\ImportShapefileJob;
 use Uneca\DisseminationToolkit\Models\Area;
@@ -10,20 +15,15 @@ use Uneca\DisseminationToolkit\Services\AreaTree;
 use Uneca\DisseminationToolkit\Services\ShapefileImporter;
 use Uneca\DisseminationToolkit\Services\SmartTableColumn;
 use Uneca\DisseminationToolkit\Services\SmartTableData;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 
 class AreaController extends Controller
 {
     public function index(Request $request)
     {
         $areaCounts = Area::select('level', DB::raw('count(*) AS count'))->groupBy('level')->get()->keyBy('level');
-        $hierarchies = (new AreaTree())->hierarchies;
+        $hierarchies = (new AreaTree)->hierarchies;
         $summary = collect($hierarchies)->map(function ($levelName, $level) use ($areaCounts) {
-            return ($areaCounts[$level]?->count ?? 0) . ' ' . str($levelName)->plural();
+            return ($areaCounts[$level]?->count ?? 0).' '.str($levelName)->plural();
         })->join(', ', ' and ');
         view()->share('hierarchies', $hierarchies);
 
@@ -47,6 +47,7 @@ class AreaController extends Controller
     public function create()
     {
         $levels = (new AreaTree)->hierarchies;
+
         return view('dissemination::manage.area.create', ['levels' => array_map(fn ($level) => ucfirst($level), $levels)]);
     }
 
@@ -60,9 +61,9 @@ class AreaController extends Controller
             $file->storeAs('/shapefiles', $filenameWithExt, 'imports');
         }
         $shpFile = collect([$filename, 'shp'])->join('.');
-        $filePath = Storage::disk('imports')->path('shapefiles/' . $shpFile);
+        $filePath = Storage::disk('imports')->path('shapefiles/'.$shpFile);
 
-        $importer = new ShapefileImporter();
+        $importer = new ShapefileImporter;
         $sampleFeature = $importer->sample($filePath);
 
         // Check for empty shapefiles
@@ -82,7 +83,7 @@ class AreaController extends Controller
         ImportShapefileJob::dispatch($filePath, $level, auth()->user(), app()->getLocale());
 
         return redirect()->route('manage.area.index')
-            ->withMessage("Importing is in progress. You will be notified when it is complete.");
+            ->withMessage('Importing is in progress. You will be notified when it is complete.');
     }
 
     public function edit(Area $area)
@@ -93,14 +94,16 @@ class AreaController extends Controller
     public function update(Area $area, Request $request)
     {
         $area->update($request->only(['name', 'code']));
+
         return redirect()->route('manage.area.index')
-            ->withMessage("The area has been updated");
+            ->withMessage('The area has been updated');
     }
 
     public function destroy()
     {
         Area::truncate();
+
         return redirect()->route('manage.area.index')
-            ->withMessage("The areas table has been truncated");
+            ->withMessage('The areas table has been truncated');
     }
 }

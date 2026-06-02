@@ -1,3 +1,5 @@
+@import "quill/dist/quill.snow.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,9 +36,9 @@
     background-color: rgb(0 0 0 / 0%);
     backdrop-filter: blur(3px);
     transition:
-            display 0.7s allow-discrete,
-            overlay 0.7s allow-discrete,
-            background-color 0.7s;
+        display 0.7s allow-discrete,
+        overlay 0.7s allow-discrete,
+        background-color 0.7s;
     /* Equivalent to
     transition: all 0.7s allow-discrete; */
 }
@@ -56,9 +58,36 @@
     height: 100%;
     object-fit: cover;
 }
-
 .Map {
     min-height: 50vh;
     min-width: 100%;
     position: relative;
+}
+
+.block-editor-quill .ql-editor {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 1rem;
+}
+
+.block-editor-quill .ql-container {
+    font-family: inherit;
+}
+
+.block-editor-quill .ql-editor.prose {
+    line-height: revert;
+}
+
+.block-editor-quill .ql-editor.prose p,
+.block-editor-quill .ql-editor.prose ol,
+.block-editor-quill .ql-editor.prose ul,
+.block-editor-quill .ql-editor.prose pre,
+.block-editor-quill .ql-editor.prose blockquote,
+.block-editor-quill .ql-editor.prose h1,
+.block-editor-quill .ql-editor.prose h2,
+.block-editor-quill .ql-editor.prose h3,
+.block-editor-quill .ql-editor.prose h4,
+.block-editor-quill .ql-editor.prose h5,
+.block-editor-quill .ql-editor.prose h6 {
+    margin: revert;
+    padding: revert;
 }

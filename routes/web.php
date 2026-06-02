@@ -9,7 +9,6 @@ use Uneca\DisseminationToolkit\Http\Controllers\AuthHomeController;
 use Uneca\DisseminationToolkit\Http\Controllers\DatasetController as DatasetManagementController;
 use Uneca\DisseminationToolkit\Http\Controllers\DatasetImportController;
 use Uneca\DisseminationToolkit\Http\Controllers\DatasetPublishStatusController;
-use Uneca\DisseminationToolkit\Http\Controllers\DatasetRemovalController;
 use Uneca\DisseminationToolkit\Http\Controllers\DatasetTemplateController;
 use Uneca\DisseminationToolkit\Http\Controllers\DatasetTruncationController;
 use Uneca\DisseminationToolkit\Http\Controllers\DimensionController;
@@ -19,10 +18,10 @@ use Uneca\DisseminationToolkit\Http\Controllers\DimensionValueController;
 use Uneca\DisseminationToolkit\Http\Controllers\DimensionValueImportController;
 use Uneca\DisseminationToolkit\Http\Controllers\DocumentManagementController;
 use Uneca\DisseminationToolkit\Http\Controllers\DocumentPublishedStatusController;
-use Uneca\DisseminationToolkit\Http\Controllers\Guest\DocumentController;
 use Uneca\DisseminationToolkit\Http\Controllers\Guest\DataExplorerController;
 use Uneca\DisseminationToolkit\Http\Controllers\Guest\DatasetController;
 use Uneca\DisseminationToolkit\Http\Controllers\Guest\DatasetDownloadController;
+use Uneca\DisseminationToolkit\Http\Controllers\Guest\DocumentController;
 use Uneca\DisseminationToolkit\Http\Controllers\Guest\LandingController;
 use Uneca\DisseminationToolkit\Http\Controllers\Guest\MapVisualizationController;
 use Uneca\DisseminationToolkit\Http\Controllers\Guest\RendererController;
@@ -33,8 +32,8 @@ use Uneca\DisseminationToolkit\Http\Controllers\IndicatorController;
 use Uneca\DisseminationToolkit\Http\Controllers\NotificationController;
 use Uneca\DisseminationToolkit\Http\Controllers\OrganizationController;
 use Uneca\DisseminationToolkit\Http\Controllers\RoleController;
-use Uneca\DisseminationToolkit\Http\Controllers\StoryDesignController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryController as StoryManagementController;
+use Uneca\DisseminationToolkit\Http\Controllers\StoryDesignController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryDuplicationController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryPublishedStatusController;
 use Uneca\DisseminationToolkit\Http\Controllers\StoryRestrictedStatusController;
@@ -49,7 +48,7 @@ use Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\ChartWizardController
 use Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\MapWizardController;
 use Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\ScorecardWizardController;
 use Uneca\DisseminationToolkit\Http\Controllers\VizBuilder\TableWizardController;
-use Uneca\DisseminationToolkit\Http\Controllers\YearController;
+use Uneca\DisseminationToolkit\Livewire\ManageStoryDesigner;
 
 Route::middleware(['web'])->group(function () {
     Route::get('landing', [LandingController::class, 'index'])->name('landing');
@@ -77,7 +76,7 @@ Route::middleware(['web'])->group(function () {
 
         Route::view('tidy', 'dissemination::manage.tidy')->name('tidy');
 
-        //Route::resource('topic', TopicController::class);
+        // Route::resource('topic', TopicController::class);
         Route::get('topic', [TopicController::class, 'index'])->name('topic.index');
         Route::get('topic/create', [TopicController::class, 'create'])->name('topic.create')->can(PermissionsEnum::CREATE_TOPIC);
         Route::post('topic', [TopicController::class, 'store'])->name('topic.store')->can(PermissionsEnum::CREATE_TOPIC);
@@ -85,7 +84,7 @@ Route::middleware(['web'])->group(function () {
         Route::patch('topic/{topic}', [TopicController::class, 'update'])->name('topic.update')->can(PermissionsEnum::EDIT_TOPIC);
         Route::delete('topic/{topic}', [TopicController::class, 'destroy'])->name('topic.destroy')->can(PermissionsEnum::DELETE_TOPIC);
 
-        //Route::resource('indicator', IndicatorController::class);
+        // Route::resource('indicator', IndicatorController::class);
         Route::get('indicator', [IndicatorController::class, 'index'])->name('indicator.index');
         Route::get('indicator/create', [IndicatorController::class, 'create'])->name('indicator.create')->can(PermissionsEnum::CREATE_INDICATOR);
         Route::post('indicator', [IndicatorController::class, 'store'])->name('indicator.store')->can(PermissionsEnum::CREATE_INDICATOR);
@@ -93,7 +92,7 @@ Route::middleware(['web'])->group(function () {
         Route::patch('indicator/{indicator}', [IndicatorController::class, 'update'])->name('indicator.update')->can(PermissionsEnum::EDIT_INDICATOR);
         Route::delete('indicator/{indicator}', [IndicatorController::class, 'destroy'])->name('indicator.destroy')->can(PermissionsEnum::DELETE_INDICATOR);
 
-        //Route::resource('dimension', DimensionController::class);
+        // Route::resource('dimension', DimensionController::class);
         Route::get('dimension/create-table', DimensionTableCreationController::class)->name('dimension.create-table')->can(PermissionsEnum::CREATE_DIMENSION);
         Route::get('dimension', [DimensionController::class, 'index'])->name('dimension.index');
         Route::get('dimension/create', [DimensionController::class, 'create'])->name('dimension.create')->can(PermissionsEnum::CREATE_DIMENSION);
@@ -108,7 +107,7 @@ Route::middleware(['web'])->group(function () {
             Route::resource('dimension.import-values', DimensionValueImportController::class)->only(['create', 'store']);
         });
 
-        //Route::resource('dataset', DatasetManagementController::class)->only(['index', 'create', 'edit', 'destroy']);
+        // Route::resource('dataset', DatasetManagementController::class)->only(['index', 'create', 'edit', 'destroy']);
         Route::get('dataset', [DatasetManagementController::class, 'index'])->name('dataset.index');
         Route::get('dataset/create', [DatasetManagementController::class, 'create'])->name('dataset.create')->can(PermissionsEnum::CREATE_DATASET);
         Route::post('dataset', [DatasetManagementController::class, 'store'])->name('dataset.store')->can(PermissionsEnum::CREATE_DATASET);
@@ -121,7 +120,7 @@ Route::middleware(['web'])->group(function () {
         Route::patch('dataset/{dataset}/change-publish-status', DatasetPublishStatusController::class)->name('dataset.change-publish-status')
             ->can(PermissionsEnum::PUBLISH_AND_UNPUBLISH_DATASET);
 
-        //Route::resource('story', \Uneca\DisseminationToolkit\Http\Controllers\StoryController::class);
+        // Route::resource('story', \Uneca\DisseminationToolkit\Http\Controllers\StoryController::class);
         Route::get('story', [StoryManagementController::class, 'index'])->name('story.index');
         Route::get('story/create', [StoryManagementController::class, 'create'])->name('story.create')->can(PermissionsEnum::CREATE_STORY);
         Route::post('story', [StoryManagementController::class, 'store'])->name('story.store')->can(PermissionsEnum::CREATE_STORY);
@@ -129,8 +128,7 @@ Route::middleware(['web'])->group(function () {
         Route::patch('story/{story}', [StoryManagementController::class, 'update'])->name('story.update')->can(PermissionsEnum::EDIT_STORY);
         Route::delete('story/{story}', [StoryManagementController::class, 'destroy'])->name('story.destroy')->can(PermissionsEnum::DELETE_STORY);
         Route::get('story/{story}/duplicate', StoryDuplicationController::class)->name('story.duplicate')->can(PermissionsEnum::CREATE_STORY);
-        Route::get('story/{story}/design', [StoryDesignController::class, 'edit'])->name('story.design')->can(PermissionsEnum::EDIT_STORY);
-        Route::patch('story/{story}/design', [StoryDesignController::class, 'update'])->name('story.design.update')->can(PermissionsEnum::EDIT_STORY);
+        Route::get('story/{story}/design', ManageStoryDesigner::class)->name('story.design')->can(PermissionsEnum::EDIT_STORY);
         Route::post('story/upload-image', [StoryDesignController::class, 'uploadImage'])->name('story.upload-image');
 
         Route::patch('story/{story}/change-published-status', StoryPublishedStatusController::class)->name('story.change-published-status')
@@ -176,7 +174,7 @@ Route::middleware(['web'])->group(function () {
             Route::post('viz-builder/scorecard', 'store')->name('viz-builder.scorecard.store');
         });
 
-        //Route::resource('document', DocumentManagementController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
+        // Route::resource('document', DocumentManagementController::class)->only('index', 'create', 'store', 'edit', 'update', 'destroy');
         Route::get('document', [DocumentManagementController::class, 'index'])->name('document.index');
         Route::get('document/create', [DocumentManagementController::class, 'create'])->name('document.create')->can(PermissionsEnum::CREATE_DOCUMENT);
         Route::post('document', [DocumentManagementController::class, 'store'])->name('document.store')->can(PermissionsEnum::CREATE_DOCUMENT);

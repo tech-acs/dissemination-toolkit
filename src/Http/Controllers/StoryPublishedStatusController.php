@@ -3,8 +3,8 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Story;
 use Illuminate\Http\Request;
+use Uneca\DisseminationToolkit\Models\Story;
 
 class StoryPublishedStatusController extends Controller
 {
@@ -12,6 +12,7 @@ class StoryPublishedStatusController extends Controller
     {
         $publishStatus = $request->boolean('published');
         $story->update(['published' => $publishStatus]);
-        return redirect()->route('manage.story.index')->withMessage('Story ' . ($publishStatus ? 'published' : 'unpublished'));
+
+        return redirect()->route('manage.story.index')->withMessage('Story '.($publishStatus ? 'published' : 'unpublished'));
     }
 }

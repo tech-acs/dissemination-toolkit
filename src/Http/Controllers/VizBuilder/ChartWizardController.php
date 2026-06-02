@@ -3,9 +3,12 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Uneca\DisseminationToolkit\Http\Resources\ChartDesignerResource;
 use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;
+use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Tag;
 use Uneca\DisseminationToolkit\Models\Visualization;
@@ -13,10 +16,6 @@ use Uneca\DisseminationToolkit\Services\QueryBuilder;
 use Uneca\DisseminationToolkit\Services\Sorter;
 use Uneca\DisseminationToolkit\Services\VizWizardSession;
 use Uneca\DisseminationToolkit\Traits\PlotlyDefaults;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;
-use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
 
 class ChartWizardController extends Controller
 {
@@ -27,12 +26,14 @@ class ChartWizardController extends Controller
         2 => 'Design chart',
         3 => 'Add metadata & save',
     ];
+
     private string $type = 'chart';
 
     public function step1()
     {
         $step = 1;
         $this->setupResource();
+
         return view('dissemination::manage.viz-builder.step1')->with(['steps' => $this->steps, 'currentStep' => $step, 'type' => $this->type]);
     }
 
@@ -44,6 +45,7 @@ class ChartWizardController extends Controller
                 ->withErrors('You must prepare appropriate data for your visualization before proceeding to the next step');
         }
         $resource = VizWizardSession::get();
+
         return view('dissemination::manage.viz-builder.chart.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource]);
     }
 
@@ -55,6 +57,7 @@ class ChartWizardController extends Controller
         }
         $resource = VizWizardSession::get();
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Chart::class]);
+
         return view('dissemination::manage.viz-builder.step3')
             ->with([
                 'steps' => $this->steps,
@@ -68,12 +71,13 @@ class ChartWizardController extends Controller
     public function step3Get()
     {
         $step = 3;
-        //$this->recordChartDesign(json_decode($request->get('data'), true), json_decode($request->get('layout'), true));
+        // $this->recordChartDesign(json_decode($request->get('data'), true), json_decode($request->get('layout'), true));
         if (! $this->isStepValid($step)) {
             return redirect()->route('manage.viz-builder.chart.design');
         }
         $resource = VizWizardSession::get();
         $visualization = $resource?->vizId ? Visualization::find($resource->vizId) : new Visualization(['livewire_component' => Chart::class]);
+
         return view('dissemination::manage.viz-builder.step3')
             ->with([
                 'steps' => $this->steps,
@@ -104,7 +108,7 @@ class ChartWizardController extends Controller
         $description = $request->get('description');
         $isFilterable = $request->boolean('filterable');
         $isReviewable = $request->boolean('is_reviewable');
-        //$isPublished = $request->boolean('published');
+        // $isPublished = $request->boolean('published');
         $resource = VizWizardSession::get();
 
         $vizInfo = [
@@ -115,7 +119,7 @@ class ChartWizardController extends Controller
             'layout' => $resource->layout,
             'is_filterable' => $isFilterable,
             'is_reviewable' => $isReviewable,
-            //'published' => $isPublished,
+            // 'published' => $isPublished,
             'thumbnail' => $resource->thumbnail,
         ];
         if ($resource?->vizId) {
@@ -126,7 +130,7 @@ class ChartWizardController extends Controller
                 'name' => str($title)->slug()->toString(),
                 'data_params' => $resource->dataParams,
                 'livewire_component' => Chart::class,
-                ...$vizInfo
+                ...$vizInfo,
             ]);
         }
 
@@ -137,6 +141,7 @@ class ChartWizardController extends Controller
             $visualization->topics()->sync($inheritedTopics);
 
             VizWizardSession::forget();
+
             return redirect()->route('manage.visualization.index')->withMessage('Visualization successfully saved');
         }
     }
@@ -152,6 +157,7 @@ class ChartWizardController extends Controller
                 ->withMessage('The visualization is either broken or could not be located');
         }
         $resource = VizWizardSession::get();
+
         return view('dissemination::manage.viz-builder.chart.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource]);
     }
 
@@ -163,6 +169,7 @@ class ChartWizardController extends Controller
     private function isStepValid($step): bool
     {
         $resource = VizWizardSession::get();
+
         return ($resource instanceof DesignerResource) && (! empty($resource->dataSources));
     }
 
@@ -170,16 +177,16 @@ class ChartWizardController extends Controller
     {
         return [
             ...self::DEFAULT_CONFIG,
-            //'toImageButtonOptions' => ['filename' => $this->graphDiv . ' (' . now()->toDayDateTimeString() . ')'],
+            // 'toImageButtonOptions' => ['filename' => $this->graphDiv . ' (' . now()->toDayDateTimeString() . ')'],
             'locale' => app()->getLocale(),
         ];
     }
 
-    private function setupResource(Visualization $visualization = null): void
+    private function setupResource(?Visualization $visualization = null): void
     {
         if ($visualization) {
             $query = new QueryBuilder($visualization->data_params);
-            $rawData = $query->get()->all();//Sorter::sort($query->get())->all();
+            $rawData = $query->get()->all(); // Sorter::sort($query->get())->all();
             $resource = new ChartDesignerResource(
                 dataSources: toDataFrame(collect($rawData))->toArray(),
                 data: $visualization->data,
@@ -190,7 +197,7 @@ class ChartWizardController extends Controller
             );
         } else {
             $resource = new ChartDesignerResource(
-                //data: [['type' => 'choroplethmapbox', 'geojson']],
+                // data: [['type' => 'choroplethmapbox', 'geojson']],
                 config: [...$this->getConfig(), 'editable' => true],
                 defaultLayout: self::DEFAULT_LAYOUT
             );

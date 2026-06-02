@@ -11,7 +11,6 @@ enum RatingEnum: int
     case VERY_GOOD = 4;
     case Excellent = 5;
 
-
     public static function getRatingLabel(RatingEnum|int $rating): string
     {
         return match ($rating) {
@@ -23,6 +22,7 @@ enum RatingEnum: int
             default => 'Not rated'
         };
     }
+
     public static function getRatingColor(RatingEnum|int $rating): string
     {
         return match ($rating) {
@@ -32,6 +32,7 @@ enum RatingEnum: int
             default => 'bg-gray-500 text-white',
         };
     }
+
     public static function getRatingValues(): array
     {
         return [
@@ -39,13 +40,15 @@ enum RatingEnum: int
             self::FAIR,
             self::GOOD,
             self::VERY_GOOD,
-            self::Excellent
+            self::Excellent,
         ];
     }
+
     public static function getTotalRating(): int
     {
         return count(self::getRatingValues());
     }
+
     public static function getRatings(): array
     {
         $ratings = collect();
@@ -58,6 +61,7 @@ enum RatingEnum: int
                 'isSelected' => false,
             ]);
         }
+
         return $ratings->toArray();
     }
 }

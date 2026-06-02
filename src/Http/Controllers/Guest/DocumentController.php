@@ -2,13 +2,13 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
-use Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum;
 use Uneca\DisseminationToolkit\Models\Document;
 use Uneca\DisseminationToolkit\Models\Tag;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
 {
@@ -17,8 +17,8 @@ class DocumentController extends Controller
         $query = Document::published()
             ->when(! empty($request->get('keyword')), function (Builder $query) use ($request) {
                 $locale = app()->getLocale();
-                $query->where("title->$locale", 'ilike', '%' . $request->get('keyword') . '%');
-                $query->orWhere("description->$locale", 'ilike', '%' . $request->get('keyword') . '%');
+                $query->where("title->$locale", 'ilike', '%'.$request->get('keyword').'%');
+                $query->orWhere("description->$locale", 'ilike', '%'.$request->get('keyword').'%');
             })
             ->when(! empty($request->get('topic')), function (Builder $query) use ($request) {
                 $query->whereHas('topics', function (Builder $query) use ($request) {
@@ -53,7 +53,7 @@ class DocumentController extends Controller
             }
         }
 
-        list($sortBy, $sortOrder) = $this->setSortOrder($request->get('sort', 'relevance'));
+        [$sortBy, $sortOrder] = $this->setSortOrder($request->get('sort', 'relevance'));
         $query->orderBy($sortBy, $sortOrder);
 
         $records = $query->paginate(config('app.page_size', 10));
@@ -80,6 +80,7 @@ class DocumentController extends Controller
             ->increment('view_count', 1, ['updated_at' => $censusTable->updated_at]);
 
         $censusTable->updated_by = $censusTable->user->name;
+
         return view('dissemination::guest.document.show', compact('censusTable'));
     }
 
@@ -120,7 +121,8 @@ class DocumentController extends Controller
                 $sortOrder = 'DESC';
                 break;
         }
-        return array($sortBy, $sortOrder);
+
+        return [$sortBy, $sortOrder];
     }
 
     private function getSortOptions(): array
@@ -131,7 +133,7 @@ class DocumentController extends Controller
             'yearDesc' => 'Recent ↑',
             'year' => 'Oldest ↓',
             'title' => 'Title (A-Z)',
-            'titleDesc' => 'Title (Z-A)'
+            'titleDesc' => 'Title (Z-A)',
         ];
     }
 

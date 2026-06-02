@@ -11,6 +11,7 @@ class NotificationBell extends Component
     public function render()
     {
         $this->unreadCount = auth()->user()->unreadNotifications->count();
+
         return view('dissemination::livewire.notification-bell');
     }
 }

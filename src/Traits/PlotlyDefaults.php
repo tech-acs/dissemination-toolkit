@@ -11,29 +11,29 @@ trait PlotlyDefaults
     ];
 
     public const DEFAULT_LAYOUT = [
-        "showlegend" => true,
-        "legend" => [
-            "orientation" => "h",
-            "x" => 0,
-            "y" => 1.12,
+        'showlegend' => true,
+        'legend' => [
+            'orientation' => 'h',
+            'x' => 0,
+            'y' => 1.12,
         ],
-        "xaxis" => [
-            "type" => "category",
-            "tickmode" => "auto",
-            "automargin" => true,
+        'xaxis' => [
+            'type' => 'category',
+            'tickmode' => 'auto',
+            'automargin' => true,
         ],
-        "height" => 550,
-        "margin" => [
-            "l" => 60,
-            "r" => 10,
-            "t" => 10,
-            "b" => 40,
+        'height' => 550,
+        'margin' => [
+            'l' => 60,
+            'r' => 10,
+            't' => 10,
+            'b' => 40,
         ],
-        "modebar" => [
-            "orientation" => "v",
-            "color" => "white",
-            "bgcolor" => "darkgray",
+        'modebar' => [
+            'orientation' => 'v',
+            'color' => 'white',
+            'bgcolor' => 'darkgray',
         ],
-        "dragmode" => "pan",
+        'dragmode' => 'pan',
     ];
 }

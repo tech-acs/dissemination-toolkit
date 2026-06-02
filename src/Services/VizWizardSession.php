@@ -19,10 +19,11 @@ class VizWizardSession
             $class = $data['__class'];
             unset($data['__class']);
             if ($class === ChartDesignerResource::class || $class === TableDesignerResource::class) {
-                $resource = new $class();
+                $resource = new $class;
                 foreach ($data as $key => $value) {
                     $resource->$key = $value;
                 }
+
                 return $resource;
             }
         }

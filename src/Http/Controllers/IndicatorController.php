@@ -3,12 +3,12 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Uneca\DisseminationToolkit\Http\Requests\IndicatorRequest;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Topic;
 use Uneca\DisseminationToolkit\Services\SmartTableColumn;
 use Uneca\DisseminationToolkit\Services\SmartTableData;
-use Illuminate\Http\Request;
 
 class IndicatorController extends Controller
 {
@@ -31,7 +31,8 @@ class IndicatorController extends Controller
     public function create()
     {
         $topics = Topic::pluck('name', 'id');
-        $indicator = new Indicator();
+        $indicator = new Indicator;
+
         return view('dissemination::manage.indicator.create', compact('topics', 'indicator'));
     }
 
@@ -39,12 +40,14 @@ class IndicatorController extends Controller
     {
         $indicator = Indicator::create($request->only(['name', 'description', 'code']));
         $indicator->topics()->sync($request->get('topics'));
+
         return redirect()->route('manage.indicator.index')->withMessage('Record created');
     }
 
     public function edit(Indicator $indicator)
     {
         $topics = Topic::pluck('name', 'id');
+
         return view('dissemination::manage.indicator.edit', compact('indicator', 'topics'));
     }
 
@@ -52,16 +55,18 @@ class IndicatorController extends Controller
     {
         $indicator->update($request->only(['name', 'description', 'code']));
         $indicator->topics()->sync($request->get('topics'));
+
         return redirect()->route('manage.indicator.index')->withMessage('Record updated');
     }
 
     public function destroy(Indicator $indicator)
     {
-        //Check if the indicator has any related datasets
+        // Check if the indicator has any related datasets
         if ($indicator->datasets()->count() > 0) {
             return redirect()->back()->withErrors(['This indicator has related datasets, please delete those first.']);
         }
         $indicator->delete();
+
         return redirect()->route('manage.indicator.index')->withMessage('Record deleted');
     }
 }

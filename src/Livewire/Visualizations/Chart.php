@@ -2,11 +2,11 @@
 
 namespace Uneca\DisseminationToolkit\Livewire\Visualizations;
 
-use Uneca\DisseminationToolkit\Traits\AreaResolver;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Uneca\DisseminationToolkit\Livewire\Visualization;
+use Uneca\DisseminationToolkit\Traits\AreaResolver;
 
 class Chart extends Visualization
 {
@@ -17,7 +17,9 @@ class Chart extends Visualization
         'displaylogo' => false,
         'modeBarButtonsToRemove' => ['select2d', 'lasso2d', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian'],
     ];
+
     public array $config;
+
     public string $filterPath = '';
 
     public function mount(): void
@@ -33,11 +35,11 @@ class Chart extends Visualization
         if ($data->isNotEmpty()) {
             foreach ($traces as $index => $trace) {
                 $columnNames = Arr::get($trace, 'meta.columnNames', []);
-                foreach($columnNames as $key => $columnName) {
+                foreach ($columnNames as $key => $columnName) {
                     if (! is_array($columnName)) {
                         if (str($columnName)->contains(' - ')) {
                             $columns = explode(' - ', $columnName);
-                            $traces[$index][$key] = collect($columns)->map(fn($column) => $data[$column])->values()->toArray();
+                            $traces[$index][$key] = collect($columns)->map(fn ($column) => $data[$column])->values()->toArray();
                         } else {
                             $traces[$index][$key] = $data[$columnName] ?? null;
                         }
@@ -47,12 +49,14 @@ class Chart extends Visualization
         } else {
             $traces = [];
         }
+
         return $traces;
     }
 
     public function makeConfig(): array
     {
-        $dynamicOptions = ['toImageButtonOptions' => ['filename' => $this->htmlId . ' (' . now()->toDayDateTimeString() . ')'], 'locale' => app()->getLocale()];
+        $dynamicOptions = ['toImageButtonOptions' => ['filename' => $this->htmlId.' ('.now()->toDayDateTimeString().')'], 'locale' => app()->getLocale()];
+
         return array_merge(self::DEFAULT_CONFIG, $dynamicOptions);
     }
 
@@ -64,7 +68,7 @@ class Chart extends Visualization
     #[On('dataShaperEvent')]
     public function reactToChanges(array $rawData, string $indicatorName, array $dataParams): void
     {
-        //$this->layout = array_replace_recursive($this::DEFAULT_OPTIONS, $this->layout, []);
+        // $this->layout = array_replace_recursive($this::DEFAULT_OPTIONS, $this->layout, []);
         $this->preparePayload($rawData);
         $this->dispatch("updateChart.$this->htmlId", $this->data, $this->layout);
     }

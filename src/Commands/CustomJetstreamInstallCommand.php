@@ -2,8 +2,6 @@
 
 namespace Uneca\DisseminationToolkit\Commands;
 
-
-
 use Laravel\Jetstream\Console\InstallCommand;
 
 class CustomJetstreamInstallCommand extends InstallCommand

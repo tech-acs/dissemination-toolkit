@@ -2,19 +2,22 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
-use Uneca\DisseminationToolkit\Models\Story;
-use Uneca\DisseminationToolkit\Models\Visualization;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Uneca\DisseminationToolkit\Models\Story;
+use Uneca\DisseminationToolkit\Models\Visualization;
 
 class ReviewForm extends Component
 {
     #[Validate('required|integer|between:1,5')]
     public int $rating = 0;
+
     #[Validate('required|string|min:5')]
     public string $headline = '';
-    /*#[Validate('required|string|min:5')]*/
+
+    /* #[Validate('required|string|min:5')] */
     public string $detailedReview = '';
+
     #[Validate('required')]
     public Visualization|Story $subject;
 
@@ -30,14 +33,14 @@ class ReviewForm extends Component
 
     public function rate()
     {
-        //dump($this->rating, $this->headline, $this->detailedReview);
+        // dump($this->rating, $this->headline, $this->detailedReview);
         $this->validate();
         $this->subject->reviews()->create([
             'user_id' => auth()->id(),
             'rating' => $this->rating,
             'headline' => $this->headline,
             'detailed_review' => $this->detailedReview,
-            'approved_at' => now()
+            'approved_at' => now(),
         ]);
         $this->reset();
         $this->message = 'Your review has been submitted.';

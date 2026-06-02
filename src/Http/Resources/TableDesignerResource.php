@@ -4,7 +4,7 @@ namespace Uneca\DisseminationToolkit\Http\Resources;
 
 use JsonSerializable;
 
-class TableDesignerResource implements JsonSerializable, DesignerResource
+class TableDesignerResource implements DesignerResource, JsonSerializable
 {
     public function __construct(
         public array $dataSources = [],
@@ -13,23 +13,22 @@ class TableDesignerResource implements JsonSerializable, DesignerResource
         public array $options = [],
         public ?int $vizId = null,
         public string $indicatorTitle = '',
-        //public array $defaultLayout = [],
+        // public array $defaultLayout = [],
         public array $dataParams = [],
         public array $rawData = [],
         public ?string $thumbnail = null,
-    )
-    {}
+    ) {}
 
     public function toArray(): array
     {
         return [
-            'dataSources' => (object)$this->dataSources,
-            //'initialData' => $this->data,
-            //'initialLayout' => (object)$this->layout,
+            'dataSources' => (object) $this->dataSources,
+            // 'initialData' => $this->data,
+            // 'initialLayout' => (object)$this->layout,
             'options' => $this->options,
             'vizId' => $this->vizId,
-            //'indicatorTitle' => $this->indicatorTitle,
-            //'defaultLayout' => $this->defaultLayout,
+            // 'indicatorTitle' => $this->indicatorTitle,
+            // 'defaultLayout' => $this->defaultLayout,
         ];
     }
 

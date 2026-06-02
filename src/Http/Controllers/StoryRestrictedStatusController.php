@@ -3,8 +3,8 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Story;
 use Illuminate\Http\Request;
+use Uneca\DisseminationToolkit\Models\Story;
 
 class StoryRestrictedStatusController extends Controller
 {
@@ -12,6 +12,7 @@ class StoryRestrictedStatusController extends Controller
     {
         $restrictedStatus = $request->boolean('restricted');
         $story->update(['restricted' => $restrictedStatus]);
-        return redirect()->route('manage.story.index')->withMessage('Story ' . ($restrictedStatus ? 'restricted' : 'shared'));
+
+        return redirect()->route('manage.story.index')->withMessage('Story '.($restrictedStatus ? 'restricted' : 'shared'));
     }
 }

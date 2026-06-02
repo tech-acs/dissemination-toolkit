@@ -2,10 +2,6 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
-use Uneca\DisseminationToolkit\Jobs\ImportDatasetJob;
-use Uneca\DisseminationToolkit\Models\Area;
-use Uneca\DisseminationToolkit\Models\Dataset;
-use Uneca\DisseminationToolkit\Models\Dimension;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -15,29 +11,42 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\SimpleExcel\SimpleExcelReader;
+use Uneca\DisseminationToolkit\Jobs\ImportDatasetJob;
+use Uneca\DisseminationToolkit\Models\Area;
+use Uneca\DisseminationToolkit\Models\Dataset;
+use Uneca\DisseminationToolkit\Models\Dimension;
 
 class DatasetImporter extends Component
 {
     use WithFileUploads;
 
     public $spreadsheet;
+
     public bool $fileAccepted = false;
+
     public Dataset $dataset;
+
     public Collection $indicators;
+
     public Collection $dimensions;
+
     public array $columnHeaders = [];
+
     public array $columnMapping = [];
+
     public string $filePath = '';
+
     public string $message = '';
-    //const CHUNK_SIZE = 500;
+
+    // const CHUNK_SIZE = 500;
     public string $importError = '';
 
     private function mappings(): array
     {
         return [
-            'indicators' => collect($this->indicators)->mapWithKeys(fn ($indicator) => [$indicator->id  => ''])->all(),
-            'dimensions' => collect($this->dimensions)->mapWithKeys(fn ($dimension) => [$dimension->id  => ''])->all(),
-            'others' => collect(['geography'])->mapWithKeys(fn ($other) => [$other  => ''])->all(),
+            'indicators' => collect($this->indicators)->mapWithKeys(fn ($indicator) => [$indicator->id => ''])->all(),
+            'dimensions' => collect($this->dimensions)->mapWithKeys(fn ($dimension) => [$dimension->id => ''])->all(),
+            'others' => collect(['geography'])->mapWithKeys(fn ($other) => [$other => ''])->all(),
         ];
     }
 
@@ -63,7 +72,7 @@ class DatasetImporter extends Component
         $this->validateOnly('spreadsheet');
         $filename = collect([Str::random(40), $this->spreadsheet->getClientOriginalExtension()])->join('.');
         $this->spreadsheet->storeAs('/spreadsheets', $filename, 'imports');
-        $this->filePath = Storage::disk('imports')->path('spreadsheets/' . $filename);
+        $this->filePath = Storage::disk('imports')->path('spreadsheets/'.$filename);
         $this->columnHeaders = SimpleExcelReader::create($this->filePath)->getHeaders();
         $this->fileAccepted = true;
     }
@@ -80,8 +89,9 @@ class DatasetImporter extends Component
         }
         $lookups['geography'] = [
             'lookup' => array_change_key_case(Area::pluck('id', 'code')->all(), CASE_LOWER),
-            'fk' => 'area_id'
+            'fk' => 'area_id',
         ];
+
         return $lookups;
     }
 
@@ -152,6 +162,7 @@ class DatasetImporter extends Component
     public function render()
     {
         $this->dataset->loadCount(['dimensions', 'indicators']);
+
         return view('dissemination::livewire.dataset-importer');
     }
 }

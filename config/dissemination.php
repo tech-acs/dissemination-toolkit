@@ -10,7 +10,7 @@ return [
     'emailing_enabled' => env('EMAILING_ENABLED', false),
     'enforce_2fa' => env('ENFORCE_2FA', false),
     'invitation' => [
-        'ttl_hours' => (int) env('INVITATION_TTL_HOURS', 72)
+        'ttl_hours' => (int) env('INVITATION_TTL_HOURS', 72),
     ],
     'require_account_approval' => env('REQUIRE_ACCOUNT_APPROVAL', false),
     'color_theme' => env('COLOR_THEME', 'Chimera'),
@@ -25,7 +25,7 @@ return [
     ],
 
     'featured_stories' => env('FEATURED_STORIES', 2),
-    'fact_tables' => ['census_facts' => 'Census facts' /*'population_facts' => 'Population characteristics', 'housing_facts' => 'Housing characteristics'*/],
+    'fact_tables' => ['census_facts' => 'Census facts' /* 'population_facts' => 'Population characteristics', 'housing_facts' => 'Housing characteristics' */],
     'shapefile' => [
         'import_chunk_size' => (int) env('SHAPEFILE_IMPORT_CHUNK_SIZE', 500),
         'stop_import_if_orphans_found' => env('SHAPEFILE_STOP_IMPORT_IF_ORPHANS_FOUND', true),

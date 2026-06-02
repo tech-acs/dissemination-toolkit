@@ -21,7 +21,7 @@
             @endphp
 
             @if (is_array($_blocks))
-                <div class="pt-10 space-y-6">
+                <div class="pt-3 space-y-6">
                     @foreach($_blocks as $_block)
                         @switch($_block['type'] ?? '')
                             @case('text')
@@ -36,7 +36,7 @@
                                     $_wrapperClass = match($_align) {
                                         'left' => 'flex flex-col items-start',
                                         'right' => 'flex flex-col items-end',
-                                        'default' => 'flex flex-col items-center',
+                                        default => 'flex flex-col items-center',
                                     };
                                     $_captionAlign = match($_align) {
                                         'left' => 'text-left',
@@ -71,7 +71,7 @@
                                                         $_childWrapper = match($_childAlign) {
                                                             'left' => 'flex flex-col items-start',
                                                             'right' => 'flex flex-col items-end',
-                                                            'default' => 'flex flex-col items-center',
+                                        default => 'flex flex-col items-center',
                                                         };
                                                         $_childCaptionAlign = match($_childAlign) {
                                                             'left' => 'text-left',
@@ -122,13 +122,13 @@
                                                     $_childWrapper = match($_childAlign) {
                                                         'left' => 'flex flex-col items-start',
                                                         'right' => 'flex flex-col items-end',
-                                                        'default' => 'flex flex-col items-center',
-                                                    };
-                                                    $_childCaptionAlign = match($_childAlign) {
-                                                        'left' => 'text-left',
-                                                        'right' => 'text-right',
-                                                        'full' => '',
-                                                        default => 'text-center',
+                                                            default => 'flex flex-col items-center',
+                                                        };
+                                                        $_childCaptionAlign = match($_childAlign) {
+                                                            'left' => 'text-left',
+                                                            'right' => 'text-right',
+                                                            'full' => '',
+                                                            default => 'text-center',
                                                     };
                                                 @endphp
                                                 <figure class="my-4">

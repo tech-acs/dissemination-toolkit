@@ -2,9 +2,9 @@
 
 namespace Uneca\DisseminationToolkit\Actions;
 
-use Uneca\DisseminationToolkit\Models\Dimension;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Uneca\DisseminationToolkit\Models\Dimension;
 
 class CreateDimensionAction
 {
@@ -19,10 +19,12 @@ class CreateDimensionAction
                     }
                 });
             } catch (\Exception $exception) {
-                logger("Error in CreateDimensionAction action (createTable function)", ['Exception message' => $exception->getMessage()]);
+                logger('Error in CreateDimensionAction action (createTable function)', ['Exception message' => $exception->getMessage()]);
+
                 return false;
             }
         }
+
         return true;
     }
 
@@ -39,7 +41,7 @@ class CreateDimensionAction
             'rank' => [
                 'type' => 'integer',
                 'parameters' => ['nullable' => true],
-            ]
+            ],
         ];
         $tableName = $dimension->table_name;
         $tableExists = $this->createTable($tableName, $columns);
@@ -48,12 +50,13 @@ class CreateDimensionAction
             foreach ($dimension->for as $factTable) {
                 try {
                     Schema::table($factTable, function (Blueprint $table) use ($tableName) {
-                        $table->foreignId($tableName . '_id')->nullable();
+                        $table->foreignId($tableName.'_id')->nullable();
                     });
                 } catch (\Exception $exception) {
-                    logger("Error in CreateDimensionAction (handle function)", ['Exception message' => $exception->getMessage()]);
+                    logger('Error in CreateDimensionAction (handle function)', ['Exception message' => $exception->getMessage()]);
                 }
             }
+
             return true;
         } else {
             return false;

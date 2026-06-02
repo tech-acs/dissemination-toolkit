@@ -23,6 +23,7 @@ class LandingController extends Controller
             ->orderBy('updated_at')
             ->take(config('dissemination.featured_stories'))
             ->get();
+
         return view('dissemination::guest.landing', compact('datasetSummary', 'featuredStories'));
     }
 }

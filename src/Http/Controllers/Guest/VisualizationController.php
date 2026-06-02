@@ -3,10 +3,10 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Topic;
-use Uneca\DisseminationToolkit\Models\Visualization;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Uneca\DisseminationToolkit\Models\Topic;
+use Uneca\DisseminationToolkit\Models\Visualization;
 
 class VisualizationController extends Controller
 {
@@ -27,6 +27,7 @@ class VisualizationController extends Controller
             ->get()
             ->sortByDesc('updated_at');
         $topics = Topic::all();
+
         return view('dissemination::guest.visualization.index', compact('records', 'topics'));
     }
 
@@ -36,6 +37,7 @@ class VisualizationController extends Controller
             if ($request->has('embed')) {
                 return view('dissemination::guest.visualization.embed', compact('visualization'));
             }
+
             return view('dissemination::guest.visualization.show', compact('visualization'));
         }
         abort(403);

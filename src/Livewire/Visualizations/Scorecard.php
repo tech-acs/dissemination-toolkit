@@ -2,11 +2,11 @@
 
 namespace Uneca\DisseminationToolkit\Livewire\Visualizations;
 
-use Uneca\DisseminationToolkit\Traits\AreaResolver;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Uneca\DisseminationToolkit\Livewire\Visualization;
+use Uneca\DisseminationToolkit\Traits\AreaResolver;
 
 class Scorecard extends Visualization
 {
@@ -17,7 +17,9 @@ class Scorecard extends Visualization
         'displaylogo' => false,
         'modeBarButtonsToRemove' => ['select2d', 'lasso2d', 'autoScale2d', 'hoverClosestCartesian', 'hoverCompareCartesian'],
     ];
+
     public array $config;
+
     public string $filterPath = '';
 
     public function mount(): void
@@ -33,7 +35,7 @@ class Scorecard extends Visualization
         if ($data->isNotEmpty()) {
             foreach ($traces as $index => $trace) {
                 $columnNames = Arr::get($trace, 'meta.columnNames', []);
-                foreach($columnNames as $key => $columnName) {
+                foreach ($columnNames as $key => $columnName) {
                     if (! is_array($columnName)) {
                         $traces[$index][$key] = $data[$columnName] ?? null;
                     }
@@ -42,25 +44,27 @@ class Scorecard extends Visualization
         } else {
             $traces = [];
         }
+
         return $traces;
     }
 
     public function makeConfig(): array
     {
-        $dynamicOptions = ['toImageButtonOptions' => ['filename' => $this->htmlId . ' (' . now()->toDayDateTimeString() . ')'], 'locale' => app()->getLocale()];
+        $dynamicOptions = ['toImageButtonOptions' => ['filename' => $this->htmlId.' ('.now()->toDayDateTimeString().')'], 'locale' => app()->getLocale()];
+
         return array_merge(self::DEFAULT_CONFIG, $dynamicOptions);
     }
 
     public function preparePayload(array $rawData = []): void
     {
         $this->data = $this->makeTraces(collect($rawData));
-        //array_replace_recursive($this->data[0], $options['data']);
+        // array_replace_recursive($this->data[0], $options['data']);
     }
 
     #[On('dataShaperEvent')]
     public function reactToChanges(array $rawData, string $indicatorName, array $dataParams): void
     {
-        //$this->layout = array_replace_recursive($this::DEFAULT_OPTIONS, $this->layout, []);
+        // $this->layout = array_replace_recursive($this::DEFAULT_OPTIONS, $this->layout, []);
         $this->preparePayload($rawData);
         $this->dispatch("updateChart.$this->htmlId", $this->data, $this->layout);
     }
@@ -71,7 +75,7 @@ class Scorecard extends Visualization
         $indicatorTrace = array_replace_recursive($this->data[0], $options['data']);
         $this->data[0] = $indicatorTrace;
         $this->layout = array_replace_recursive($this->layout, $options['layout']);
-        //dump($this->data);
+        // dump($this->data);
         $this->dispatch("updateResponse.$this->htmlId", $this->data, $this->layout);
     }
 

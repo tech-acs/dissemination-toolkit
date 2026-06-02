@@ -22,7 +22,7 @@ class CreateDimensions extends Command
             $dimensions = Dimension::whereId($dimensionId)->get();
         }
         foreach ($dimensions as $dimension) {
-            $this->info('Creating dimension: ' . $dimension->name);
+            $this->info('Creating dimension: '.$dimension->name);
             $successful = (new CreateDimensionAction)->handle($dimension);
             if ($successful) {
                 $this->info("{$dimension->name} created.");

@@ -2,10 +2,10 @@
 
 namespace Uneca\DisseminationToolkit\Livewire;
 
+use Livewire\Component;
 use Uneca\DisseminationToolkit\Models\Area;
 use Uneca\DisseminationToolkit\Services\AreaTree;
 use Uneca\DisseminationToolkit\Traits\ChecksumSafetyTrait;
-use Livewire\Component;
 
 class AreaFilter extends Component
 {
@@ -15,9 +15,9 @@ class AreaFilter extends Component
 
     public function mount()
     {
-        $areaTree = new AreaTree();
+        $areaTree = new AreaTree;
         $selectionsFromSession = session()->get('area-filter', []);
-        $restrictions = ['Country' => Area::ofLevel(0)->first()?->path]; //auth()->user()->areaRestrictionAsFilter();
+        $restrictions = ['Country' => Area::ofLevel(0)->first()?->path]; // auth()->user()->areaRestrictionAsFilter();
         $subject = null;
         $this->dropdowns = array_map(function ($level) use ($selectionsFromSession, $restrictions, $areaTree, &$subject) {
             $dropdown = ['list' => [], 'selected' => null, 'restricted' => null];
@@ -37,6 +37,7 @@ class AreaFilter extends Component
                 $subject = $restrictions[$levelName];
                 $dropdown['restricted'] = $this->addChecksumSafety($subject);
             }
+
             return $dropdown;
         }, array_flip($areaTree->hierarchies));
     }
@@ -50,6 +51,7 @@ class AreaFilter extends Component
             if ($resetDownstream) {
                 $this->dropdowns[$levelName]['list'] = [];
                 $this->dropdowns[$levelName]['selected'] = null;
+
                 continue;
             }
             if ($shouldUpdate) {

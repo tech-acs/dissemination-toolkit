@@ -2,6 +2,4 @@
 
 namespace Uneca\DisseminationToolkit\Http\Resources;
 
-interface DesignerResource
-{
-}
+interface DesignerResource {}

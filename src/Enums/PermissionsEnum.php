@@ -26,7 +26,7 @@ enum PermissionsEnum: string
 
     // indicator
     case CREATE_INDICATOR = 'create:indicator';
-    case EDIT_INDICATOR= 'edit:indicator';
+    case EDIT_INDICATOR = 'edit:indicator';
     case DELETE_INDICATOR = 'delete:indicator';
 
     // dimension

@@ -14,7 +14,7 @@ class DatasetImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'datafile' => 'mimetypes:text/csv'
+            'datafile' => 'mimetypes:text/csv',
         ];
     }
 }

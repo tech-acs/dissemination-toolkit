@@ -2,8 +2,11 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
-use Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum;
 use Uneca\DisseminationToolkit\Http\Requests\CensusTableRequest;
 use Uneca\DisseminationToolkit\Models\Document;
 use Uneca\DisseminationToolkit\Models\Indicator;
@@ -11,9 +14,6 @@ use Uneca\DisseminationToolkit\Models\Tag;
 use Uneca\DisseminationToolkit\Models\Topic;
 use Uneca\DisseminationToolkit\Services\SmartTableColumn;
 use Uneca\DisseminationToolkit\Services\SmartTableData;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class DocumentManagementController extends Controller
 {
@@ -63,13 +63,14 @@ class DocumentManagementController extends Controller
         $topics = Topic::pluck('name', 'id');
         $indicators = Indicator::all();
         $types = CensusTableTypeEnum::getTypes();
-        $document = (new Document());
+        $document = (new Document);
+
         return view('dissemination::manage.document.create', compact('topics', 'indicators', 'types', 'document'));
     }
 
     public function store(CensusTableRequest $request)
     {
-        if (!($request->hasFile('file') && $request->file('file')->isValid())) {
+        if (! ($request->hasFile('file') && $request->file('file')->isValid())) {
             return redirect()->back()->withErrors(['file' => 'File is required']);
         }
         $fileInfo = $this->uploadCensusFile($request, 'public', 'documents');
@@ -82,6 +83,7 @@ class DocumentManagementController extends Controller
 
         $updatedTags = Tag::prepareForSync($request->get('tags', ''));
         $document->tags()->sync($updatedTags->pluck('id'));
+
         return redirect()->route('manage.document.index')->withMessage('Document created');
     }
 
@@ -92,6 +94,7 @@ class DocumentManagementController extends Controller
         $types = CensusTableTypeEnum::getTypes();
         $document->load(['topics', 'tags']);
         $selectedTopics = $document->topics->pluck('id')->toArray();
+
         return view('dissemination::manage.document.edit', compact('document', 'topics', 'indicators', 'selectedTopics', 'types'));
     }
 
@@ -113,7 +116,8 @@ class DocumentManagementController extends Controller
     public function destroy(Document $document)
     {
         $document->delete();
-        Storage::disk('public')->move($document->file_path, 'archive/' . $document->file_name);
+        Storage::disk('public')->move($document->file_path, 'archive/'.$document->file_name);
+
         return redirect()->route('manage.document.index')->withMessage('Document deleted');
     }
 }
