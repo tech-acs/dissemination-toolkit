@@ -3,10 +3,10 @@
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Uneca\DisseminationToolkit\Models\Story;
-use Uneca\DisseminationToolkit\Models\Visualization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Uneca\DisseminationToolkit\Models\Story;
+use Uneca\DisseminationToolkit\Models\Visualization;
 
 class StoryDesignController extends Controller
 {
@@ -20,6 +20,7 @@ class StoryDesignController extends Controller
                 $blocks = $decoded;
             }
         }
+
         return view('dissemination::manage.story.block-editor', compact('story', 'visualizations', 'blocks'));
     }
 
@@ -27,11 +28,12 @@ class StoryDesignController extends Controller
     {
         $request->validate([
             'blocks' => 'required|array',
-            'blocks.*.type' => 'required|in:text,image,visualization',
+            'blocks.*.type' => 'required|in:text,image,visualization,two-column',
             'blocks.*.data' => 'required|array',
         ]);
 
         $story->update(['html' => json_encode($request->blocks)]);
+
         return response('Success', 200);
     }
 
@@ -40,9 +42,9 @@ class StoryDesignController extends Controller
         $request->validate(['image' => 'required|image|mimes:png,jpg,jpeg']);
 
         $image = $request->file('image');
-        $imageName = Str::uuid() . '.' . $image->getClientOriginalExtension();
+        $imageName = Str::uuid().'.'.$image->getClientOriginalExtension();
         $imagePath = $image->storeAs('stories/images', $imageName, 'public');
 
-        return response()->json(['image_path' => asset('storage/' . $imagePath)]);
+        return response()->json(['image_path' => asset('storage/'.$imagePath)]);
     }
 }
