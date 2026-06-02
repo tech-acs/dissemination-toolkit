@@ -26,6 +26,8 @@ class TidyDataMaker extends Component
     // Reactively parse data when the user pastes into the textarea
     public function updatedRawData($value)
     {
+        $value = preg_replace('/^\xEF\xBB\xBF/', '', $value);
+
         if (empty(trim($value))) {
             $this->resetData();
             return;
@@ -33,9 +35,12 @@ class TidyDataMaker extends Component
 
         $lines = explode("\n", trim($value));
         if (count($lines) > 0) {
-            // Detect if the user pasted tab-separated or comma-separated data
+            // Detect delimiter: tab, semicolon, or comma (by frequency in first line)
             $firstLine = $lines[0];
-            $delimiter = strpos($firstLine, "\t") !== false ? "\t" : ",";
+            $tabCount = substr_count($firstLine, "\t");
+            $semiCount = substr_count($firstLine, ";");
+            $commaCount = substr_count($firstLine, ",");
+            $delimiter = $tabCount ? "\t" : ($semiCount > $commaCount ? ";" : ",");
 
             $this->columns = str_getcsv($firstLine, $delimiter);
 

@@ -127,7 +127,7 @@ Route::middleware(['web'])->group(function () {
         Route::post('story', [StoryManagementController::class, 'store'])->name('story.store')->can(PermissionsEnum::CREATE_STORY);
         Route::get('story/{story}/edit', [StoryManagementController::class, 'edit'])->name('story.edit')->can(PermissionsEnum::EDIT_STORY);
         Route::patch('story/{story}', [StoryManagementController::class, 'update'])->name('story.update')->can(PermissionsEnum::EDIT_STORY);
-        Route::delete('story', [StoryManagementController::class, 'destroy'])->name('story.destroy')->can(PermissionsEnum::DELETE_STORY);
+        Route::delete('story/{story}', [StoryManagementController::class, 'destroy'])->name('story.destroy')->can(PermissionsEnum::DELETE_STORY);
         Route::get('story/{story}/duplicate', StoryDuplicationController::class)->name('story.duplicate')->can(PermissionsEnum::CREATE_STORY);
         Route::get('story/{story}/design', [StoryDesignController::class, 'edit'])->name('story.design')->can(PermissionsEnum::EDIT_STORY);
         Route::patch('story/{story}/design', [StoryDesignController::class, 'update'])->name('story.design.update')->can(PermissionsEnum::EDIT_STORY);
