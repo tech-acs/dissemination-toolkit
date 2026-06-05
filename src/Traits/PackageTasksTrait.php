@@ -24,6 +24,7 @@ trait PackageTasksTrait
         'plotly.js-dist' => '^3.5.1',
         'plotly.js-locales' => '^3.5.1',
         'tailwindcss' => '^3.4.0',
+        "quill" => "^2.0.2",
         //'d3-format' => '^3.1.0',
         'leaflet-image' => '^0.4.0',
         'html2canvas-pro' => '^1.5.8',

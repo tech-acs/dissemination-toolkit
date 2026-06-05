@@ -9,8 +9,7 @@ export default {
         './vendor/laravel/jetstream/**/*.blade.php',
         './vendor/uneca/dissemination-toolkit/**/*.blade.php',
         './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
-        './resources/js/ChartEditor/*.jsx'
+        './resources/views/**/*.blade.php'
     ],
 
     theme: {
