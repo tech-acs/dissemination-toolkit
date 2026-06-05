@@ -4,7 +4,7 @@
 
         <article class="p-4 rounded-md ring-1 mb-8">
             <x-dissemination::guest-header :content="$visualization" :show-embed="true" />
-            @if($visualization->isFilterable)
+            @if($visualization->is_filterable)
                 <livewire:area-filter />
             @endif
 

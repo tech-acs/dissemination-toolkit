@@ -48,6 +48,7 @@ class ScorecardWizardController extends Controller
         $resource = VizWizardSession::get();
         $options = $this->makeOptions($resource);
         $resource = $this->addCurrentValuesToResource($resource, $options);
+        VizWizardSession::put($resource);
 
         // dump($resource, $options);
         return view('dissemination::manage.viz-builder.scorecard.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);
@@ -135,6 +136,7 @@ class ScorecardWizardController extends Controller
         // dump('from db', $resource);
         $options = $this->makeOptions($resource, $visualization);
         $resource = $this->addCurrentValuesToResource($resource, $options);
+        VizWizardSession::put($resource);
 
         // dump('synt', $resource, $options);
         return view('dissemination::manage.viz-builder.scorecard.step2')->with(['steps' => $this->steps, 'currentStep' => $step, 'resource' => $resource, 'options' => $options]);

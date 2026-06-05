@@ -7,6 +7,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Uneca\DisseminationToolkit\Models\Area;
+use Uneca\DisseminationToolkit\Models\AreaHierarchy;
 use Uneca\DisseminationToolkit\Models\Dimension;
 use Uneca\DisseminationToolkit\Models\Indicator;
 
@@ -183,8 +184,6 @@ class TidyDataMaker extends Component
         $columnLookups = [];
         $identifierColumns = array_diff($this->columns, $this->checkedColumns);
 
-        $geographyKeywords = ['Area', 'Geography'];
-
         foreach ([...$identifierColumns, $this->nameColumn] as $colName) {
             $lookup = $this->buildLookup($colName);
             if ($lookup !== null) {
@@ -211,11 +210,14 @@ class TidyDataMaker extends Component
         }
 
         foreach ($columnLookups as $colName => $lookup) {
-            if (! in_array(mb_strtolower($colName), array_map('mb_strtolower', $geographyKeywords))) {
+            $hierarchy = AreaHierarchy::where('name->'.app()->getLocale(), $colName)->first();
+
+            if (! $hierarchy) {
                 continue;
             }
 
             $ambiguous = Area::select('name')
+                ->ofLevel($hierarchy->index)
                 ->groupBy('name')
                 ->having(DB::raw('count(*)'), '>', 1)
                 ->pluck('name')
@@ -249,17 +251,17 @@ class TidyDataMaker extends Component
 
     private function buildLookup(string $nameColumn): ?array
     {
-        $geographyKeywords = ['Area', 'Geography'];
+        $hierarchy = AreaHierarchy::where('name->'.app()->getLocale(), 'ILIKE', $nameColumn)->first();
 
-        if (in_array(mb_strtolower($nameColumn), array_map('mb_strtolower', $geographyKeywords))) {
-            $areaLookup = Area::get()->pluck('code', 'name')
+        if ($hierarchy) {
+            $areaLookup = Area::ofLevel($hierarchy->index)->get()->pluck('code', 'name')
                 ->mapWithKeys(fn ($code, $name) => [mb_strtoupper($name) => $code])
                 ->toArray();
 
             return ! empty($areaLookup) ? $areaLookup : null;
         }
 
-        $dimension = Dimension::where('name->'.app()->getLocale(), $nameColumn)->first();
+        $dimension = Dimension::where('name->'.app()->getLocale(), 'ILIKE', $nameColumn)->first();
         if (! $dimension) {
             return null;
         }

@@ -2,6 +2,7 @@
     <div
         id="{{ $htmlId }}"
         class="chart"
+        viz-id="{{ $vizId }}"
         x-init="new PlotlyChart('{{ $htmlId }}')"
         data-data='@json($data)'
         data-layout='@json($layout)'

@@ -6,6 +6,7 @@
         id="{{ $htmlId }}"
         class="map"
         style="height: calc(100vh - 360px);"
+        viz-id="{{ $vizId }}"
         x-init="new LeafletMap('{{ $htmlId }}')"
         data-data='@json($data)'
         data-layout='@json($layout)'

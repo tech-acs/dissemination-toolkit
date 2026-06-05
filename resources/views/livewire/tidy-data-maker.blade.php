@@ -16,7 +16,7 @@
                 <div class="bg-gray-50 p-5 rounded border border-gray-200 space-y-4">
                     <div>
                         <p class="text-sm text-gray-500 mb-3">Checked columns will be melted into variable/value rows. Unchecked columns remain as columns.
-                            If any are named as one of your dimensions, "Area" or "Geography" then they will be <b>codified</b> (name/label replaced by code).</p>
+                            If any are named as one of your dimensions or a defined <b>area hierarchy</b> then they will be <b>codified</b> (name/label replaced by code).</p>
 
                         <div class="flex flex-wrap gap-4 bg-white p-3 border rounded shadow-inner">
                             @forelse($columns as $column)
