@@ -50,7 +50,7 @@
             <div>
                 <x-label for="blurb" value="{{ __('Introduction') }}" class="inline" /><x-dissemination::locale-display />
                 {{--<x-textarea name="blurb" rows="3"></x-textarea>--}}
-                <x-textarea name="blurb" rows="3">{{ old('blurb', $organization->blurb ?? null) }}</x-textarea>
+                <x-dissemination::textarea name="blurb" rows="3">{{ old('blurb', $organization->blurb ?? null) }}</x-dissemination::textarea>
                 <x-input-error for="blurb" class="mt-2" />
             </div>
             <x-label for="logo_path" value="{{ __('Social Media') }}" />
@@ -79,7 +79,7 @@
             <div class="w-1/2">
                 <x-label for="address" value="{{ __('Address') }}" class="inline" /><x-dissemination::locale-display />
                 {{--<x-textarea name="address" rows="3" class="">{{ old('address', $organization->address ?? null) }}</x-textarea>--}}
-                <x-textarea name="address" rows="3" class="">{{ old('address', $organization->address ?? null) }}</x-textarea>
+                <x-dissemination::textarea name="address" rows="3" class="">{{ old('address', $organization->address ?? null) }}</x-dissemination::textarea>
                 <x-input-error for="address" class="mt-2" />
             </div>
         </div>

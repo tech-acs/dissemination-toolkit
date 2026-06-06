@@ -25,7 +25,7 @@ trait PackageTasksTrait
         'plotly.js-locales' => '^3.5.1',
         'tailwindcss' => '^3.4.0',
         "quill" => "^2.0.2",
-        //'d3-format' => '^3.1.0',
+        'd3-format' => '^3.1.0',
         'leaflet-image' => '^0.4.0',
         'html2canvas-pro' => '^1.5.8',
     ];
@@ -38,6 +38,7 @@ trait PackageTasksTrait
         'spatie/simple-excel:^3.9',
         'spatie/laravel-translatable:^6.1',
         'spatie/db-dumper:^4.1',
+        'uneca/plotly-chart-editor:^1.0'
     ];
 
     public array $vendorPublish = [
