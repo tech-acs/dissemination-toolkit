@@ -118,8 +118,11 @@ class ImportShapefileJob implements ShouldQueue
 
         })->then(function (Batch $batch) { // All jobs completed successfully...
 
-        })->catch(function (Batch $batch, Throwable $e) { // First batch job failure detected...
-
+        })->catch(function (Batch $batch, Throwable $e) use ($user) { // First batch job failure detected...(invoked only for first)
+            Notification::sendNow($user, new TaskFailedNotification(
+                'Task failed',
+                'The shapefile import failed because a child chunk job failed.'
+            ));
         })->finally(function (Batch $batch) use ($user) { // The batch has finished executing...
             $count = Cache::get("batch_{$batch->id}");
             Notification::sendNow($user, new TaskCompletedNotification(
@@ -130,6 +133,7 @@ class ImportShapefileJob implements ShouldQueue
         }); // ->allowFailures()
 
         $processBatch = true;
+        $reason = null;
         foreach ($features->chunk(config('dissemination.shapefile.import_chunk_size')) as $index => $featuresChunk) {
             $features = $featuresChunk->values()->toArray();
 
@@ -150,20 +154,35 @@ class ImportShapefileJob implements ShouldQueue
                     $batch->add(new ImportShapefileChunkJob($augmentedFeaturesChunk, $this->level, $this->user, $this->locale));
                 } else {
                     $processBatch = false;
+                    $reason = 'orphans_found';
                     break;
                 }
             } else {
                 $processBatch = false;
+                $reason = 'invalid_codes';
                 break;
             }
         }
 
         if ($processBatch) {
-            $batch->dispatch();
+            try {
+                $batch->dispatch();
+            } catch (\Throwable $e) {
+                logger('ImportShapefile batch dispatch failed', ['error' => $e->getMessage()]);
+                Notification::sendNow($user, new TaskFailedNotification(
+                    'Task failed',
+                    'The shapefile import failed because the background queue driver could not handle the request. Try reducing the chunk size or switching to the sync queue driver.'
+                ));
+            }
         } else {
+            $message = match ($reason) {
+                'invalid_codes' => "The shapefile could not be imported because some areas have missing or invalid 'code'/'name' attributes.",
+                'orphans_found' => 'The shapefile could not be imported because some areas could not be matched to a parent geography.',
+                default => 'The shapefile could not be imported. Please check the logs for details.',
+            };
             Notification::sendNow($user, new TaskFailedNotification(
                 'Task failed',
-                'The shapefile could not be imported because there were some errors found in it. Please check the logs for details.'
+                $message
             ));
         }
     }
@@ -173,7 +192,7 @@ class ImportShapefileJob implements ShouldQueue
         logger('ImportShapefile Job Failed', ['Exception: ' => $exception->getMessage()]);
         Notification::sendNow($this->user, new TaskFailedNotification(
             'Task failed',
-            $exception->getMessage()
+            'The shapefile import failed due to a job/queue error: ' . $exception->getMessage()
         ));
     }
 }
