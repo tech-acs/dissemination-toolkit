@@ -12,13 +12,63 @@
             </div>
 
             <div>
-                <h2 class="text-xl font-bold mb-2">2. Select columns to melt/pivot</h2>
-                <div class="bg-gray-50 p-5 rounded border border-gray-200 space-y-4">
+                 <h2 class="text-xl font-bold mb-2">2. Select columns to melt/pivot</h2>
+
+            @if($errors->any())
+                <div class="rounded-md bg-red-50 border border-red-200 p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">Please fix the following errors:</h3>
+                            <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if(count($codificationWarnings) > 0)
+                <div class="rounded-md bg-yellow-50 border border-yellow-200 p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3 text-sm text-yellow-700">
+                            <p class="font-medium">{{ __('Codification incomplete') }}</p>
+                            <p>{{ $skipUnmatched ? __('The following values could not be mapped to codes and have been excluded from all CSVs:') : __('The following values could not be mapped to codes and will keep their original labels in the Codified CSV:') }}</p>
+                            <ul class="list-disc list-inside mt-1">
+                                @foreach($codificationWarnings as $warning)
+                                    <li>{{ $warning }}</li>
+                                @endforeach
+                            </ul>
+                            <label class="mt-3 flex items-center space-x-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    wire:model.live="skipUnmatched"
+                                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                >
+                                <span class="text-sm">Exclude unmatched rows from all CSVs</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+                 <div class="bg-gray-50 p-5 rounded border border-gray-200 space-y-4">
                     <div>
                         <p class="text-sm text-gray-500 mb-3">Checked columns will be melted into variable/value rows. Unchecked columns remain as columns.
                             If any are named as one of your dimensions or a defined <b>area hierarchy</b> then they will be <b>codified</b> (name/label replaced by code).</p>
 
-                        <div class="flex flex-wrap gap-4 bg-white p-3 border rounded shadow-inner">
+                        <div class="flex flex-wrap gap-4 bg-white p-3 border rounded shadow-inner @error('checkedColumns') border-red-500 @enderror">
                             @forelse($columns as $column)
                                 <label class="flex items-center space-x-2 cursor-pointer">
                                     <input
@@ -38,7 +88,7 @@
                     <div class="grid grid-cols-2 gap-4 pt-2">
                         <div>
                             <label class="block text-sm font-medium text-gray-700">New "Dimension" column name</label>
-                            <select wire:model.live="nameColumn" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <select wire:model.live="nameColumn" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm @error('nameColumn') border-red-500 ring-1 ring-red-500 @enderror">
                                 <option value="">Select a dimension...</option>
                                 @foreach($this->dimensions as $dimension)
                                     <option value="{{ $dimension }}">{{ $dimension }}</option>
@@ -47,7 +97,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">New "Value" column name</label>
-                            <select wire:model.live="valueColumn" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <select wire:model.live="valueColumn" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm @error('valueColumn') border-red-500 ring-1 ring-red-500 @enderror">
                                 <option value="">Select an indicator...</option>
                                 @foreach($this->indicators as $indicator)
                                     <option value="{{ $indicator }}">{{ $indicator }}</option>
@@ -55,29 +105,12 @@
                             </select>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            @if(count($codificationWarnings) > 0)
-                <div class="rounded-md bg-yellow-50 border border-yellow-200 p-4">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div class="ml-3 text-sm text-yellow-700">
-                            <p class="font-medium">{{ __('Codification incomplete') }}</p>
-                            <p>{{ __('The following values could not be mapped to codes and will keep their original labels in the Codified CSV:') }}</p>
-                            <ul class="list-disc list-inside mt-1">
-                                @foreach($codificationWarnings as $warning)
-                                    <li>{{ $warning }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="pt-3 flex justify-end">
+                        <x-secondary-button wire:click="apply">Apply</x-secondary-button>
                     </div>
                 </div>
-            @endif
+             </div>
 
         </div>
 

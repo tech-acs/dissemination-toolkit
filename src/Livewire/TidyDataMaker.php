@@ -22,9 +22,9 @@ class TidyDataMaker extends Component
     public $checkedColumns = [];
 
     // Names for the newly pivoted columns
-    public $nameColumn = 'variable';
+    public $nameColumn = '';
 
-    public $valueColumn = 'value';
+    public $valueColumn = '';
 
     public $tidiedData = [];
 
@@ -33,6 +33,8 @@ class TidyDataMaker extends Component
     public $codifiedCsvOutput = '';
 
     public $codificationWarnings = [];
+
+    public $skipUnmatched = false;
 
     // Reactively parse data when the user pastes into the textarea
     public function updatedRawData($value)
@@ -76,16 +78,33 @@ class TidyDataMaker extends Component
     // Reactively re-pivot the data if any inputs change
     public function updatedCheckedColumns()
     {
-        $this->tidyData();
     }
 
     public function updatedNameColumn()
     {
-        $this->tidyData();
     }
 
     public function updatedValueColumn()
     {
+    }
+
+    public function updatedSkipUnmatched()
+    {
+        $this->tidyData();
+    }
+
+    public function apply()
+    {
+        $this->validate([
+            'checkedColumns' => 'required|array|min:2',
+            'nameColumn' => 'required',
+            'valueColumn' => 'required',
+        ], [
+            'checkedColumns.min' => 'Please select at least 2 columns to melt.',
+            'nameColumn.required' => 'Please select a dimension for the new column.',
+            'valueColumn.required' => 'Please select an indicator for the new column.',
+        ]);
+
         $this->tidyData();
     }
 
@@ -122,8 +141,31 @@ class TidyDataMaker extends Component
 
         $this->tidiedData = $tidied;
         $this->codificationWarnings = [];
+
+        $columnLookups = $this->buildColumnLookups();
+        $unmapped = [];
+        $filtered = [];
+        foreach ($this->tidiedData as $row) {
+            $hasUnmapped = false;
+            foreach ($columnLookups as $col => $lookup) {
+                $label = $row[$col] ?? null;
+                if ($label !== null && ! isset($lookup[mb_strtoupper($label)])) {
+                    $unmapped[$col][$label] = true;
+                    $hasUnmapped = true;
+                }
+            }
+            if (! $this->skipUnmatched || ! $hasUnmapped) {
+                $filtered[] = $row;
+            }
+        }
+        $this->tidiedData = $filtered;
+
+        foreach ($unmapped as $col => $labels) {
+            $this->codificationWarnings[] = $col.': '.implode(', ', array_keys($labels)).' ('.count($labels).($this->skipUnmatched ? ' excluded' : ' unmapped').' value(s))';
+        }
+
         $this->generateCsvOutput();
-        $this->generateCodifiedCsvOutput();
+        $this->generateCodifiedCsvOutput($columnLookups);
     }
 
     public function generateCsvOutput()
@@ -156,6 +198,7 @@ class TidyDataMaker extends Component
         $this->csvOutput = '';
         $this->codifiedCsvOutput = '';
         $this->codificationWarnings = [];
+        $this->skipUnmatched = false;
     }
 
     public function downloadCsv(): StreamedResponse
@@ -172,15 +215,8 @@ class TidyDataMaker extends Component
         }, 'tidy-data-codified.csv');
     }
 
-    public function generateCodifiedCsvOutput()
+    private function buildColumnLookups(): array
     {
-        if (empty($this->tidiedData)) {
-            $this->codifiedCsvOutput = '';
-            $this->codificationWarnings = [];
-
-            return;
-        }
-
         $columnLookups = [];
         $identifierColumns = array_diff($this->columns, $this->checkedColumns);
 
@@ -191,23 +227,30 @@ class TidyDataMaker extends Component
             }
         }
 
-        $unmapped = [];
-        $codified = array_map(function ($row) use ($columnLookups, &$unmapped) {
+        return $columnLookups;
+    }
+
+    public function generateCodifiedCsvOutput(array $columnLookups = [])
+    {
+        if (empty($this->tidiedData)) {
+            $this->codifiedCsvOutput = '';
+            $this->codificationWarnings = [];
+
+            return;
+        }
+
+        if (empty($columnLookups)) {
+            $columnLookups = $this->buildColumnLookups();
+        }
+
+        $codified = array_map(function ($row) use ($columnLookups) {
             foreach ($columnLookups as $col => $lookup) {
                 $label = $row[$col] ?? null;
-                if ($label !== null && ! isset($lookup[mb_strtoupper($label)])) {
-                    $unmapped[$col][$label] = true;
-                }
                 $row[$col] = $lookup[mb_strtoupper($label)] ?? $label;
             }
 
             return $row;
         }, $this->tidiedData);
-
-        $this->codificationWarnings = [];
-        foreach ($unmapped as $col => $labels) {
-            $this->codificationWarnings[] = $col.': '.implode(', ', array_keys($labels)).' ('.count($labels).' unmapped value(s))';
-        }
 
         foreach ($columnLookups as $colName => $lookup) {
             $hierarchy = AreaHierarchy::where('name->'.app()->getLocale(), $colName)->first();
