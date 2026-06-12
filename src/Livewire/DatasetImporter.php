@@ -95,18 +95,14 @@ class DatasetImporter extends Component
         return $lookups;
     }
 
-    /*private function lookItUp($key, $dimension, $lookups): array
-    {
-        $map = $lookups[$dimension];
-        return [$map['fk'], $map['lookup'][$key] ?? null];
-    }*/
-
     public function import()
     {
         $this->validate();
         $lookups = $this->makeLookupTables();
 
         ImportDatasetJob::dispatch($this->dataset, $this->filePath, $lookups, $this->columnMapping, auth()->user(), app()->getLocale());
+
+        $this->message = 'The file is being imported. You will receive a notification when the process is complete.';
 
         /*$this->importError = '';
         try {

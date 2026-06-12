@@ -15,7 +15,7 @@
         </div>
     @endif
     <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
-        {{--@if ($message)
+        @if ($message)
             <div class="rounded-md bg-blue-50 p-4">
                 <div class="flex">
                     <div class="flex-shrink-0">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-        @endif--}}
+        @endif
         <div class="md:grid md:grid-cols-3 md:gap-6">
             <div class="md:col-span-1">
                 <h3 class="text-lg font-medium leading-6 text-gray-900">{{ __('Spreadsheet') }}</h3>
