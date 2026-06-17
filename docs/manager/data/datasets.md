@@ -1,24 +1,19 @@
 # Datasets
 
-Datasets are collections of tabular data that power the platform. Each dataset contains indicators, dimensions, and observations. Accessible at `manage/dataset`.
+Datasets are collections of tabular data that power the platform. Each dataset contains indicators, dimensions, and observations. Accessible from the management top navigation by selecting **Datasets**.
 
 ## Creating a dataset
 
-1. Navigate to `manage/dataset`
+1. Go to the Datasets page from the management top navigation
 2. Click **Create**
 3. Fill in the fields:
    - **Name** (multi-language)
    - **Description** (multi-language)
-   - **Code** — a unique identifier
    - **Indicators** — select one or more indicators
-   - **Geographic granularity** — the maximum area level
-   - **Fact table** — select the database fact table
-   - **Data source**
-   - **Data date**
-   - **Language**
+   - **Data geographic granularity** — the finest geographic level for which data is available
+   - **Fact table** — select the database fact table that will store the data
    - **Dimensions** — select applicable dimensions
-   - **Contributor**
-   - **Format**
+     - The **year** dimension is required.
 4. Click **Save**
 
 ## Editing a dataset
@@ -30,7 +25,7 @@ Datasets are collections of tabular data that power the platform. Each dataset c
 ## Importing data
 
 1. Click **Import** next to a dataset (`manage/dataset/{dataset}/import`)
-2. The Livewire `dataset-importer` component guides you through uploading data from an Excel or CSV file
+2. The dataset importer guides you through uploading data from an Excel or CSV file
 3. Map columns and click **Import**
 
 ## Downloading an import template
@@ -50,4 +45,4 @@ Toggle the publish switch on a dataset row to control whether it appears on the 
 1. Click **Delete** next to a dataset
 2. Confirm in the dialog — this also removes associated data
 
-A link to the **Tidy Data Maker** (`manage/tidy`) is available from the datasets index page for preparing data before import.
+A link to the **Tidy Data Maker** is available from the datasets index page for preparing data before import.

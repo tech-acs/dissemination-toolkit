@@ -1,10 +1,10 @@
 # Documents
 
-The Documents section lets you upload and manage census tables published as Excel files, with full Dublin Core metadata. Accessible at `manage/document`.
+The Documents section lets you upload and manage census tables published as Excel files, with full Dublin Core metadata. Accessible from the management top navigation by selecting **Documents**.
 
 ## Creating a document
 
-1. Navigate to `manage/document`
+1. Go to the Documents page from the management top navigation
 2. Click **Create**
 3. Upload the file (up to 100MB)
 4. Select the **Type** — Census Table, Document, Microdata, or Report

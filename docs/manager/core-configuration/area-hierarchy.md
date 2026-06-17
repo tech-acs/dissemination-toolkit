@@ -1,10 +1,10 @@
 # Area Hierarchy
 
-Area hierarchies define the geographic levels used throughout the platform, such as Region, District, County, or Ward. Accessible at `manage/area-hierarchy` (Super Admin only).
+Area hierarchies define the geographic levels used throughout the platform, such as Region, District, County, or Ward. Accessible from the management admin menu (wrench icon) under **Core Configuration → Area Hierarchy** (Super Admin only).
 
 ## Creating a hierarchy level
 
-1. Navigate to `manage/area-hierarchy`
+1. Go to the Area Hierarchy page from the management admin menu
 2. Click **Create**
 3. Fill in the fields:
    - **Name** (multi-language) — e.g. "Region", "District"

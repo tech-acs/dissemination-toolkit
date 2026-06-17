@@ -64,7 +64,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: 'Visualizations', link: '/manager/visual-content/visualizations' },
-            { text: 'Data stories', link: '/manager/visual-content/data-stories' },
+            { text: 'Data Stories', link: '/manager/visual-content/data-stories' },
           ]
         },
         { text: 'Documents', link: '/manager/documents' },

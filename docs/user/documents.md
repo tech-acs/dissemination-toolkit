@@ -1,6 +1,6 @@
 # Documents
 
-The Documents section contains census tables published as Excel files, organised by census year and series. These tables maintain a consistent design over time to foster comparability of census outputs.
+The Documents section contains census tables published as Excel files, organized by census year and series. These tables maintain a consistent design over time to foster comparability of census outputs.
 
 ## Browsing
 
@@ -21,7 +21,7 @@ Use the search bar to find tables by title keyword.
 
 ### Sort
 
-Results can be sorted by relevance, popularity, date (newest/oldest), or title (A-Z/Z-A).
+Results can be sorted by Relevance, Popularity, Recent, Oldest, Title (A-Z), or Title (Z-A).
 
 ## Document list
 
@@ -36,4 +36,4 @@ Each document in the results list shows:
 
 ## Document detail
 
-Click a document to view its detail page, which includes the full description, metadata (producer, publisher, data source), clickable topic and tag links, and a download button.
+Click a document to view its detail page, which includes the full description, published date, last modified date, updated by, producer, publisher, data source, comment, clickable topic and tag links, and a download button.

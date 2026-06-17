@@ -1,10 +1,10 @@
 # Topics
 
-Topics organise indicators, visualisations, and data stories into semantic categories for easier browsing. Accessible at `manage/topic`.
+Topics organize indicators, visualizations, and data stories into semantic categories for easier browsing. Accessible from the management top navigation by selecting **Topics**.
 
 ## Creating a topic
 
-1. Navigate to `manage/topic`
+1. Go to the Topics page from the management top navigation
 2. Click **Create**
 3. Fill in the fields:
    - **Name** (multi-language)

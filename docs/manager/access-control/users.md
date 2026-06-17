@@ -1,6 +1,6 @@
 # Users
 
-Manage user accounts, assign roles, and control access to the platform. Accessible at `manage/user` (Super Admin only).
+Manage user accounts, assign roles, and control access to the platform. Accessible from the management admin menu (wrench icon) under **Access Control → Users** (Super Admin only).
 
 ## User list
 
@@ -12,11 +12,17 @@ Displays a table of all registered users with:
 - Name, email, and profile photo
 - Assigned role
 - Suspension status
-- Edit and Delete actions per row
+- Edit, Suspend/Restore, and Delete actions per row
 
 ### Invitations tab
 
-Use the Livewire `invitation-manager` component to send invitations to new users. Enter an email address and the system sends an invitation link. Pending invitations are listed with options to resend or revoke.
+Use the **Invitations** tab to send invitations to new users. Enter an email address and the system generates an invitation link. You can also use the bulk-invite option to invite multiple users at once.
+
+Pending invitations are listed with options to:
+- **Show link** — copy the registration link to send manually
+- **Resend email** — resend the invitation email
+- **Renew** — refresh an expired invitation
+- **Delete** — remove the invitation
 
 ## Editing a user
 
@@ -26,10 +32,9 @@ Use the Livewire `invitation-manager` component to send invitations to new users
 
 ## Suspending a user
 
-1. Navigate to the user's suspension page (`manage/user/{user}/suspension`)
-2. Toggle the suspension on or off
-3. Confirm your password to apply the change
-4. Suspended users cannot log in until the suspension is lifted
+1. Click **Suspend** (or **Restore**) next to a user, or navigate to `manage/user/{user}/suspension`
+2. The toggle switches the suspension status on or off
+3. Suspended users cannot log in until the suspension is lifted
 
 ## Deleting a user
 
