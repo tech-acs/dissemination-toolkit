@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Dissemination Toolkit",
   description: "Census and survey data dissemination tool",
+  base: "/dissemination-toolkit",
   ignoreDeadLinks: [
     /^https?:\/\/localhost/
   ],
@@ -21,11 +22,11 @@ export default defineConfig({
     sidebar: {
       '/user/': [
         { text: 'Introduction', link: '/user/introduction' },
-        { text: 'Data explorer', link: '/user/' }, // Searching, pivoting, download, etc.
-        { text: 'Visualizations', link: '/user/' }, // Create, publish,
-        { text: 'Data stories', link: '/user/' },
-        { text: 'Documents', link: '/user/' },
-        { text: 'Datasets', link: '/user/' },
+        { text: 'Data explorer', link: '/user/data-explorer' },
+        { text: 'Visualizations', link: '/user/visualizations' },
+        { text: 'Data Stories', link: '/user/data-stories' },
+        { text: 'Documents', link: '/user/documents' },
+        { text: 'Datasets', link: '/user/datasets' },
       ],
 
       '/manager/': [
@@ -47,27 +48,28 @@ export default defineConfig({
           ]
         },
         {
-          text: 'Abc',
+          text: 'Data',
           collapsed: true,
           items: [
-            { text: 'Topics', link: '/manager/' },
-            { text: 'Indicators', link: '/manager/' },
-            { text: 'Dimensions', link: '/manager/' },
-            { text: 'Datasets', link: '/manager/' },
+            { text: 'Topics', link: '/manager/data/topics' },
+            { text: 'Indicators', link: '/manager/data/indicators' },
+            { text: 'Dimensions', link: '/manager/data/dimensions' },
+            { text: 'Datasets', link: '/manager/data/datasets' },
+            { text: 'Tidy Data Maker', link: '/manager/data/tidy-data-maker' },
+            { text: 'Tags', link: '/manager/data/tags' },
           ]
         },
         {
-          text: 'Xyz',
+          text: 'Visual Content',
           collapsed: true,
           items: [
-            { text: 'Visualizations', link: '/manager/' },
-            { text: 'Data stories', link: '/manager/' },
+            { text: 'Visualizations', link: '/manager/visual-content/visualizations' },
+            { text: 'Data stories', link: '/manager/visual-content/data-stories' },
           ]
         },
-        { text: 'Documents', link: '/manager/announcements' },
-        { text: 'Tags', link: '/manager/announcements' },
+        { text: 'Documents', link: '/manager/documents' },
         { text: 'Announcements', link: '/manager/announcements' },
-        { text: 'Organization', link: '/manager/settings' },
+        { text: 'Settings', link: '/manager/settings' },
       ],
     },
 
