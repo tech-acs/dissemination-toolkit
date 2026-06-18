@@ -2,7 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Scorecard;

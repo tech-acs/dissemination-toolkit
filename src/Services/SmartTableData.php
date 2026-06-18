@@ -135,7 +135,7 @@ class SmartTableData
     public function build(Request $request): void
     {
         if (! isset($this->sortBy)) {
-            dd('You have not set a default sorting column');
+            throw new \RuntimeException('You have not set a default sorting column');
         }
         if ($request->has('sort_by') && $this->sortableColumns->contains($request->get('sort_by'))) {
             $this->sortBy = $request->get('sort_by');

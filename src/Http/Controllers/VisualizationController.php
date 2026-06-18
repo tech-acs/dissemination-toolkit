@@ -2,7 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;

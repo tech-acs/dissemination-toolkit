@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
@@ -9,7 +10,7 @@ class Organization extends Model
 {
     protected $table = 'organization';
 
-    use HasTranslations;
+    use HasFactory, HasTranslations;
 
     protected $guarded = ['id'];
 

@@ -2,7 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;
 use Uneca\DisseminationToolkit\Http\Resources\DesignerResource;

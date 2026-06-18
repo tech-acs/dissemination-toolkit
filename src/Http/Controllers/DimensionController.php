@@ -2,7 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Uneca\DisseminationToolkit\Actions\CreateDimensionAction;
 use Uneca\DisseminationToolkit\Actions\RemoveDimensionAction;

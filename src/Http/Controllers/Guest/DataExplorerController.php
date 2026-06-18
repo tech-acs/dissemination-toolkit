@@ -2,7 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 
 class DataExplorerController extends Controller
 {

@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -9,7 +10,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Indicator extends Model
 {
-    use HasTranslations;
+    use HasFactory, HasTranslations;
 
     protected $guarded = ['id'];
 
