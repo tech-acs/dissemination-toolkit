@@ -16,18 +16,17 @@ trait PackageTasksTrait
         'leaflet' => '^1.9',
         'quill' => '^2.0.2',
         '@tailwindcss/aspect-ratio' => '^0.4.2',
-        'ag-grid-community' => '^32.0.1',
+        'ag-grid-community' => '^35.0',
         'alpinejs' => '^3.14.1',
         'autoprefixer' => '^10.4.16',
         'laravel-vite-plugin' => '^3.0',
         'lodash-es' => '^4.17.21',
-        'plotly.js-dist' => '^3.5.1',
+        'plotly.js-cartesian-dist' => '^3.5.1',
         'plotly.js-locales' => '^3.5.1',
         'tailwindcss' => '^3.4.0',
-        "quill" => "^2.0.2",
         'd3-format' => '^3.1.0',
         'leaflet-image' => '^0.4.0',
-        'html2canvas-pro' => '^1.5.8',
+        'html2canvas-pro' => '^2.0',
     ];
 
     public array $phpDependencies = [

@@ -1,5 +1,17 @@
-import { createGrid } from 'ag-grid-community';
+import { createGrid, ModuleRegistry, AllCommunityModule, themeQuartz } from 'ag-grid-community';
 import html2canvas from "html2canvas-pro";
+
+ModuleRegistry.registerModules([AllCommunityModule]);
+
+const myTheme = themeQuartz;
+
+function normalizeOptions(options) {
+    if (options.unSortIcon !== undefined) {
+        options.defaultColDef = { ...(options.defaultColDef ?? {}), unSortIcon: options.unSortIcon };
+        delete options.unSortIcon;
+    }
+    return options;
+}
 
 export default class AgGridTable {
     id;
@@ -22,19 +34,23 @@ export default class AgGridTable {
         else{
             this.rootElement = document.getElementById(htmlId)
         }
-        this.rootElement.classList.add(...['ag-theme-quartz', 'w-full', 'h-[calc(60vh)]']);
+        this.rootElement.classList.add(...['w-full', 'h-[calc(60vh)]']);
         const vizId = this.rootElement.getAttribute('viz-id')
 
         if (vizId) {
             this.fetchData(vizId)
                 .then(() => {
                     this.rootElement.innerHTML = ''
+                    this.options = normalizeOptions(this.options);
+                    this.options.theme = myTheme;
                     this.table = createGrid(this.rootElement, this.options);
                 })
         } else {
             this.options = JSON.parse(this.rootElement.dataset['options'])
             if (this.options?.rowData?.length > 0) {
                 this.rootElement.innerHTML = ''
+                this.options = normalizeOptions(this.options);
+                this.options.theme = myTheme;
                 this.table = createGrid(this.rootElement, this.options)
             }
         }
@@ -111,6 +127,8 @@ export default class AgGridTable {
                 return colDef
             })
 
+            options = normalizeOptions(options);
+            options.theme = myTheme;
             this.table = createGrid(this.rootElement, options);
         });
     }

@@ -11,7 +11,7 @@ class TableOptionsShaper extends Component
     public array $optionLabels = [
         'pagination' => 'Enable pagination',
         'suppressMovableColumns' => 'Disable movable columns',
-        'unSortIcon' => 'Show unsort icon',
+        'defaultColDef.unSortIcon' => 'Show unsort icon',
         'columnHoverHighlight' => 'Highlight columns on hover',
     ];
 

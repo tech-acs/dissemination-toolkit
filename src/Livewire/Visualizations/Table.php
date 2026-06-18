@@ -23,7 +23,9 @@ class Table extends Visualization
             'type' => 'fitGridWidth',
         ],
         'suppressMovableColumns' => false,
-        'unSortIcon' => false,
+        'defaultColDef' => [
+            'unSortIcon' => false,
+        ],
         'columnHoverHighlight' => false,
         'pagination' => false,
     ];
