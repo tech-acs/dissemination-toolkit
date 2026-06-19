@@ -1,6 +1,6 @@
 # Areas
 
-Areas are the geographic entities (e.g. specific regions, districts, counties) that belong to a hierarchy level. Accessible at `manage/area` (Super Admin only).
+Areas are the geographic entities (e.g. specific regions, districts, counties) that belong to a hierarchy level. Accessible from the management admin menu (wrench icon) under **Core Configuration → Areas** (Super Admin only).
 
 ## Importing areas
 
@@ -8,7 +8,7 @@ The import page provides two methods:
 
 ### Shapefile import
 
-1. Navigate to `manage/area` and click **Import**
+1. Go to the Areas page from the management admin menu and click **Import**
 2. Select the **Shapefile** tab
 3. Upload three files:
    - `.shp` — shapefile geometry
@@ -20,8 +20,11 @@ The import page provides two methods:
 ### Spreadsheet import
 
 1. Select the **Spreadsheet** tab
-2. Use the Livewire `area-spreadsheet-importer` component to upload your data
-3. Map columns to the expected fields
+2. Upload a `.csv` file
+3. For each configured area hierarchy level, map two columns from your spreadsheet:
+   - **Name** — the human-readable area name
+   - **Code** — the unique area code
+   - **Zero pad code to length** — optional padding length for the code (leave at `0` for no padding)
 4. Click **Import**
 
 ## Editing an area

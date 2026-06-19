@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
@@ -10,6 +11,7 @@ use Spatie\Translatable\HasTranslations;
 class Tag extends Model
 {
     // use HasTranslations;
+    use HasFactory;
 
     protected $guarded = ['id'];
     // public $translatable = ['name'];

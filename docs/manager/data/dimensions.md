@@ -1,10 +1,10 @@
 # Dimensions
 
-Dimensions are descriptive attributes used to slice and filter data, such as sex, age group, or education level. Accessible at `manage/dimension`.
+Dimensions are descriptive attributes used to slice and filter data, such as sex, age group, or education level. Accessible from the management top navigation by selecting **Dimensions**.
 
 ## Creating a dimension
 
-1. Navigate to `manage/dimension`
+1. Go to the Dimensions page from the management top navigation
 2. Click **Create**
 3. Fill in the fields:
    - **Name** (multi-language)

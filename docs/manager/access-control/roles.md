@@ -1,10 +1,10 @@
 # Roles
 
-Roles group permissions together so they can be assigned to users. Accessible at `manage/role` (Super Admin only).
+Roles group permissions together so they can be assigned to users. Accessible from the management admin menu (wrench icon) under **Access Control → Roles** (Super Admin only).
 
 ## Creating a role
 
-1. Navigate to `manage/role`
+1. Go to the Roles page from the management admin menu
 2. Enter a **Name** for the role in the form at the top of the page
 3. Click **Create**
 4. The new role appears in the roles table below
@@ -12,7 +12,7 @@ Roles group permissions together so they can be assigned to users. Accessible at
 ## Editing a role (permission matrix)
 
 1. Click **Edit** next to a role
-2. The Livewire `role-manager` component displays a permission matrix with all available permissions grouped by resource:
+2. The page displays a permission matrix with all available permissions grouped by resource:
 
 | Resource | Permissions |
 |---|---|

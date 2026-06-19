@@ -2,7 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 use Uneca\DisseminationToolkit\Models\Dataset;
 

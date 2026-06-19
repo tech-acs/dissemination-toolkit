@@ -2,6 +2,7 @@
 
 namespace Uneca\DisseminationToolkit\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -12,7 +13,7 @@ use Uneca\DisseminationToolkit\Services\DynamicDimensionModel;
 
 class Dataset extends Model
 {
-    use HasTranslations;
+    use HasFactory, HasTranslations;
 
     protected $guarded = ['id'];
 

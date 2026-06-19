@@ -3,6 +3,7 @@
 namespace Uneca\DisseminationToolkit\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -11,7 +12,7 @@ use Uneca\DisseminationToolkit\Traits\Reviewable;
 
 class Visualization extends Model
 {
-    use HasTranslations;
+    use HasFactory, HasTranslations;
     use Reviewable;
 
     protected $guarded = ['id'];

@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Uneca\DisseminationToolkit\Http\Requests\IndicatorRequest;
 use Uneca\DisseminationToolkit\Models\Indicator;
 use Uneca\DisseminationToolkit\Models\Topic;
@@ -38,7 +38,7 @@ class IndicatorController extends Controller
 
     public function store(IndicatorRequest $request)
     {
-        $indicator = Indicator::create($request->only(['name', 'description', 'code']));
+        $indicator = Indicator::create($request->only(['name', 'description']));
         $indicator->topics()->sync($request->get('topics'));
 
         return redirect()->route('manage.indicator.index')->withMessage('Record created');
@@ -53,7 +53,7 @@ class IndicatorController extends Controller
 
     public function update(Indicator $indicator, IndicatorRequest $request)
     {
-        $indicator->update($request->only(['name', 'description', 'code']));
+        $indicator->update($request->only(['name', 'description']));
         $indicator->topics()->sync($request->get('topics'));
 
         return redirect()->route('manage.indicator.index')->withMessage('Record updated');

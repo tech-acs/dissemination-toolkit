@@ -1,10 +1,10 @@
 # Data Stories
 
-Data Stories are narrative-rich pages that combine text, images, and embedded visualizations to tell data-driven stories. Accessible at `manage/story`.
+Data Stories are narrative-rich pages that combine text, images, and embedded visualizations to tell data-driven stories. Accessible from the management top navigation by selecting **Data Stories**.
 
 ## Creating a story
 
-1. Navigate to `manage/story`
+1. Go to the Data Stories page from the management top navigation
 2. Click **Create**
 3. Fill in the fields:
    - **Title** (multi-language)
@@ -20,7 +20,7 @@ Data Stories are narrative-rich pages that combine text, images, and embedded vi
 ## Designing the story content
 
 1. After creating the story, click **Design**
-2. The Livewire **Story Designer** lets you build the page using blocks:
+2. The story editor lets you build the page using blocks:
 
 | Block type | Description |
 |---|---|

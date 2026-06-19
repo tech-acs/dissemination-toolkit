@@ -4,7 +4,6 @@ namespace Uneca\DisseminationToolkit\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class IndicatorRequest extends FormRequest
 {
@@ -25,7 +24,6 @@ class IndicatorRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'code' => ['required', 'min:1', Rule::unique('indicators')->ignore($this->indicator)],
             'topics' => 'required|array|min:1',
         ];
     }

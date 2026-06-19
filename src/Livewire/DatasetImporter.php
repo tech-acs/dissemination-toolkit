@@ -104,55 +104,7 @@ class DatasetImporter extends Component
 
         $this->message = 'The file is being imported. You will receive a notification when the process is complete.';
 
-        /*$this->importError = '';
-        try {
-            $dataFile = SimpleExcelReader::create($this->filePath);//->formatHeadersUsing(fn($header) => strtolower(trim($header)));
-            $rows = $dataFile->getRows();
-            $inserted = 0;
-            $rows->chunk(self::CHUNK_SIZE)->each(function ($chunk, $chunkIndex) use (&$inserted, $lookups) {
-                $entries = [];
-                $chunk->each(function(array $row, $rowIndexWithinAChunk) use ($chunkIndex, $inserted, &$entries, $lookups) {
-                    $commonForMultipleIndicators = ['dataset_id' => $this->dataset->id];
-                    foreach ($this->columnMapping['dimensions'] as $dimensionId => $dimensionColumn) {
-                        list($foreignKeyCol, $valueId) = $this->lookItUp($row[$dimensionColumn], $dimensionId, $lookups);
-                        $commonForMultipleIndicators[$foreignKeyCol] = $valueId;
-                    }
-                    foreach ($this->columnMapping['others'] as $dimensionId => $dimensionColumn) {
-                        list($foreignKeyCol, $valueId) = $this->lookItUp($row[$dimensionColumn], $dimensionId, $lookups);
-                        $commonForMultipleIndicators[$foreignKeyCol] = $valueId;
-                    }
-                    foreach ($this->columnMapping['indicators'] as $indicatorId => $valueColumn) {
-                        $entry = [...$commonForMultipleIndicators];
-                        $entry['indicator_id'] = $indicatorId;
-                        $entry['value'] = (float)$row[$valueColumn];
-
-                        if (in_array(null, $entry, true)) {
-                            $lineNo = self::CHUNK_SIZE * $chunkIndex + $rowIndexWithinAChunk + 2;
-                            logger("Dataset import error on line $lineNo", ['ENTRY' => $entry, 'ROW' => $row]);
-                            throw ValidationException::withMessages([
-                                'datafile' => "The data seems to contain invalid data (unknown dimension value, etc.) at the following row (around line $lineNo).<br><br>" .
-                                    implode(', ', $row) .
-                                    "<br><br>" .
-                                    "$inserted rows were imported. Please correct and re-import.<br>Remember to empty the dataset first to avoid duplicates."
-                            ]);
-                        } else {
-                            array_push($entries, $entry);
-                        }
-                    }
-                });
-                $result = DB::table($this->dataset->fact_table)->insertOrIgnore($entries);
-                $inserted += $result;
-
-            });
-            // ToDo: Exception: Method Livewire\Features\SupportRedirects\Redirector::withMessage does not exist.
-            return redirect()->route('manage.dataset.index')->withMessage("$inserted observations imported for dataset");
-
-        } catch (\Exception $exception) {
-
-            logger('Exception: ' . $exception->getMessage());
-            //return back()->withErrors(['datafile' => $exception->getMessage()]);
-            $this->importError = str($exception->getMessage())->limit(500);
-        }*/
+        $this->reset('spreadsheet', 'fileAccepted', 'columnHeaders', 'columnMapping', 'filePath');
     }
 
     public function render()

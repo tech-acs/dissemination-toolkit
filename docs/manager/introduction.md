@@ -10,15 +10,15 @@ Click the **Login** button in the top-right corner of the public site. After sig
 
 The toolkit uses granular permissions. Each action (create, edit, delete, publish) on each content type (topics, indicators, dimensions, datasets, stories, visualizations, documents) is controlled by a specific permission. Users are assigned to **roles**, and roles are granted permissions.
 
-A **Super Admin** role bypasses all permission checks and has access to everything, including user management, role configuration, area management, and organisation settings.
+A **Super Admin** role bypasses all permission checks and has access to everything, including user management, role configuration, area management, and organization settings.
 
 ## Dashboard overview
 
-The management home page (`manage/home`) presents a grid of cards, each linking to a management section:
+The management home page presents a grid of cards, each linking to a management section:
 
-- **Manage visualizations** — create, customise, and share interactive data visualisations
+- **Manage visualizations** — create, customize, and share interactive data visualizations
 - **Manage stories** — build data-driven narratives using the story designer
-- **Manage topics** — organise indicators, visualisations, and stories into semantic categories
+- **Manage topics** — organize indicators, visualizations, and stories into semantic categories
 - **Manage indicators** — create, update, and assign indicators to topics
 - **Manage dimensions** — define descriptive attributes used to slice and dice data
 - **Manage datasets** — import and manage collections of tabular data

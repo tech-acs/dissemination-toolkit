@@ -11,11 +11,6 @@
                 <x-dissemination::textarea name="description" rows="3">{{ old('description', $dataset->description ?? null) }}</x-dissemination::textarea>
                 <x-input-error for="description" class="mt-2" />
             </div>
-            <div>
-                <x-label for="code" value="{{ __('Code') }} *" />
-                <x-input id="code" name="code" class="w-50 mt-1" value="{{ old('code', $dataset->code ?? null) }}" />
-                <x-input-error for="code" class="mt-2" />
-            </div>
             <div class="grid grid-cols-2">
                 <div class="space-y-8">
                     <div>
