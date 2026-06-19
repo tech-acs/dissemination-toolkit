@@ -12,11 +12,6 @@
                 <x-input-error for="description" class="mt-2" />
             </div>
             <div>
-                <x-label for="code" value="{{ __('Code') }} *" />
-                <x-input id="code" name="code" class="w-50 mt-1" value="{{ old('code', $topic->code ?? null) }}" />
-                <x-input-error for="code" class="mt-2" />
-            </div>
-            <div>
                 <x-label for="rank" value="{{ __('Rank') }}" />
                 <x-input id="rank" name="rank" type="number" class="w-20 mt-1" value="{{ old('rank', $topic->rank ?? null) }}" />
                 <x-input-error for="rank" class="mt-2" />

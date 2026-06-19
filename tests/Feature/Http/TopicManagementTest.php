@@ -18,22 +18,20 @@ it('allows an admin to create a topic', function () {
         ->post(route('manage.topic.store'), [
             'name' => 'New Topic',
             'description' => 'A description',
-            'code' => 'new_topic',
             'rank' => 1,
         ]);
 
     $response->assertRedirect(route('manage.topic.index'));
 
-    expect(Topic::where('code', 'new_topic')->exists())->toBeTrue();
+    expect(Topic::where('name->en', 'New Topic')->exists())->toBeTrue();
 });
 
 it('validates topic creation input', function () {
     $this->actingAs(adminUser(), 'sanctum')
         ->post(route('manage.topic.store'), [
             'name' => '',
-            'code' => '',
         ])
-        ->assertSessionHasErrors(['name', 'code']);
+        ->assertSessionHasErrors(['name']);
 });
 
 it('allows an admin to update a topic', function () {
@@ -43,7 +41,6 @@ it('allows an admin to update a topic', function () {
         ->patch(route('manage.topic.update', $topic), [
             'name' => 'Updated Topic',
             'description' => 'Updated description',
-            'code' => $topic->code,
             'rank' => $topic->rank,
         ])
         ->assertRedirect(route('manage.topic.index'));

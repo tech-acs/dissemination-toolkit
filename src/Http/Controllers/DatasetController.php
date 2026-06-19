@@ -31,7 +31,7 @@ class DatasetController extends Controller
 
     public function store(DatasetRequest $request)
     {
-        $dataset = Dataset::create($request->only(['fact_table', 'max_area_level', 'name', 'description', 'code', 'data_source', 'contributor', 'data_date', 'format', 'language']));
+        $dataset = Dataset::create($request->only(['fact_table', 'max_area_level', 'name', 'description', 'data_source', 'contributor', 'data_date', 'format', 'language']));
         $dataset->indicators()->sync($request->indicators);
         $dataset->dimensions()->sync($request->dimensions);
         $inheritedTopics = $dataset->indicators->pluck('topics')->flatten()->pluck('id')->unique();
@@ -52,7 +52,7 @@ class DatasetController extends Controller
 
     public function update(Dataset $dataset, DatasetRequest $request)
     {
-        $dataset->update($request->only(['fact_table', 'max_area_level', 'name', 'description', 'code', 'data_source', 'contributor', 'data_date', 'format', 'language']));
+        $dataset->update($request->only(['fact_table', 'max_area_level', 'name', 'description', 'data_source', 'contributor', 'data_date', 'format', 'language']));
         $dataset->indicators()->sync($request->indicators);
         $dataset->dimensions()->sync($request->dimensions);
         $inheritedTopics = $dataset->indicators->pluck('topics')->flatten()->pluck('id')->unique();

@@ -21,12 +21,11 @@ it('allows an admin to create an indicator', function () {
         ->post(route('manage.indicator.store'), [
             'name' => 'New Indicator',
             'description' => 'A description',
-            'code' => 'new_indicator',
             'topics' => [$topic->id],
         ])
         ->assertRedirect(route('manage.indicator.index'));
 
-    $indicator = Indicator::where('code', 'new_indicator')->first();
+    $indicator = Indicator::where('name->en', 'New Indicator')->first();
     expect($indicator)->not->toBeNull()
         ->and($indicator->topics)->toHaveCount(1);
 });
@@ -35,10 +34,9 @@ it('validates indicator creation input', function () {
     $this->actingAs(adminUser(), 'sanctum')
         ->post(route('manage.indicator.store'), [
             'name' => '',
-            'code' => '',
             'topics' => [],
         ])
-        ->assertSessionHasErrors(['name', 'code', 'topics']);
+        ->assertSessionHasErrors(['name', 'topics']);
 });
 
 it('allows an admin to update an indicator', function () {
@@ -49,7 +47,6 @@ it('allows an admin to update an indicator', function () {
         ->patch(route('manage.indicator.update', $indicator), [
             'name' => 'Updated Indicator',
             'description' => 'Updated description',
-            'code' => $indicator->code,
             'topics' => [$topic->id],
         ])
         ->assertRedirect(route('manage.indicator.index'));
