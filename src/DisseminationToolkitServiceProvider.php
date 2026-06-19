@@ -22,6 +22,7 @@ use Uneca\DisseminationToolkit\Commands\ImportData;
 use Uneca\DisseminationToolkit\Commands\ImportDataset;
 use Uneca\DisseminationToolkit\Commands\RemoveDimension;
 use Uneca\DisseminationToolkit\Commands\RemoveDimensions;
+use Uneca\DisseminationToolkit\Commands\SeedSample;
 use Uneca\DisseminationToolkit\Commands\Update;
 use Uneca\DisseminationToolkit\Components\Reviews;
 use Uneca\DisseminationToolkit\Components\SmartTable;
@@ -122,6 +123,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
                 ImportDataset::class,
                 RemoveDimension::class,
                 RemoveDimensions::class,
+                SeedSample::class,
                 Update::class,
             ]);
     }
