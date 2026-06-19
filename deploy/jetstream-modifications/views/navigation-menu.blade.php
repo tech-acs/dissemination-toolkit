@@ -13,13 +13,61 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 lg:flex items-center">
                     <x-nav-link href="{{ route('manage.home') }}" :active="request()->routeIs('manage.home')">{{ __('Home') }}</x-nav-link>
-                    <x-nav-link href="{{ route('manage.visualization.index') }}" :active="request()->routeIs('manage.visualization.*')">{{ __('Visualizations') }}</x-nav-link>
-                    <x-nav-link href="{{ route('manage.story.index') }}" :active="request()->routeIs('manage.story.*')" class="whitespace-nowrap">{{ __('Data stories') }}</x-nav-link>
-                    <x-nav-link href="{{ route('manage.topic.index') }}" :active="request()->routeIs('manage.topic.*')">{{ __('Topics') }}</x-nav-link>
-                    <x-nav-link href="{{ route('manage.indicator.index') }}" :active="request()->routeIs('manage.indicator.*')">{{ __('Indicators') }}</x-nav-link>
-                    <x-nav-link href="{{ route('manage.dimension.index') }}" :active="request()->routeIs('manage.dimension.*')">{{ __('Dimensions') }}</x-nav-link>
-                    <x-nav-link href="{{ route('manage.dataset.index') }}" :active="request()->routeIs('manage.dataset.*')">{{ __('Datasets') }}</x-nav-link>
-                    <x-nav-link href="{{ route('manage.document.index') }}" :active="request()->routeIs('manage.document.*')">{{ __('Documents') }}</x-nav-link>
+
+                    @php
+                        $isDataActive = request()->routeIs('manage.topic.*') || request()->routeIs('manage.indicator.*') || request()->routeIs('manage.dimension.*') || request()->routeIs('manage.dataset.*');
+                        $isContentActive = request()->routeIs('manage.visualization.*') || request()->routeIs('manage.story.*') || request()->routeIs('manage.document.*') || request()->routeIs('manage.tag.*');
+                    @endphp
+
+                    <x-dropdown align="left" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out {{ $isDataActive ? 'border-indigo-400 text-gray-900' : '' }}">
+                                {{ __('Data') }}
+                                <svg class="ml-1 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-dropdown-link href="{{ route('manage.topic.index') }}">
+                                {{ __('Topics') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('manage.indicator.index') }}">
+                                {{ __('Indicators') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('manage.dimension.index') }}">
+                                {{ __('Dimensions') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('manage.dataset.index') }}">
+                                {{ __('Datasets') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
+
+                    <x-dropdown align="left" width="48">
+                        <x-slot name="trigger">
+                            <button class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out {{ $isContentActive ? 'border-indigo-400 text-gray-900' : '' }}">
+                                {{ __('Content') }}
+                                <svg class="ml-1 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-dropdown-link href="{{ route('manage.visualization.index') }}">
+                                {{ __('Visualizations') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('manage.story.index') }}">
+                                {{ __('Data stories') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('manage.document.index') }}">
+                                {{ __('Documents') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('manage.tag.index') }}">
+                                {{ __('Tags') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
                 </div>
             </div>
 
@@ -46,35 +94,19 @@
 
                             <x-slot name="content">
                                 <div class="w-48">
+
                                     <div class="block px-4 py-2 text-xs text-gray-400">{{ __('Access Control') }}</div>
                                     <x-dropdown-link class="px-6" href="{{ route('manage.user.index') }}">{{ __('Users') }}</x-dropdown-link>
                                     <x-dropdown-link class="px-6" href="{{ route('manage.role.index') }}">{{ __('Roles') }}</x-dropdown-link>
+                                    
                                     <div class="border-t border-gray-100"></div>
                                     <div class="block px-4 py-2 text-xs text-gray-400">{{ __('Core Configuration') }}</div>
-                                    {{--<x-dropdown-link class="px-6" href="{{route('developer.source.index')}}">{{ __('Sources') }}</x-dropdown-link>--}}
                                     <x-dropdown-link class="px-6" href="{{route('manage.area-hierarchy.index')}}">{{ __('Area Hierarchy') }}</x-dropdown-link>
                                     <x-dropdown-link class="px-6" href="{{ route('manage.area.index') }}">{{ __('Areas') }}</x-dropdown-link>
-                                    <div class="border-t border-gray-100"></div>
-                                    {{--<div class="block px-4 py-2 text-xs text-gray-400">{{ __('Data') }}</div>
-                                    <x-dropdown-link class="px-6" href="{{ route('manage.topic.index') }}">{{ __('Topics') }}</x-dropdown-link>
-                                    --}}{{--<x-dropdown-link class="px-6" href="{{ route('manage.subtopic.index') }}">{{ __('Subtopics') }}</x-dropdown-link>--}}{{--
-                                    <x-dropdown-link class="px-6" href="{{ route('manage.indicator.index') }}">{{ __('Indicators') }}</x-dropdown-link>
-                                    <x-dropdown-link class="px-6" href="{{ route('manage.dimension.index') }}">{{ __('Dimensions') }}</x-dropdown-link>
-                                    <x-dropdown-link class="px-6" href="{{ route('manage.year.index') }}">{{ __('Years') }}</x-dropdown-link>
-                                    <x-dropdown-link class="px-6" href="{{ route('manage.dataset.index') }}">{{ __('Datasets') }}</x-dropdown-link>
-                                    <div class="border-t border-gray-100"></div>--}}
-                                    <div class="block px-4 py-2 text-xs text-gray-400">{{ __('Dissemination') }}</div>
-                                    <x-dropdown-link class="px-6" href="{{ route('manage.organization.edit') }}">{{ __('Organization') }}</x-dropdown-link>
-                                    <x-dropdown-link class="px-6" href="{{ route('manage.tag.index') }}">{{ __('Tags') }}</x-dropdown-link>
-                                    {{--<div class="border-t border-gray-100"></div>
-                                    <div class="block px-4 py-2 text-xs text-gray-400">{{ __('Templates') }}</div>
-                                    <x-dropdown-link class="px-6" href="{{ route('manage.templates.visualization.index') }}">{{ __('Visualizations') }}</x-dropdown-link>
-                                    <x-dropdown-link class="px-6" href="{{ route('manage.templates.story.index') }}">{{ __('Stories') }}</x-dropdown-link>--}}
-                                    {{-- <x-dropdown-link class="px-6" href="{{ route('manage.story.index') }}">{{ __('Stories Store') }}</x-dropdown-link> --}}
+                                    
                                     <div class="border-t border-gray-100"></div>
                                     <x-dropdown-link href="{{route('manage.announcement.index')}}">{{ __('Announcements') }}</x-dropdown-link>
-                                    {{--<x-dropdown-link href="{{route('usage_stats')}}">{{ __('Usage Stats') }}</x-dropdown-link>
-                                    <x-dropdown-link href="{{route('analytics.index')}}">{{ __('Query Analytics') }}</x-dropdown-link>--}}
+                                    <x-dropdown-link href="{{ route('manage.organization.edit') }}">{{ __('Settings') }}</x-dropdown-link>
                                 </div>
                             </x-slot>
                         </x-dropdown>
@@ -214,13 +246,17 @@
             {{--<x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
                 {{ __('Home') }}
             </x-responsive-nav-link>--}}
-            <x-responsive-nav-link href="{{ route('manage.visualization.index') }}" :active="request()->routeIs('manage.visualization.*')">{{ __('Visualizations') }}</x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('manage.story.index') }}" :active="request()->routeIs('manage.story.*')" class="whitespace-nowrap">{{ __('Data stories') }}</x-responsive-nav-link>
+            <div class="block px-4 py-2 text-xs text-gray-400">{{ __('Data') }}</div>
             <x-responsive-nav-link href="{{ route('manage.topic.index') }}" :active="request()->routeIs('manage.topic.*')">{{ __('Topics') }}</x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('manage.indicator.index') }}" :active="request()->routeIs('manage.indicator.*')">{{ __('Indicators') }}</x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('manage.dimension.index') }}" :active="request()->routeIs('manage.dimension.*')">{{ __('Dimensions') }}</x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('manage.dataset.index') }}" :active="request()->routeIs('manage.dataset.*')">{{ __('Datasets') }}</x-responsive-nav-link>
+            <div class="border-t border-gray-200 border-dotted mx-4"></div>
+            <div class="block px-4 py-2 text-xs text-gray-400">{{ __('Content') }}</div>
+            <x-responsive-nav-link href="{{ route('manage.visualization.index') }}" :active="request()->routeIs('manage.visualization.*')">{{ __('Visualizations') }}</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('manage.story.index') }}" :active="request()->routeIs('manage.story.*')" class="whitespace-nowrap">{{ __('Data stories') }}</x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('manage.document.index') }}" :active="request()->routeIs('manage.document.*')">{{ __('Documents') }}</x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('manage.tag.index') }}" :active="request()->routeIs('manage.tag.*')">{{ __('Tags') }}</x-responsive-nav-link>
 
             @can('Super User')
                 <div class="border-t border-gray-200"></div>
@@ -230,10 +266,8 @@
                 <x-responsive-nav-link href="{{route('manage.area-hierarchy.index')}}">{{ __('Area Hierarchy') }}</x-responsive-nav-link>
                 <x-responsive-nav-link href="{{ route('manage.area.index') }}">{{ __('Areas') }}</x-responsive-nav-link>
                 <div class="border-t border-gray-200 border-dotted mx-4"></div>
-                <x-responsive-nav-link href="{{ route('manage.organization.edit') }}">{{ __('Organization') }}</x-responsive-nav-link>
-                <x-responsive-nav-link href="{{ route('manage.tag.index') }}">{{ __('Tags') }}</x-responsive-nav-link>
-                <div class="border-t border-gray-200 border-dotted mx-4"></div>
                 <x-responsive-nav-link href="{{ route('manage.announcement.index') }}">{{ __('Announcements') }}</x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('manage.organization.edit') }}">{{ __('Settings') }}</x-responsive-nav-link>
             @endcan
         </div>
 
