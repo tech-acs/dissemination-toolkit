@@ -1,16 +1,15 @@
 # Topics
 
-Topics organize indicators, visualizations, and data stories into semantic categories for easier browsing. Accessible from the management top navigation by selecting **Topics**.
+Topics are used to categorize indicators, visualizations, and data stories into semantic groups. When creating an indicator, you assign it to one or more topics. Visualizations inherit topics from their selected indicators, while data stories are assigned topics directly. On the public site, users can filter content by topic across the Data Explorer, Visualizations, and Data Stories pages. Accessible from the management top navigation under **Data → Topics**.
 
 ## Creating a topic
 
 1. Go to the Topics page from the management top navigation
 2. Click **Create**
 3. Fill in the fields:
-   - **Name** (multi-language)
-   - **Description** (multi-language)
-   - **Code** — a unique identifier
-   - **Rank** — display ordering
+    - **Name** (multi-language)
+    - **Description** (multi-language)
+    - **Rank** — display ordering
 4. Click **Save**
 
 ## Editing a topic

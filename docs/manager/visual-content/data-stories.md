@@ -1,36 +1,42 @@
 # Data Stories
 
-Data Stories are narrative-rich pages that combine text, images, and embedded visualizations to tell data-driven stories. Accessible from the management top navigation by selecting **Data Stories**.
+Data Stories are narrative-rich pages that combine text, images, and embedded visualizations to tell data-driven stories. Accessible from the management top navigation under **Content → Data stories**.
 
 ## Creating a story
 
 1. Go to the Data Stories page from the management top navigation
 2. Click **Create**
 3. Fill in the fields:
-   - **Title** (multi-language)
-   - **Description** (multi-language)
-   - **Topics** — select one or more topics
-   - **Filterable by geography** — toggle
-   - **Featured** — toggle to feature on the landing page
-   - **Featured image** — upload
-   - **Reviewable** — toggle to allow ratings and reviews
-   - **Tags**
+
+   | Field | Description |
+   |---|---|
+   | **Title** (multi-language) | The story title |
+   | **Description** (multi-language) | A summary of the story |
+   | **Topics** | Select one or more topics |
+   | **Filterable by geography** | Toggle to let users filter by area |
+   | **Featured** | Toggle to feature on the landing page |
+   | **Featured image** | Upload an image |
+   | **Reviewable** | Toggle to allow ratings and reviews |
+   | **Tags** | Type a tag name and click **Add** |
+
 4. Click **Save**
 
 ## Designing the story content
 
-1. After creating the story, click **Design**
-2. The story editor lets you build the page using blocks:
+After creating the story, click **Design** to open the story designer. The page header shows the story title, description, and **Save** / **Reset** / **Close** buttons.
 
-| Block type | Description |
+### Add Block section
+
+Click any **Add Block** button to add content to the story:
+
+| Block | Description |
 |---|---|
-| **Text** | Rich formatted content with Tailwind prose styling |
-| **Image** | Uploaded image with alignment (left, right, centre, full-width) and optional caption |
-| **Visualization** | Embed any published chart, table, map, or scorecard |
-| **Two-column** | Side-by-side layout with any mix of text, image, and visualization blocks |
+| **Text** | Rich text editor with formatting toolbar. Supports block format (Normal, Heading 1, Heading 2, Heading 3), bold, italic, underline, links, ordered and bullet lists, and clean formatting. Each text block has a **✕** remove button. |
+| **Image** | Upload an image with optional caption. Supports alignment (left, right, centre, full-width). |
+| **Visualization** | Embed any published chart, table, map, or scorecard. Select from a dropdown of available visualizations. |
+| **Two-Column Container** | A side-by-side layout. Each column can independently contain text or an embedded visualization. Inner blocks have their own **✕** remove buttons. |
 
-3. Arrange blocks by adding, removing, or reordering them
-4. Click **Save** to update the story
+Blocks can be added, removed, and rearranged. Click **Save** to persist changes, **Reset** to revert, or **Close** to exit without saving.
 
 ## Duplicating a story
 
@@ -39,11 +45,11 @@ Data Stories are narrative-rich pages that combine text, images, and embedded vi
 
 ## Publishing / unpublishing
 
-Toggle the publish switch on a story row to control its visibility on the public Data Stories page. Requires the `publish-and-unpublish:story` permission.
+Toggle the publish switch on a story row to control its visibility on the public Data Stories page. Requires the **Publish and unpublish** permission.
 
 ## Restricting / sharing
 
-Toggle the restrict switch to limit a story to its owner only, or make it accessible to all users. Requires the `edit:story` permission.
+Toggle the restrict switch to limit a story to its owner only, or make it accessible to all users. Requires the **Edit** permission.
 
 ## Editing a story
 

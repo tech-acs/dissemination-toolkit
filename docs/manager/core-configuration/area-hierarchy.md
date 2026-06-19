@@ -1,6 +1,6 @@
 # Area Hierarchy
 
-Area hierarchies define the geographic levels used throughout the platform, such as Region, District, County, or Ward. Accessible from the management admin menu (wrench icon) under **Core Configuration → Area Hierarchy** (Super Admin only).
+Area hierarchies define the geographic levels used throughout the platform, such as Region, District, County, or Ward. Accessible from the management **Manage** dropdown under **Core Configuration → Area Hierarchy** (Super Admin only).
 
 ## Creating a hierarchy level
 
@@ -9,7 +9,7 @@ Area hierarchies define the geographic levels used throughout the platform, such
 3. Fill in the fields:
    - **Name** (multi-language) — e.g. "Region", "District"
    - **Zero pad length** — number of digits for zero-padding area codes
-   - **Shape simplification tolerance** — tolerance value for simplifying shapefile geometries
+   - **Shape simplification tolerance** — tolerance value for simplifying shapefile geometries when serving maps
 4. Click **Save**
 
 The order of hierarchy levels determines their display order in geographic filters throughout the platform.

@@ -1,6 +1,6 @@
 # Documents
 
-The Documents section lets you upload and manage census tables published as Excel files, with full Dublin Core metadata. Accessible from the management top navigation by selecting **Documents**.
+The Documents section lets you upload and manage census tables published as Excel files, with full Dublin Core metadata. Accessible from the management top navigation under **Content → Documents**.
 
 ## Creating a document
 
@@ -28,7 +28,7 @@ The Documents section lets you upload and manage census tables published as Exce
 
 ## Publishing / unpublishing
 
-Toggle the publish switch on a document row to control its visibility on the public Documents page. Requires the `publish-and-unpublish:document` permission.
+Toggle the publish switch on a document row to control its visibility on the public Documents page. Requires the **Publish and unpublish** permission.
 
 ## Deleting a document
 

@@ -1,8 +1,8 @@
 # Users
 
-Manage user accounts, assign roles, and control access to the platform. Accessible from the management admin menu (wrench icon) under **Access Control → Users** (Super Admin only).
+Manage user accounts, assign roles, and control access to the platform. Accessible from the management **Manage** dropdown under **Access Control → Users** (Super Admin only).
 
-## User list
+## User management
 
 The Users page has two tabs:
 
@@ -16,7 +16,26 @@ Displays a table of all registered users with:
 
 ### Invitations tab
 
-Use the **Invitations** tab to send invitations to new users. Enter an email address and the system generates an invitation link. You can also use the bulk-invite option to invite multiple users at once.
+The Invitations tab provides two ways to invite new users.
+
+#### Invite new user (single)
+
+1. Click **Invite New User**
+2. In the modal, enter the user's **Email address**
+3. Optionally select a **Role to assign** (or leave as "Will assign later")
+4. Click **Invite**
+
+The system generates a unique registration link that expires in 72 hours. The pending invitation appears in the table below.
+
+#### Bulk invite
+
+1. Click **Bulk Invite**
+2. Prepare a spreadsheet (`.xlsx` or `.csv`) with at least an **email** column. Optionally include a **role** column with the exact role name to assign
+3. Upload the file and click **Invite**
+
+A template can be downloaded by clicking **Download Import Template**. The system processes each row and creates an invitation for each email address.
+
+#### Pending invitations
 
 Pending invitations are listed with options to:
 - **Show link** — copy the registration link to send manually

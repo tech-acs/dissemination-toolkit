@@ -2,9 +2,11 @@
 
 The management dashboard is where authorised users create, manage, and publish content on the Dissemination Toolkit. Access is controlled through a role-based permission system.
 
+Manager accounts are usually created during setup/deployment but can also be created on the command line (CLI) at any time afterwards.
+
 ## Logging in
 
-Click the **Login** button in the top-right corner of the public site. After signing in with your credentials, you are redirected to the management dashboard at `/manage/home`.
+Click the **Login** button in the top-right corner of the public site (landing page). After signing in with your credentials, you are redirected to the management dashboard at `/manage/home`.
 
 ## Permissions model
 
@@ -14,21 +16,38 @@ A **Super Admin** role bypasses all permission checks and has access to everythi
 
 ## Dashboard overview
 
-The management home page presents a grid of cards, each linking to a management section:
+The management home page presents a grid of cards organized into two groups:
 
-- **Manage visualizations** — create, customize, and share interactive data visualizations
-- **Manage stories** — build data-driven narratives using the story designer
+### Data
+
 - **Manage topics** — organize indicators, visualizations, and stories into semantic categories
 - **Manage indicators** — create, update, and assign indicators to topics
 - **Manage dimensions** — define descriptive attributes used to slice and dice data
 - **Manage datasets** — import and manage collections of tabular data
+
+### Content
+
+- **Manage visualizations** — create, customize, and share interactive data visualizations
+- **Manage stories** — build data-driven narratives using the story designer
 - **Manage documents** — upload census tables with Dublin Core metadata
+- **Manage tags** — Tags help you categorize and filter artefacts for easier discovery and organization.
 
 ## Navigation
 
-The top navigation bar provides quick links to each content section. The **admin wrench icon** (visible only to Super Admin users) opens a dropdown with advanced configuration options:
+The top navigation bar provides quick links organized into dropdowns:
+
+### Main navigation
+
+| Menu | Items |
+|---|---|
+| **Data** | Topics, Indicators, Dimensions, Datasets |
+| **Content** | Visualizations, Data stories, Documents, Tags |
+
+### Manage dropdown
+
+The **Manage** dropdown (visible only to Super Admin users) provides access to advanced configuration:
 
 - **Access Control** — Users and Roles
 - **Core Configuration** — Area Hierarchy and Areas
-- **Dissemination** — Organisation settings and Tags
 - **Announcements**
+- **Settings** — Organisation details and branding

@@ -1,8 +1,8 @@
 # Tags
 
-Tags are labels that can be attached to visualizations, data stories, and documents for filtering and discovery. Accessible from the management admin menu (wrench icon) under **Dissemination → Tags** (Super Admin only).
+Tags are labels that can be attached to visualizations, data stories, and documents for filtering and discovery. Accessible from the management top navigation under **Content → Tags**.
 
-Tags are created automatically when users add tags to content via the tag input field. They cannot be created directly, only renamed.
+Tags are created automatically when users type them into the tag input field on visualizations, data stories, and documents. If a tag with the same name already exists, it is reused rather than duplicated — the usage count simply increments. Tags cannot be created directly from this page, only renamed.
 
 ## Viewing tags
 
