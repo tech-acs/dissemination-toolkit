@@ -3,7 +3,6 @@
 namespace Uneca\DisseminationToolkit\Tests\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Uneca\DisseminationToolkit\Enums\PermissionsEnum;

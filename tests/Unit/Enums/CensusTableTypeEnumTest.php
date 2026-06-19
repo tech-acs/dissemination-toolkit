@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Collection;
 use Uneca\DisseminationToolkit\Enums\CensusTableTypeEnum;
 
 it('returns labels, classes and icons for each type', function () {
@@ -11,7 +12,7 @@ it('returns labels, classes and icons for each type', function () {
 });
 
 it('exposes all available types', function () {
-    expect(CensusTableTypeEnum::getTypes())->toBeInstanceOf(\Illuminate\Support\Collection::class)->not->toBeEmpty();
+    expect(CensusTableTypeEnum::getTypes())->toBeInstanceOf(Collection::class)->not->toBeEmpty();
 });
 
 it('falls back to unknown label for invalid value', function () {

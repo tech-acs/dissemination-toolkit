@@ -76,17 +76,11 @@ class TidyDataMaker extends Component
     }
 
     // Reactively re-pivot the data if any inputs change
-    public function updatedCheckedColumns()
-    {
-    }
+    public function updatedCheckedColumns() {}
 
-    public function updatedNameColumn()
-    {
-    }
+    public function updatedNameColumn() {}
 
-    public function updatedValueColumn()
-    {
-    }
+    public function updatedValueColumn() {}
 
     public function updatedSkipUnmatched()
     {

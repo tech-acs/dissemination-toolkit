@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers\VizBuilder;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Uneca\DisseminationToolkit\Http\Requests\VisualizationRequest;

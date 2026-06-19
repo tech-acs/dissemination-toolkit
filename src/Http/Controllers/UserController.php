@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Spatie\Permission\Models\Role;
 use Uneca\DisseminationToolkit\Models\Invitation;
 use Uneca\DisseminationToolkit\Models\User;

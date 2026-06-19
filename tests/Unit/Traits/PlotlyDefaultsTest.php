@@ -3,7 +3,8 @@
 use Uneca\DisseminationToolkit\Traits\PlotlyDefaults;
 
 it('exposes default plotly config and layout constants', function () {
-    $subject = new class {
+    $subject = new class
+    {
         use PlotlyDefaults;
     };
 

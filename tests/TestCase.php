@@ -8,6 +8,7 @@ use Laravel\Fortify\FortifyServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\Permission\PermissionServiceProvider;
 use Uneca\DisseminationToolkit\DisseminationToolkitServiceProvider;
+use Uneca\DisseminationToolkit\Models\User;
 use Uneca\DisseminationToolkit\Tests\Database\Seeders\TestDatabaseSeeder;
 
 class TestCase extends Orchestra
@@ -57,7 +58,7 @@ class TestCase extends Orchestra
             'sslmode' => 'prefer',
         ]);
 
-        $app['config']->set('auth.providers.users.model', \Uneca\DisseminationToolkit\Models\User::class);
+        $app['config']->set('auth.providers.users.model', User::class);
         $app['config']->set('auth.passwords.users.provider', 'users');
 
         $app['config']->set('cache.default', 'array');

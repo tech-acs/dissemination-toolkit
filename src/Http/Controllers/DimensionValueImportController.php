@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Closure;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 use Spatie\SimpleExcel\SimpleExcelReader;
 use Uneca\DisseminationToolkit\Http\Requests\DimensionValuesImportRequest;

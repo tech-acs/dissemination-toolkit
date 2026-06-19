@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 it('divides two numbers safely', function () {
@@ -47,7 +48,8 @@ it('returns an empty result set for empty data frame', function () {
 });
 
 it('handles model collections when converting to data frame', function () {
-    $model = new class extends \Illuminate\Database\Eloquent\Model {
+    $model = new class extends Model
+    {
         protected $fillable = ['name', 'value'];
     };
 

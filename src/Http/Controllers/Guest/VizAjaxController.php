@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Scorecard;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Table;
