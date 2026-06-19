@@ -1,16 +1,15 @@
 # Indicators
 
-Indicators are the measurable data points (e.g. population, literacy rate, unemployment) that appear in datasets. Accessible from the management top navigation by selecting **Indicators**.
+Indicators are the measurable data points (e.g. population, literacy rate, unemployment) that appear in datasets. They are the building blocks of visualizations — when creating a chart, table, map, or scorecard, you select one or more indicators from a dataset to display. Accessible from the management top navigation under **Data → Indicators**.
 
 ## Creating an indicator
 
 1. Go to the Indicators page from the management top navigation
 2. Click **Create**
 3. Fill in the fields:
-   - **Name** (multi-language)
-   - **Description** (multi-language)
-   - **Code** — a unique identifier
-   - **Topics** — select one or more topics to associate
+    - **Name** (multi-language)
+    - **Description** (multi-language)
+    - **Topics** — select one or more topics to associate
 4. Click **Save**
 
 ## Editing an indicator

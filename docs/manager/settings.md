@@ -1,6 +1,6 @@
 # Settings (Branding)
 
-The Settings page controls the organization's branding and contact information displayed throughout the public site. Accessible from the management admin menu (wrench icon) under **Dissemination → Organization**.
+The Settings page controls the organization's branding and contact information displayed throughout the public site. Accessible from the management **Manage** dropdown by selecting **Settings**.
 
 ## Editing organization details
 

@@ -197,12 +197,13 @@ Route::middleware(['web'])->group(function () {
 
             Route::get('organization', [OrganizationController::class, 'edit'])->name('organization.edit');
             Route::patch('organization/{organization}', [OrganizationController::class, 'update'])->name('organization.update');
-            Route::resource('tag', TagController::class)->only(['index', 'edit', 'update']);
             /*Route::name('templates.')->group(function () {
                 //Route::resource('templates/visualization', \App\Http\Controllers\VisualizationTemplateController::class)->only(['index', 'destroy']);
                 Route::resource('templates/story', \App\Http\Controllers\StoryTemplateController::class)->only(['index', 'destroy']);
             });*/
         });
+
+        Route::resource('tag', TagController::class)->only(['index', 'edit', 'update']);
     });
 
     Route::get('/', function () {

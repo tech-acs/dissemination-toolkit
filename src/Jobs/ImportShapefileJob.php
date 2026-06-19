@@ -167,7 +167,7 @@ class ImportShapefileJob implements ShouldQueue
         if ($processBatch) {
             try {
                 $batch->dispatch();
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 logger('ImportShapefile batch dispatch failed', ['error' => $e->getMessage()]);
                 Notification::sendNow($user, new TaskFailedNotification(
                     'Task failed',
@@ -192,7 +192,7 @@ class ImportShapefileJob implements ShouldQueue
         logger('ImportShapefile Job Failed', ['Exception: ' => $exception->getMessage()]);
         Notification::sendNow($this->user, new TaskFailedNotification(
             'Task failed',
-            'The shapefile import failed due to a job/queue error: ' . $exception->getMessage()
+            'The shapefile import failed due to a job/queue error: '.$exception->getMessage()
         ));
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Uneca\DisseminationToolkit\Enums\SortDirection;
 use Uneca\DisseminationToolkit\Services\SmartTableColumn;
@@ -43,7 +44,7 @@ it('reverses sort direction when it is the active sorted column', function () {
         'sort_direction' => SortDirection::ASC->value,
     ]);
 
-    $table = new SmartTableData(\App\Models\User::query(), $request);
+    $table = new SmartTableData(User::query(), $request);
     $column = (new SmartTableColumn('name'))->sortable();
     $table->columns([$column])->sortBy('name');
 
@@ -53,7 +54,7 @@ it('reverses sort direction when it is the active sorted column', function () {
 it('defaults reverse sort direction to ascending when not active', function () {
     $request = Request::create('/', 'GET');
 
-    $table = new SmartTableData(\App\Models\User::query(), $request);
+    $table = new SmartTableData(User::query(), $request);
     $column = (new SmartTableColumn('name'))->sortable();
     $table->columns([$column])->sortBy('email');
 
@@ -63,7 +64,7 @@ it('defaults reverse sort direction to ascending when not active', function () {
 it('renders a sort icon when sortable', function () {
     $request = Request::create('/', 'GET');
 
-    $table = new SmartTableData(\App\Models\User::query(), $request);
+    $table = new SmartTableData(User::query(), $request);
     $column = (new SmartTableColumn('name'))->sortable();
     $table->columns([$column])->sortBy('name');
 

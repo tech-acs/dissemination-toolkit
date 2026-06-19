@@ -4,14 +4,34 @@ The Tidy Data Maker reshapes non-tidy data into a long, import-ready format. It 
 
 ## Using the Tidy Data Maker
 
-1. Go to the Tidy Data Maker page from the datasets index page
-2. Paste your data into the text area. The tool accepts comma-, tab-, or semicolon-delimited data
-3. Select the columns you want to **melt** (reshape from wide to long)
-4. Provide names for the two new columns:
-   - **Dimension column** — the name of the dimension the melted headers represent (for example, `Year` or `Sex`)
-   - **Value column** — the name of the indicator value (for example, `Population`)
-5. The preview shows the reshaped tidy data
-6. Click **Download CSV** to save the tidy file, or **Download Codified CSV** to replace dimension and area labels with their database codes
-7. Import the resulting file via the **Datasets** page
+### 1. Paste wide format data (CSV/TSV)
 
-The tool warns you if any labels cannot be matched to existing dimension or area codes, and can optionally skip unmatched rows when generating the codified output.
+Paste your data into the text area. The tool accepts comma-, tab-, or semicolon-delimited data.
+
+### 2. Select columns to melt/pivot
+
+Checkboxes appear for each column in your pasted data. **Checked columns** are melted into variable/value rows. **Unchecked columns** remain as columns in the output.
+
+Select the dimension and indicator to use for the melted columns:
+
+- **New "Dimension" column name** — pick the dimension the melted column headers represent (e.g. Year, Sex)
+- **New "Value" column name** — pick the indicator the values represent (e.g. Population count)
+
+If any checked columns are named after an existing dimension or area hierarchy level, values will automatically be **codified** (labels replaced by database codes) in the Codified CSV output.
+
+Click **Apply** to generate the reshaped data.
+
+### 3. Tidy data (long format)
+
+The reshaped data is displayed in a preview table and text area. From here you can:
+
+- **Download CSV** — saves the tidy file with human-readable labels
+- **Download Codified CSV** — saves the tidy file with dimension and area labels replaced by their database codes, ready for import
+
+## Unmatched values
+
+If any values in the checked columns cannot be matched to existing dimension or area codes, a warning is shown listing the unmapped values. You can optionally check **Exclude unmatched rows from all CSVs** to skip those rows in the output. After adjusting, click **Apply** again and download the file.
+
+## Next step
+
+Import the resulting file via the **Datasets** page (see [Importing data](/manager/data/datasets)).

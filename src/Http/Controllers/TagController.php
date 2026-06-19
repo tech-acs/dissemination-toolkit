@@ -2,8 +2,8 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Uneca\DisseminationToolkit\Models\Tag;
 
 class TagController extends Controller

@@ -37,7 +37,7 @@ trait PackageTasksTrait
         'spatie/simple-excel:^3.9',
         'spatie/laravel-translatable:^6.1',
         'spatie/db-dumper:^4.1',
-        'uneca/plotly-chart-editor:^1.0'
+        'uneca/plotly-chart-editor:^1.0',
     ];
 
     public array $vendorPublish = [

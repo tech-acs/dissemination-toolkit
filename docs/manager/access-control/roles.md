@@ -1,6 +1,6 @@
 # Roles
 
-Roles group permissions together so they can be assigned to users. Accessible from the management admin menu (wrench icon) under **Access Control → Roles** (Super Admin only).
+Roles group permissions together so they can be assigned to users. Accessible from the management **Manage** dropdown under **Access Control → Roles** (Super Admin only).
 
 ## Creating a role
 

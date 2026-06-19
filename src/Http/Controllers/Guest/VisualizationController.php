@@ -2,9 +2,9 @@
 
 namespace Uneca\DisseminationToolkit\Http\Controllers\Guest;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Uneca\DisseminationToolkit\Models\Topic;
 use Uneca\DisseminationToolkit\Models\Visualization;
 

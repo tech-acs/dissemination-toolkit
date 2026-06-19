@@ -3,7 +3,8 @@
 use Uneca\DisseminationToolkit\Traits\ChecksumSafetyTrait;
 
 it('adds a checksum safety prefix to a non-empty string', function () {
-    $subject = new class {
+    $subject = new class
+    {
         use ChecksumSafetyTrait;
 
         public function add(?string $str): ?string

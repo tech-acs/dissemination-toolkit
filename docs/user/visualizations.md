@@ -6,7 +6,7 @@ Visualizations are published charts, tables, maps, and scorecards created from t
 
 | Type | Description |
 |---|---|
-| **Chart** | Interactive charts — bar, line, scatter, pie, histogram, box, area, sunburst |
+| **Chart** | Interactive charts — bar, line, scatter, pie, histogram, box, area |
 | **Table** | Sortable data tables |
 | **Map** | Choropleth maps showing geographic data distribution |
 | **Scorecard** | A single highlighted number or indicator |

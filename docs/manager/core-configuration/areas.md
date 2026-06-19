@@ -1,6 +1,6 @@
 # Areas
 
-Areas are the geographic entities (e.g. specific regions, districts, counties) that belong to a hierarchy level. Accessible from the management admin menu (wrench icon) under **Core Configuration → Areas** (Super Admin only).
+Areas are the geographic entities (e.g. specific regions, districts, counties) that belong to a hierarchy level. Accessible from the management **Manage** dropdown under **Core Configuration → Areas** (Super Admin only).
 
 ## Importing areas
 

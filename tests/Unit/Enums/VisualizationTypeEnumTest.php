@@ -2,8 +2,6 @@
 
 use Uneca\DisseminationToolkit\Enums\VisualizationTypeEnum;
 use Uneca\DisseminationToolkit\Livewire\Visualizations\Chart;
-use Uneca\DisseminationToolkit\Livewire\Visualizations\Map;
-use Uneca\DisseminationToolkit\Livewire\Visualizations\Table;
 
 it('returns details for every visualization type', function () {
     foreach (VisualizationTypeEnum::cases() as $type) {

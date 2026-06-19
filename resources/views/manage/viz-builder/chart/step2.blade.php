@@ -13,7 +13,7 @@
                     :data="$resource->data"
                     :layout="$resource->layout"
                     :config="$resource->config"
-                    :trace-types="['bar', 'line', 'scatter', 'pie', 'histogram', 'box', 'area', 'sunburst']"
+                    :trace-types="['bar', 'line', 'scatter', 'pie', 'histogram', 'box', 'area']"
                     sync-mode="auto"
                 />
             </div>

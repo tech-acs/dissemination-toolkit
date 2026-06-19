@@ -1,6 +1,6 @@
 # Announcements
 
-Announcements are broadcast messages sent to all users of a selected role. Accessible from the management admin menu (wrench icon) by selecting **Announcements**.
+Announcements are broadcast messages sent to all users of a selected role. Accessible from the management **Manage** dropdown by selecting **Announcements**.
 
 ## Creating an announcement
 
