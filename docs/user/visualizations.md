@@ -28,3 +28,9 @@ Click a visualization to open its detail page, which includes:
 - **Share** button — share via Email, Telegram, WhatsApp, Twitter/X, LinkedIn, Facebook, Microsoft Teams, or SMS
 - **Ratings & reviews** — if the visualization is reviewable, you can see the average rating and read approved reviews
 - **Area filter** — if the visualization is filterable by geography, you can select an area and apply it to filter the displayed data
+
+## Tags
+
+Tags are labels attached to visualizations to aid discovery. They appear as blue badges below the description on a visualization's detail page.
+
+When you search by keyword on the Visualizations page, the search matches both visualization titles **and** their tags — so typing a tag name like "population" will surface all visualizations tagged with it.

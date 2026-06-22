@@ -36,4 +36,4 @@ Each document in the results list shows:
 
 ## Document detail
 
-Click a document to view its detail page, which includes the full description, published date, last modified date, updated by, producer, publisher, data source, comment, clickable topic and tag links, and a download button.
+Click a document to view its detail page, which includes the full description, published date, last modified date, updated by, producer, publisher, data source, comment, topic and tag badges, and a download button.
