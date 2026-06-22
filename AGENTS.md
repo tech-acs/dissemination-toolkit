@@ -133,6 +133,24 @@ When a user asks to add, remove, or change a dependency that ships with the pack
 
 The package's documentation lives in `docs/` and is built with [VitePress](https://vitepress.dev) (config at `docs/.vitepress/config.mts`). Content is organised into `docs/manager/` (admin/manager guide) and `docs/user/` (end-user guide), with `docs/index.md` as the landing page. npm scripts (in `package.json`): `npm run docs:dev` (local dev server), `npm run docs:build` (build static site to `docs/.vitepress/dist`), `npm run docs:preview` (preview the built site). Edit the Markdown files under `docs/` when updating documentation; do not edit generated output under `docs/.vitepress/cache` or `docs/.vitepress/dist`.
 
+### Documentation sync stamp
+
+The documentation was last reviewed and aligned with package release **1.12.0** (commit `292bc93`, 2026-06-19).
+
+| Field | Value |
+|---|---|
+| Aligned at | `1.12.0` |
+| Commit | `292bc93` |
+| Date | 2026-06-19 |
+
+To check whether docs have drifted from the package since this stamp, run:
+
+```
+git log 1.12.0..HEAD --oneline -- src/ routes/ resources/views/ config/ database/migrations/
+```
+
+Review each listed package change, update the relevant docs pages, then bump the stamp above to the latest release tag.
+
 <!-- CODEGRAPH_START -->
 ## CodeGraph
 
