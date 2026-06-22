@@ -116,6 +116,7 @@
 
         <div>
             <h2 class="text-xl font-bold mb-2">3. Tidy data (long format)</h2>
+            <span class="text-sm text-gray-400">Preview of the unformatted tidy data</span>
             <div class="space-y-6">
 
                 @if(count($tidiedData) > 0)
@@ -166,7 +167,6 @@
                 @endif
             </div>
         </div>
-
 
     </div>
 </div>
