@@ -42,10 +42,10 @@ trait PackageTasksTrait
 
     public array $vendorPublish = [
         'Dissemination config' => ['--tag=dissemination-config', '--force'],
-        'Dissemination migrations' => ['--tag=dissemination-migrations', '--force'],
         // 'Dissemination stubs' => ['--tag=dissemination-stubs'],
         'Livewire config' => ['--tag=livewire:config'],
         'Spatie permissions' => ['--provider=Spatie\Permission\PermissionServiceProvider', '--force'],
+        'Dissemination migrations' => ['--tag=dissemination-migrations', '--force'],
     ];
 
     public array $customizedJetstreamViews = [
@@ -89,9 +89,6 @@ trait PackageTasksTrait
     protected function copyCustomizedJetstreamFiles(): void
     {
         $this->components->info('Copying customized Jetstream files');
-        $this->components->task('Jetstream actions', function () {
-            return $this->copyFilesInDir(__DIR__.'/../../deploy/jetstream-modifications/actions', app_path('Actions/Fortify'));
-        });
         foreach ($this->customizedJetstreamViews as $source => $destination) {
             $this->components->task($source, function () use ($source, $destination) {
                 return copy(__DIR__."/../../deploy/jetstream-modifications/views/$source", resource_path($destination));

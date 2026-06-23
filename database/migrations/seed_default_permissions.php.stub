@@ -1,0 +1,48 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
+use Uneca\DisseminationToolkit\Enums\PermissionsEnum;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        $desired = collect(PermissionsEnum::cases())->map(fn ($permission) => $permission->value);
+
+        $existing = DB::table('permissions')
+            ->where('guard_name', 'web')
+            ->pluck('name');
+
+        $missing = $desired->diff($existing)->map(fn ($name) => [
+            'name' => $name,
+            'guard_name' => 'web',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ])->all();
+
+        if (! empty($missing)) {
+            DB::table('permissions')->insert($missing);
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        $names = collect(PermissionsEnum::cases())->map(fn ($permission) => $permission->value)->all();
+
+        DB::table('permissions')
+            ->where('guard_name', 'web')
+            ->whereIn('name', $names)
+            ->delete();
+    }
+};

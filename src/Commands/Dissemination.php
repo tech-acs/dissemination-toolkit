@@ -23,12 +23,11 @@ class Dissemination extends Command
         $this->copyCustomizedJetstreamFiles();
         $this->configureJetstreamFeatures();
         $this->copyAssets();
-        $this->copyColorPalettes();
         $this->customizeExceptionRendering();
         $this->installEnvFiles();
         $this->installEmptyWebRoutesFile();
         $this->installJsDependencies();
-        //        $this->createPermissions();
+        // $this->createPermissions();
         $this->cleanup();
 
         info('Installation complete');
