@@ -14,6 +14,7 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
+use Uneca\DisseminationToolkit\Actions\CreateNewUser;
 use Uneca\DisseminationToolkit\Commands\Adminify;
 use Uneca\DisseminationToolkit\Commands\CreateDimensions;
 use Uneca\DisseminationToolkit\Commands\CustomJetstreamInstallCommand;
@@ -113,6 +114,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
                 'add_extra_columns_to_datasets_tables',
                 'add_code_column_to_indicators_table',
                 'add_rank_column_to_all_dimension_tables',
+                'seed_default_permissions',
             ])
             ->hasCommands([
                 Dissemination::class,
@@ -191,6 +193,8 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         $router->aliasMiddleware('enforce_2fa', RedirectIf2FAEnforced::class);
         // $router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
 
+        Fortify::createUsersUsing(CreateNewUser::class);
+
         Fortify::registerView(function (Request $request) {
             if (! $request->hasValidSignature()) {
                 throw new InvalidSignatureException;
@@ -207,22 +211,5 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         // $router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
         $router->aliasMiddleware('permission', PermissionMiddleware::class);
         $router->aliasMiddleware('role', RoleMiddleware::class);
-
-        /*$this->app->booted(function () {
-            $schedule = $this->app->make(Schedule::class);
-            $schedule->command('chimera:generate-reports')->hourly();
-        });
-
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/../resources/stubs' => resource_path('stubs'),
-            ], 'chimera-stubs');
-        }
-
-        $this->app->singleton('settings', function () {
-            return Cache::rememberForever('settings', function () {
-                return Setting::all()->pluck('value', 'key');
-            });
-        });*/
     }
 }
