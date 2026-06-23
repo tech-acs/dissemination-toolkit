@@ -34,4 +34,6 @@ testbench.yaml
 docs/.vitepress/cache
 docs/.vitepress/dist
 
+.codegraph
+
 intro.yml
