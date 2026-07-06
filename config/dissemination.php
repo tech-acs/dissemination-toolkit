@@ -26,6 +26,10 @@ return [
 
     'featured_stories' => env('FEATURED_STORIES', 2),
     'fact_tables' => ['census_facts' => 'Census facts' /* 'population_facts' => 'Population characteristics', 'housing_facts' => 'Housing characteristics' */],
+    'api' => [
+        'per_page' => (int) env('API_RECORDS_PER_PAGE', 20),
+    ],
+
     'shapefile' => [
         'import_chunk_size' => (int) env('SHAPEFILE_IMPORT_CHUNK_SIZE', 500),
         'stop_import_if_orphans_found' => env('SHAPEFILE_STOP_IMPORT_IF_ORPHANS_FOUND', true),
