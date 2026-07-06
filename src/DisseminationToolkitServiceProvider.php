@@ -3,6 +3,7 @@
 namespace Uneca\DisseminationToolkit;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Crypt;
@@ -76,6 +77,7 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
             )
             ->hasTranslations()
             ->hasRoute('web')
+            ->hasRoute('api')
             ->hasMigrations([
                 'install_postgis_extension',
                 'install_ltree_extension',
@@ -165,6 +167,8 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
+        JsonApiResource::configure('1.1');
+
         Gate::before(function ($user, $ability) {
             return $user->hasRole('Super Admin') ? true : null;
         });
