@@ -27,6 +27,7 @@ export default defineConfig({
             { text: 'Data Stories', link: '/user/data-stories' },
             { text: 'Documents', link: '/user/documents' },
             { text: 'Datasets', link: '/user/datasets' },
+            { text: 'REST API', link: '/user/api-reference' },
           ],
 
           '/manager/': [
@@ -70,6 +71,7 @@ export default defineConfig({
             { text: 'Documents', link: '/manager/documents' },
             { text: 'Announcements', link: '/manager/announcements' },
             { text: 'Settings', link: '/manager/settings' },
+            { text: 'REST API', link: '/user/api-reference' },
           ],
         },
       }
@@ -93,6 +95,7 @@ export default defineConfig({
             { text: 'Récits de données', link: '/fr/user/data-stories' },
             { text: 'Documents', link: '/fr/user/documents' },
             { text: 'Jeux de données', link: '/fr/user/datasets' },
+            { text: 'API REST', link: '/fr/user/api-reference' },
           ],
 
           '/fr/manager/': [
@@ -136,6 +139,7 @@ export default defineConfig({
             { text: 'Documents', link: '/fr/manager/documents' },
             { text: 'Annonces', link: '/fr/manager/announcements' },
             { text: 'Paramètres', link: '/fr/manager/settings' },
+            { text: 'API REST', link: '/fr/user/api-reference' },
           ],
         },
       }

@@ -112,6 +112,10 @@ trait PackageTasksTrait
                 'search' => 'Features::accountDeletion(),',
                 'replace' => '// Features::accountDeletion(),',
             ],
+            'Enable API support' => [
+                'search' => '// Features::api(),',
+                'replace' => 'Features::api(),',
+            ],
         ];
         foreach ($options as $feature => $option) {
             $this->components->task($feature, function () use ($option) {

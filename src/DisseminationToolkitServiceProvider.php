@@ -215,5 +215,6 @@ class DisseminationToolkitServiceProvider extends PackageServiceProvider
         // $router->aliasMiddleware('log_page_views', \Uneca\DisseminationToolkit\Http\Middleware\LogPageView::class);
         $router->aliasMiddleware('permission', PermissionMiddleware::class);
         $router->aliasMiddleware('role', RoleMiddleware::class);
+        $router->aliasMiddleware('api.ability', \Uneca\DisseminationToolkit\Http\Middleware\CheckAbility::class);
     }
 }
