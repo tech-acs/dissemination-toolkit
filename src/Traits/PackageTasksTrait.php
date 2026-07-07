@@ -21,7 +21,7 @@ trait PackageTasksTrait
         'autoprefixer' => '^10.4.16',
         'laravel-vite-plugin' => '^3.0',
         'lodash-es' => '^4.17.21',
-        'plotly.js-cartesian-dist' => '^3.5.1',
+        'plotly.js' => '^3.5.1',
         'plotly.js-locales' => '^3.5.1',
         'tailwindcss' => '^3.4.0',
         'd3-format' => '^3.1.0',

@@ -1,6 +1,4 @@
-import Plotly from 'plotly.js-cartesian-dist';
-import fr from 'plotly.js-locales/fr';
-import ptPT from 'plotly.js-locales/pt-pt';
+import Plotly from './PlotlyCustomBundle.js';
 
 export default class PlotlyChart {
     id;
@@ -41,12 +39,6 @@ export default class PlotlyChart {
         }
         else{
             this.rootElement = document.getElementById(htmlId)
-        }
-
-        if (this.config.locale === 'fr') {
-            Plotly.register(fr);
-        } else if (this.config.locale === 'pt') {
-            Plotly.register(ptPT);
         }
 
         this.vizId = this.rootElement.getAttribute('viz-id')
